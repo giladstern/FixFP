@@ -54,5 +54,5 @@ public class ListTutorial extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+
 }
