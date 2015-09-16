@@ -17,8 +17,6 @@ public class ListActivity extends AppCompatActivity {
     String[] password = new String[6];
     MainActivity.Types type;
     WideNoLinesFP.Batch curBatch = WideNoLinesFP.Batch.FIRST;
-    int timesLeft;
-    int stage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +25,6 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         FP = (WideNoLinesFP) findViewById(R.id.list_fp);
         type = MainActivity.Types.LIST;
-        stage = getIntent().getIntExtra("stage", 0);
-        timesLeft = DispatchActivity.ITERATIONS[stage];
 
         findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +69,6 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
 //                FP.reset();
-                timesLeft--;
                 Intent next = new Intent(FP.getContext(), SuccMsg.class);
                 next.putExtra("type", type);
                 boolean equal = true;
@@ -174,7 +169,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (timesLeft != 0) {
+
             SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
             for (int i = 0; i < 6; i++) {
                 password[i] = prefs.getString(String.format("char%d", i), "");
@@ -185,13 +180,7 @@ public class ListActivity extends AppCompatActivity {
                 startActivity(next);
             }
             FP.reset();
-        }
-        else
-        {
-            Intent intent = new Intent(this, AlarmSetActivity.class);
-            intent.putExtra("stage", stage);
-            startActivity(intent);
-            finish();
-        }
+
+
     }
 }

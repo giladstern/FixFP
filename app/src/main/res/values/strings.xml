@@ -129,6 +129,4 @@
     <string name="title_activity_pattern">Fast Phrase</string>
     <string name="title_activity_pin">Fast Phrase</string>
     <string name="title_activity_alarm_set">AlarmSetActivity</string>
-    <string name="title_activity_first_screen">FirstScreen</string>
-    <string name="title_activity_list_tutorial">ListTutorial</string>
 </resources>

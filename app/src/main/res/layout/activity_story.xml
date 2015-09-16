@@ -4,7 +4,7 @@
     android:id="@+id/parent"
     tools:context="com.example.gilad.fp.StoryActivity">
 
-    <com.example.gilad.fp.TripleStoryFP
+    <com.example.gilad.fp.DiagonalStoryFP
         android:layout_width="fill_parent"
         android:layout_height="300dp"
         android:id="@+id/story_fp"

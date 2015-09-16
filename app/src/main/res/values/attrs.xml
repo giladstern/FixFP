@@ -21,5 +21,14 @@
         <attr name="arrowWidth" format="float">
         </attr>
     </declare-styleable>
+    <declare-styleable name="FP">
+        <attr name="bgColor" format="color"/>
+        <attr name ="fontColor" format="color"/>
+        <attr name="borderColor" format="color"/>
+        <attr name="space" format="integer"/>
+        <attr name="borderWidth" format="integer">
+        </attr>
+
+    </declare-styleable>
 
 </resources>
