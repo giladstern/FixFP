@@ -9,6 +9,8 @@ import android.view.View;
 
 import java.util.concurrent.TimeUnit;
 
+import com.example.gilad.fp.utils.AutoResizeTextView;
+
 public class AlarmSetActivity extends AppCompatActivity {
 
     @Override

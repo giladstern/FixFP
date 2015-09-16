@@ -4,7 +4,7 @@
     android:id="@+id/parent"
     tools:context="com.example.gilad.fp.ListActivity">
 
-    <com.example.gilad.fp.WideNoLinesFP
+    <com.example.gilad.fp.utils.WideNoLinesFP
         android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:id="@+id/list_fp"

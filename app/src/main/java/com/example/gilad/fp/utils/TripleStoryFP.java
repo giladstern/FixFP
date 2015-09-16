@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.example.gilad.fp.AutoResizeTextView;
 import com.example.gilad.fp.R;
 
 /**

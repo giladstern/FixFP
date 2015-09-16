@@ -13,6 +13,7 @@ import com.example.gilad.fp.utils.WideNoLinesFP;
 public class ListTutorial extends AppCompatActivity {
 
     String pass[];
+    String labels[];
     TextView instructions;
     WideNoLinesFP fp;
 
@@ -22,9 +23,11 @@ public class ListTutorial extends AppCompatActivity {
         setContentView(R.layout.activity_list_tutorial);
 
         pass = new String[6];
+        labels = new String[6];
         SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
         for (int i = 0; i < 6; i++) {
             pass[i] = prefs.getString(String.format("char%d", i), "");
+            labels[i] = prefs.getString(String.format("label%d", i), "");
         }
 
         instructions = (TextView) findViewById(R.id.instructions);

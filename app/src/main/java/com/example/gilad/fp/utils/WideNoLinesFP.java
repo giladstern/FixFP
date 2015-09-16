@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.gilad.fp.AutoResizeTextView;
+import com.example.gilad.fp.utils.AutoResizeTextView;
 import com.example.gilad.fp.R;
 
 

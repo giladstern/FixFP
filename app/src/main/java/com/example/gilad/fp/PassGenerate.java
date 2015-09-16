@@ -22,6 +22,7 @@ import haibison.android.lockpattern.util.ResourceUtils;
 import haibison.android.lockpattern.widget.LockPatternView;
 
 import com.example.gilad.fp.utils.SingleLineTextView;
+import com.example.gilad.fp.utils.AutoResizeTextView;
 
 
 public class PassGenerate extends AppCompatActivity {

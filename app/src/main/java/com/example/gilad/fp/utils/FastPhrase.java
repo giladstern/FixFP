@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import com.example.gilad.fp.AutoResizeTextView;
 import com.example.gilad.fp.R;
 
 import java.util.ArrayList;
