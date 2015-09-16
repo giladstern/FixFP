@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="vehicles">
+        <item name="plane">9992</item>
+        <item name="bus">128643</item>
+        <item name="bicycle">128690</item>
+        <item name="car">128663</item>
+        <item name="ship">128674</item>
+        <item name="train">128644</item>
+    </integer-array>
+    <integer-array name="animals">
+        <item name="snake">128013</item>
+        <item name="dolphin">128044</item>
+        <item name="monkey">128018</item>
+        <item name="elephant">128024</item>
+        <item name="octopus">128025</item>
+        <item name="penguin">128039</item>
+    </integer-array>
+    <integer-array name="clothes">
+        <item name="hat">128082</item>
+        <item name="glasses">128083</item>
+        <item name="shirt">128085</item>
+        <item name="pants">128086</item>
+        <item name="shoes">128095</item>
+        <item name="dress">128087</item>
+    </integer-array>
+    <integer-array name="people">
+        <item name="alien">128125</item>
+        <item name="devil">128127</item>
+        <item name="boy">128102</item>
+        <item name="girl">128103</item>
+        <item name="skull">128128</item>
+    </integer-array>
+    <integer-array name="food">
+        <item name="fries">127839</item>
+        <item name="banana">127820</item>
+        <item name="pineapple">127821</item>
+        <item name="pizza">127829</item>
+        <item name="cherries">127826</item>
+        <item name="strawberry">127827</item>
+        <item name="cake">127856</item>
+        <item name="grapes">127815</item>
+    </integer-array>
+    <integer-array name="sports">
+        <item name="soccer">9917</item>
+        <item name="basketball">127936</item>
+        <item name="football">127944</item>
+        <item name="tennis">127934</item>
+        <item name="bowling">127923</item>
+    </integer-array>
+    <integer-array name="colors">
+        <item name="red">0xffff0000</item>
+        <item name="blue">0xff0000ff</item>
+        <item name="green">0xff00ff00</item>
+        <item name="yellow">0xffffff00</item>
+        <item name="orange">0xffffa500</item>
+    </integer-array>
+</resources>

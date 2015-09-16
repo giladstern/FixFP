@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gilad.fp" >
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <receiver android:name=".Alarm" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".PassGenerate"
+            android:label="@string/title_activity_pass_generate"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".SuccMsg"
+            android:label="@string/title_activity_succ_msg"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".StoryActivity"
+            android:label="@string/title_activity_story"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ListActivity"
+            android:label="@string/title_activity_list"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".DispatchActivity"
+            android:label="@string/title_activity_dispatch" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PatternActivity"
+            android:label="@string/title_activity_pattern" >
+        </activity>
+        <activity
+            android:name=".PinActivity"
+            android:label="@string/title_activity_pin" >
+        </activity>
+        <activity
+            android:name=".AlarmSetActivity"
+            android:label="@string/title_activity_alarm_set" >
+        </activity>
+        <activity
+            android:name=".tutorial.FirstScreen"
+            android:label="@string/title_activity_first_screen" >
+        </activity>
+        <activity
+            android:name=".tutorial.ListTutorial"
+            android:label="@string/title_activity_list_tutorial" >
+        </activity>
+    </application>
+
+</manifest>

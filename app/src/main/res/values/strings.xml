@@ -1,0 +1,134 @@
+<resources>
+    <string name="app_name">FP</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="filename">stored_info</string>
+    <string name="pass">password</string>
+    <string-array name="numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="vehicles_text">
+        <item>plane</item>
+        <item>bus</item>
+        <item>bicycle</item>
+        <item>car</item>
+        <item>ship</item>
+        <item>train</item>
+    </string-array>
+    <string-array name="animals_text">
+        <item>snake</item>
+        <item>dolphin</item>
+        <item>monkey</item>
+        <item>elephant</item>
+        <item>octopus</item>
+        <item>penguin</item>
+    </string-array>
+    <string-array name="clothes_text">
+        <item>Hat</item>
+        <item>Glasses</item>
+        <item>Shirt</item>
+        <item>Pants</item>
+        <item>Shoe</item>
+        <item>Dress</item>
+    </string-array>
+    <string-array name="people_text">
+        <item>alien</item>
+        <item>devil</item>
+        <item>boy</item>
+        <item>girl</item>
+        <item>skeleton</item>
+    </string-array>
+    <string-array name="locations">
+        <item name="New York">J</item>
+        <item name="Giza">n</item>
+        <item name="Paris">e</item>
+        <item name="Rio de J.">U</item>
+        <item name="Pisa">$</item>
+    </string-array>
+    <string-array name="locations_text">
+        <item>New York</item>
+        <item>Giza</item>
+        <item>Paris</item>
+        <item>Rio de J.</item>
+        <item>Pisa</item>
+    </string-array>
+    <string-array name="food_text">
+        <item>fries</item>
+        <item>banana</item>
+        <item>pineapple</item>
+        <item>pizza</item>
+        <item>cherries</item>
+        <item>strawberry</item>
+        <item>cake</item>
+        <item>grapes</item>
+    </string-array>
+    <string-array name="drinks_text">
+        <item>milk</item>
+        <item>coffee</item>
+        <item>wine</item>
+        <item>beer</item>
+        <item>water</item>
+    </string-array>
+    <string-array name="sports_text">
+        <item>soccer</item>
+        <item>basketball</item>
+        <item>football</item>
+        <item>tennis</item>
+        <item>bowling</item>
+    </string-array>
+    <string-array name="colors_text">
+        <item>red</item>
+        <item>blue</item>
+        <item>green</item>
+        <item>yellow</item>
+        <item>orange</item>
+    </string-array>
+    <string-array name="amounts">
+        <item>13</item>
+        <item>41</item>
+        <item>56</item>
+        <item>72</item>
+        <item>95</item>
+    </string-array>
+    <string-array name="amounts_text">
+        <item>thirteen</item>
+        <item>forty one</item>
+        <item>fifty six</item>
+        <item>seventy two</item>
+        <item>ninety five</item>
+    </string-array>
+    <string-array name="cartoons">
+        <item name="Mickey">A</item>
+        <item name="Snoopy">W</item>
+        <item name="Bart">E</item>
+        <item name="Spongebob">F</item>
+        <item name="Bugs">O</item>
+    </string-array>
+    <string-array name="cartoons_text">
+        <item>Mickey</item>
+        <item>Snoopy</item>
+        <item>Bart</item>
+        <item>S.Bob</item>
+        <item>Bugs</item>
+    </string-array>
+    <string name="pass_type">pass_type</string>
+    <string name="stage_file">stage_file</string>
+    <string name="order">order</string>
+    <string name="stage">stage</string>
+    <string name="second">second</string>
+    <string name="next_alarm">next_alarm</string>
+    <string name="title_activity_pass_generate">Fast Phrase</string>
+    <string name="title_activity_succ_msg">Fast Phrase</string>
+    <string name="title_activity_story">Fast Phrase</string>
+    <string name="title_activity_list">Fast Phrase</string>
+    <string name="title_activity_dispatch">Fast Phrase</string>
+    <string name="title_activity_pattern">Fast Phrase</string>
+    <string name="title_activity_pin">Fast Phrase</string>
+    <string name="title_activity_alarm_set">AlarmSetActivity</string>
+    <string name="title_activity_first_screen">FirstScreen</string>
+    <string name="title_activity_list_tutorial">ListTutorial</string>
+</resources>

@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parent"
+    tools:context="com.example.gilad.fp.ListActivity">
+
+    <com.example.gilad.fp.WideNoLinesFP
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:id="@+id/list_fp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:id="@+id/reset"
+        android:layout_alignRight="@+id/change_type"
+        android:layout_alignTop="@+id/forgot"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Code"
+        android:id="@+id/forgot"
+        android:layout_alignLeft="@+id/new_pass"
+        android:layout_above="@+id/new_pass"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Code"
+        android:id="@+id/new_pass"
+        android:layout_toRightOf="@+id/dummy"
+        android:layout_alignTop="@id/change_type"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Code Type"
+        android:id="@+id/change_type"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/dummy"
+        android:layout_marginBottom="30dp"
+        />
+
+    <Space
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:id="@+id/dummy"/>
+
+    <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text=""
+        android:id="@+id/center"
+        android:layout_below="@id/list_fp"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"/>
+    <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text=""
+        android:id="@+id/left"
+        android:layout_alignTop="@id/center"
+        android:layout_toLeftOf="@id/center"
+        android:layout_marginRight="25dp"/>
+    <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text=""
+        android:id="@+id/right"
+        android:layout_alignTop="@id/center"
+        android:layout_toRightOf="@id/center"
+        android:layout_marginLeft="25dp"/>
+</RelativeLayout>
