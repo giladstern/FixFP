@@ -1,15 +1,12 @@
 package com.example.gilad.fp;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -19,13 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.Lock;
 
 import haibison.android.lockpattern.util.ResourceUtils;
 import haibison.android.lockpattern.widget.LockPatternView;
+
+import com.example.gilad.fp.utils.SingleLineTextView;
 
 
 public class PassGenerate extends AppCompatActivity {

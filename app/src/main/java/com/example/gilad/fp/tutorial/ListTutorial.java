@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.gilad.fp.R;
-import com.example.gilad.fp.WideNoLinesFP;
+import com.example.gilad.fp.utils.WideNoLinesFP;
 
 public class ListTutorial extends AppCompatActivity {
 

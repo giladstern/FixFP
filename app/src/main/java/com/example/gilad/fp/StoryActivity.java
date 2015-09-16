@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+
+import com.example.gilad.fp.utils.TouchData;
+import com.example.gilad.fp.utils.DiagonalStoryFP;
+import com.example.gilad.fp.utils.FastPhrase;
 
 import java.util.ArrayList;
 
@@ -28,7 +31,7 @@ public class StoryActivity extends AppCompatActivity {
 
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        FP = (TripleStoryFP) findViewById(R.id.story_fp);
+        FP = (DiagonalStoryFP) findViewById(R.id.story_fp);
         type = MainActivity.Types.TRIPLE_STORY;
         stage = getIntent().getIntExtra("stage", 0);
         timesLeft = DispatchActivity.ITERATIONS[stage];

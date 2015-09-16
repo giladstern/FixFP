@@ -1,4 +1,4 @@
-package com.example.gilad.fp;
+package com.example.gilad.fp.utils;
 
 /**
  * Created by Gilad on 8/30/2015.

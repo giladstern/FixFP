@@ -1,4 +1,4 @@
-package com.example.gilad.fp;
+package com.example.gilad.fp.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -17,6 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import com.example.gilad.fp.AutoResizeTextView;
+import com.example.gilad.fp.R;
 
 /**
  * Created by Gilad on 8/4/2015.
@@ -155,33 +158,33 @@ public class TripleStoryFP extends FastPhrase {
             // Manually laying out the views in relation to each other.
             // First item of each row.
             LayoutParams layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(ALIGN_PARENT_TOP);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(0).setLayoutParams(layout);
 
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 1);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 1);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(15).setLayoutParams(layout);
 
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 16);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 16);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(5).setLayoutParams(layout);
 
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 6);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 6);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(20).setLayoutParams(layout);
 
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 21);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 21);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(10).setLayoutParams(layout);
 
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 11);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 11);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(25).setLayoutParams(layout);
 
             // Align rows according to first item.
@@ -190,8 +193,8 @@ public class TripleStoryFP extends FastPhrase {
                 for (int i = 1 ; i < 5; i++)
                 {
                     layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    layout.addRule(RelativeLayout.RIGHT_OF, 5 * j + i);
-                    layout.addRule(RelativeLayout.ALIGN_TOP, 5 * j + i);
+                    layout.addRule(RIGHT_OF, 5 * j + i);
+                    layout.addRule(ALIGN_TOP, 5 * j + i);
                     getChildAt(5 * j + i).setLayoutParams(layout);
                 }
             }

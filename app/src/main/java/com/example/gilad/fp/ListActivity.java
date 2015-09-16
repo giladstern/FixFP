@@ -9,6 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+
+import com.example.gilad.fp.utils.FastPhrase;
+import com.example.gilad.fp.utils.WideNoLinesFP;
+import com.example.gilad.fp.utils.TouchData;
+
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.gilad.fp;
+package com.example.gilad.fp.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,19 +8,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextSwitcher;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.gilad.fp.AutoResizeTextView;
+import com.example.gilad.fp.R;
 
 
 /**
@@ -145,35 +140,35 @@ public class WideNoLinesFP extends FastPhrase {
             // Manually laying out the views in relation to each other.
             // First item of first row on top.
             LayoutParams layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(ALIGN_PARENT_TOP);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(0).setLayoutParams(layout);
 
             // First item of last row on bottom.
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 1);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 1);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(5).setLayoutParams(layout);
 
             layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            layout.addRule(RelativeLayout.BELOW, 6);
-            layout.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layout.addRule(BELOW, 6);
+            layout.addRule(ALIGN_PARENT_LEFT);
             getChildAt(10).setLayoutParams(layout);
 
             // Align rows according to first item.
             for (int i = 1 ; i < 5; i++)
             {
                 layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                layout.addRule(RelativeLayout.RIGHT_OF, i);
-                layout.addRule(RelativeLayout.ALIGN_TOP, i);
+                layout.addRule(RIGHT_OF, i);
+                layout.addRule(ALIGN_TOP, i);
                 getChildAt(i).setLayoutParams(layout);
             }
 
             for (int i = 6 ; i < 10; i++)
             {
                 layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                layout.addRule(RelativeLayout.RIGHT_OF, i);
-                layout.addRule(RelativeLayout.ALIGN_TOP, i);
+                layout.addRule(RIGHT_OF, i);
+                layout.addRule(ALIGN_TOP, i);
                 getChildAt(i).setLayoutParams(layout);
 
                 layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -182,8 +177,8 @@ public class WideNoLinesFP extends FastPhrase {
             for (int i = 11 ; i < 15; i++)
             {
                 layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                layout.addRule(RelativeLayout.RIGHT_OF, i);
-                layout.addRule(RelativeLayout.ALIGN_TOP, i);
+                layout.addRule(RIGHT_OF, i);
+                layout.addRule(ALIGN_TOP, i);
                 getChildAt(i).setLayoutParams(layout);
             }
 

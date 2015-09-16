@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
+import com.example.gilad.fp.utils.TouchData;
+
 import java.util.ArrayList;
 import java.util.List;
 
