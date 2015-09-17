@@ -4,18 +4,17 @@
     tools:context="com.example.gilad.fp.tutorial.ListTutorial"
     android:id="@+id/layout">
 
-    <com.example.gilad.fp.utils.WideNoLinesFP
+    <com.example.gilad.fp.utils.DiagonalStoryFP
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/list_fp"
-        android:layout_below="@+id/left_instructions"
+        android:layout_height="300dp"
+        android:id="@+id/story_fp"
+        android:layout_below="@+id/left_label"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp" />
+        android:layout_alignParentEnd="true" />
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:id="@+id/top_instructions"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -23,17 +22,40 @@
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:id="@+id/left_instructions"
         android:layout_below="@+id/top_instructions"
         android:layout_alignLeft="@+id/top_instructions"
         android:gravity="center" />
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:id="@+id/right_instructions"
+        android:layout_height="50dp"
+        android:id="@+id/middle_instructions"
         android:layout_alignTop="@+id/left_instructions"
         android:layout_toRightOf="@+id/left_instructions"
+        android:gravity="center" />
+    <com.example.gilad.fp.utils.AutoResizeTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/right_instructions"
+        android:layout_alignTop="@+id/middle_instructions"
+        android:layout_toRightOf="@+id/middle_instructions"
+        android:gravity="center" />
+    <com.example.gilad.fp.utils.AutoResizeTextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/left_label"
+        android:gravity="center"
+        android:layout_below="@+id/left_instructions"
+        android:layout_alignLeft="@+id/left_instructions"
+        android:layout_alignTop="@+id/list_fp"
+        />
+    <com.example.gilad.fp.utils.AutoResizeTextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/middle_label"
+        android:layout_below="@+id/middle_instructions"
+        android:layout_alignLeft="@+id/middle_instructions"
         android:gravity="center" />
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"

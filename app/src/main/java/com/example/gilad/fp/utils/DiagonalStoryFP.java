@@ -31,7 +31,7 @@ public class DiagonalStoryFP extends FastPhrase {
     private int middleSelected = -1;
     private int bottomSelected = -1;
     private Resources res;
-    private enum Batch {FIRST, SECOND}
+    public enum Batch {FIRST, SECOND, DONE}
     private Batch curBatch;
     private RectF topRect;
     private Paint topPaint;
@@ -549,12 +549,38 @@ public class DiagonalStoryFP extends FastPhrase {
                 pass[0] = ((ColoredTextSwitch) getChildAt(topSelected)).getText();
                 pass[1] = ((ColoredTextSwitch) getChildAt(middleSelected)).getText();
                 pass[2] = ((ColoredTextSwitch) getChildAt(bottomSelected)).getText();
+                if (firstCompleteListener != null)
+                {
+                    String[] send = {pass[0], pass[1], pass[2]};
+                    if (firstCompleteListener.onFirstComplete(send))
+                    {
+                        secondBatch();
+                    }
+                    else
+                    {
+                        firstBatch();
+                    }
+                    return;
+                }
                 secondBatch();
                 break;
             case SECOND:
                 pass[3] = ((ColoredTextSwitch) getChildAt(topSelected)).getText();
                 pass[4] = ((ColoredTextSwitch) getChildAt(middleSelected)).getText();
                 pass[5] = ((ColoredTextSwitch) getChildAt(bottomSelected)).getText();
+                if (secondCompleteListener != null)
+                {
+                    String[] send = {pass[3], pass[4], pass[5]};
+                    if (secondCompleteListener.onSecondComplete(send))
+                    {
+                        firstBatch();
+                    }
+                    else
+                    {
+                        secondBatch();
+                    }
+                    return;
+                }
                 if (listener != null)
                 {
                     complete();
@@ -666,6 +692,29 @@ public class DiagonalStoryFP extends FastPhrase {
 //        int yCenter = (v.getTop() + getChildAt(v.getId() + 14).getBottom()) / 2;
 //
 //        return yCenter - ev.getY() < height * 0.2 && ev.getY() - yCenter < height * 0.2;
+    }
+
+    public interface OnFirstCompleteListener
+    {
+        public boolean onFirstComplete(String[] pass);
+    }
+
+    public interface OnSecondCompleteListener
+    {
+        public boolean onSecondComplete(String[] pass);
+    }
+
+    private OnFirstCompleteListener firstCompleteListener;
+    private OnSecondCompleteListener secondCompleteListener;
+
+    public void setOnFirstCompleteListener(OnFirstCompleteListener listener)
+    {
+        firstCompleteListener = listener;
+    }
+
+    public void setOnSecondCompleteListener(OnSecondCompleteListener listener)
+    {
+        secondCompleteListener = listener;
     }
 
 }

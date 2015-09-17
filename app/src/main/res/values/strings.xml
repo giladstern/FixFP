@@ -121,6 +121,7 @@
     <string name="stage">stage</string>
     <string name="second">second</string>
     <string name="next_alarm">next_alarm</string>
+    <string name="success">success</string>
     <string name="title_activity_pass_generate">Fast Phrase</string>
     <string name="title_activity_succ_msg">Fast Phrase</string>
     <string name="title_activity_story">Fast Phrase</string>
@@ -131,4 +132,6 @@
     <string name="title_activity_alarm_set">AlarmSetActivity</string>
     <string name="title_activity_first_screen">FirstScreen</string>
     <string name="title_activity_list_tutorial">ListTutorial</string>
+    <string name="title_activity_tutorial_success">TutorialSuccess</string>
+    <string name="title_activity_story_tutorial">StoryTutorial</string>
 </resources>

@@ -29,7 +29,7 @@ public class WideNoLinesFP extends FastPhrase {
 //    private String pass[] = new String[6];
     private String topSelected = "";
     private String bottomSelected = "";
-    public enum Batch {FIRST, SECOND, THIRD}
+    public enum Batch {FIRST, SECOND, THIRD, DONE}
     private Batch curBatch;
     private Resources res;
     private boolean drawCirc = false;
@@ -576,7 +576,15 @@ public class WideNoLinesFP extends FastPhrase {
                 if (firstCompleteListener != null)
                 {
                     String[] send = {pass[0], pass[1]};
-                    firstCompleteListener.onFirstComplete(send);
+                    if (firstCompleteListener.onFirstComplete(send))
+                    {
+                        secondBatch();
+                    }
+                    else
+                    {
+                        firstBatch();
+                    }
+                    return;
                 }
                 secondBatch();
                 break;
@@ -586,7 +594,15 @@ public class WideNoLinesFP extends FastPhrase {
                 if (secondCompleteListener != null)
                 {
                     String[] send = {pass[2], pass[3]};
-                    secondCompleteListener.onSecondComplete(send);
+                    if (secondCompleteListener.onSecondComplete(send))
+                    {
+                        thirdBatch();
+                    }
+                    else
+                    {
+                        secondBatch();
+                    }
+                    return;
                 }
                 thirdBatch();
                 break;
@@ -595,8 +611,16 @@ public class WideNoLinesFP extends FastPhrase {
                 pass[5] = bottomSelected;
                 if (thirdCompleteListener != null)
                 {
-                    String[] send = {pass[0], pass[1]};
-                    thirdCompleteListener.onThirdComplete(send);
+                    String[] send = {pass[4], pass[5]};
+                    if (thirdCompleteListener.onThirdComplete(send))
+                    {
+                        firstBatch();
+                    }
+                    else
+                    {
+                        thirdBatch();
+                    }
+                    return;
                 }
                 if (listener != null)
                 {
@@ -659,20 +683,35 @@ public class WideNoLinesFP extends FastPhrase {
     //For Testing purposes.
     public interface OnFirstCompleteListener
     {
-        public void onFirstComplete(String[] pass);
+        public boolean onFirstComplete(String[] pass);
     }
 
     public interface OnSecondCompleteListener
     {
-        public void onSecondComplete(String[] pass);
+        public boolean onSecondComplete(String[] pass);
     }
 
     public interface OnThirdCompleteListener
     {
-        public void onThirdComplete(String[] pass);
+        public boolean onThirdComplete(String[] pass);
     }
 
     private OnFirstCompleteListener firstCompleteListener;
     private OnSecondCompleteListener secondCompleteListener;
     private OnThirdCompleteListener thirdCompleteListener;
+
+    public void setOnFirstCompleteListener(OnFirstCompleteListener listener)
+    {
+        firstCompleteListener = listener;
+    }
+
+    public void setOnSecondCompleteListener(OnSecondCompleteListener listener)
+    {
+        secondCompleteListener = listener;
+    }
+
+    public void setOnThirdCompleteListener(OnThirdCompleteListener listener)
+    {
+        thirdCompleteListener = listener;
+    }
 }
