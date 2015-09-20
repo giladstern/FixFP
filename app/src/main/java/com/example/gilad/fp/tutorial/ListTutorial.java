@@ -41,6 +41,8 @@ public class ListTutorial extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_tutorial);
 
+        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
+
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra("type", MainActivity.Types.LIST);
         startActivity(passIntent);
@@ -149,7 +151,7 @@ public class ListTutorial extends AppCompatActivity {
         switch(batch)
         {
             case FIRST:
-                if (password[0] == null)
+                if (password[0] == null || password[0].equals(""))
                 {
                     SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
                     for (int i = 0 ; i < 6 ; i++)

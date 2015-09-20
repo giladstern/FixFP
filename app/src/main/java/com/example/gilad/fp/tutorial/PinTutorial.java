@@ -1,4 +1,4 @@
-package com.example.gilad.fp;
+package com.example.gilad.fp.tutorial;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
+import com.example.gilad.fp.MainActivity;
+import com.example.gilad.fp.PassGenerate;
+import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.TouchData;
 
-public class PinActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class PinTutorial extends AppCompatActivity {
 
     MainActivity.Types type = MainActivity.Types.PIN;
     String[] userEntered;
@@ -30,40 +33,18 @@ public class PinActivity extends AppCompatActivity {
     Button clearButton;
     String[] password;
     ArrayList<TouchData> touchLog = new ArrayList<>();
+    boolean finished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pin);
+        setContentView(R.layout.activity_pin_tutorial);
 
-        findViewById(R.id.change_type).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), -1).commit();
-                Intent next = new Intent(PinActivity.this, MainActivity.class);
-                startActivity(next);
-                finish();
-            }
-        });
+        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
-        findViewById(R.id.new_pass).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
-                Intent next = new Intent(PinActivity.this, PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
-            }
-        });
-
-        findViewById(R.id.forgot).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(PinActivity.this, PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
-            }
-        });
+        Intent next = new Intent(this, PassGenerate.class);
+        next.putExtra("type", type);
+        startActivity(next);
 
         appContext = this;
         userEntered = new String[PIN_LENGTH];
@@ -125,8 +106,7 @@ public class PinActivity extends AppCompatActivity {
                 if (curIndex == PIN_LENGTH){
 
                     //TODO: check password.
-                    Intent next = new Intent(PinActivity.this, SuccMsg.class);
-                    next.putExtra("type", type);
+                    Intent next = new Intent(PinTutorial.this, TutorialSuccess.class);
                     boolean equal = true;
                     for (int i = 0; i < PIN_LENGTH; i++) {
                         if (!userEntered[i].equals(password[i])) {
@@ -135,12 +115,12 @@ public class PinActivity extends AppCompatActivity {
                         }
                     }
                     if (equal) {
-                        next.putExtra("succCode", true);
+                        next.putExtra(getString(R.string.success), true);
+                        finished = true;
                     } else {
-                        next.putExtra("succCode", false);
+                        next.putExtra(getString(R.string.success), false);
                     }
 
-                    next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
                     touchLog.clear();
 
                     for (int i = 0; i < PIN_LENGTH; i++)
@@ -206,7 +186,7 @@ public class PinActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_pin, menu);
+        getMenuInflater().inflate(R.menu.menu_pin_tutorial, menu);
         return true;
     }
 
@@ -228,21 +208,29 @@ public class PinActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-        for (int i = 0; i < PIN_LENGTH; i++) {
-            password[i] = prefs.getString(String.format("char%d", i), "");
-        }
-        if (password[0].equals("")) {
-            Intent next = new Intent(this, PassGenerate.class);
-            next.putExtra("type", type);
-            startActivity(next);
-        }
-        for (int i = 0; i < PIN_LENGTH; i++)
+        if (finished)
         {
-            pinBoxArray[i].setText("");
-            userEntered[i] = "";
+            finish();
         }
-        curIndex = 0;
-        touchLog.clear();
+        else
+        {
+            SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+            for (int i = 0; i < PIN_LENGTH; i++) {
+                password[i] = prefs.getString(String.format("char%d", i), "");
+            }
+
+            String instructions = "Enter the following code using the numpad:\n";
+
+            for (int i = 0; i < PIN_LENGTH; i++)
+            {
+                pinBoxArray[i].setText("");
+                userEntered[i] = "";
+                instructions += password[i] + " ";
+            }
+
+            titleView.setText(instructions);
+            curIndex = 0;
+            touchLog.clear();
+        }
     }
 }

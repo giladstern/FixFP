@@ -134,4 +134,6 @@
     <string name="title_activity_list_tutorial">ListTutorial</string>
     <string name="title_activity_tutorial_success">TutorialSuccess</string>
     <string name="title_activity_story_tutorial">StoryTutorial</string>
+    <string name="title_activity_pin_tutorial">PinTutorial</string>
+    <string name="title_activity_pattern_tutorial">PatternTutorial</string>
 </resources>

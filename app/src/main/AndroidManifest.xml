@@ -29,6 +29,11 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".PassGenerate"
@@ -52,47 +57,56 @@
         </activity>
         <activity
             android:name=".DispatchActivity"
-            android:label="@string/title_activity_dispatch" >
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+            android:label="@string/title_activity_dispatch"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".PatternActivity"
-            android:label="@string/title_activity_pattern" >
+            android:label="@string/title_activity_pattern"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".PinActivity"
-            android:label="@string/title_activity_pin" >
+            android:label="@string/title_activity_pin"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".AlarmSetActivity"
-            android:label="@string/title_activity_alarm_set" >
+            android:label="@string/title_activity_alarm_set"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".tutorial.FirstScreen"
-            android:label="@string/title_activity_first_screen" >
+            android:label="@string/title_activity_first_screen"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".tutorial.ListTutorial"
-            android:label="@string/title_activity_list_tutorial" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            android:label="@string/title_activity_list_tutorial"
+            android:screenOrientation="portrait">
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".tutorial.TutorialSuccess"
-            android:label="@string/title_activity_tutorial_success" >
+            android:label="@string/title_activity_tutorial_success"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".tutorial.StoryTutorial"
-            android:label="@string/title_activity_story_tutorial" >
+            android:label="@string/title_activity_story_tutorial"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".tutorial.PinTutorial"
+            android:label="@string/title_activity_pin_tutorial"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".tutorial.PatternTutorial"
+            android:label="@string/title_activity_pattern_tutorial"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
