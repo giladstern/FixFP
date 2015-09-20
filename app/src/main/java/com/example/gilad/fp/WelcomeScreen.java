@@ -1,4 +1,4 @@
-package com.example.gilad.fp.tutorial;
+package com.example.gilad.fp;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,19 +7,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.gilad.fp.MainActivity;
-import com.example.gilad.fp.R;
+import com.example.gilad.fp.tutorial.ListTutorial;
+import com.example.gilad.fp.tutorial.PatternTutorial;
+import com.example.gilad.fp.tutorial.PinTutorial;
+import com.example.gilad.fp.tutorial.StoryTutorial;
 import com.example.gilad.fp.utils.Vals;
 
-public class FirstScreen extends AppCompatActivity {
+import java.util.List;
+
+public class WelcomeScreen extends AppCompatActivity {
 
     private Vals.Types nextType;
+    private int stage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_screen);
+        setContentView(R.layout.activity_welcome_screen);
+
         nextType = (Vals.Types) getIntent().getSerializableExtra("type");
+        stage = getIntent().getIntExtra(getString(R.string.stage), 0);
+        //TODO: Add time incentive calculation.
 
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,19 +36,20 @@ public class FirstScreen extends AppCompatActivity {
                 switch (nextType)
                 {
                     case TRIPLE_STORY:
-                        next = new Intent(FirstScreen.this, StoryTutorial.class);
+                        next = new Intent(WelcomeScreen.this, StoryActivity.class);
                         break;
                     case LIST:
-                        next = new Intent(FirstScreen.this, ListTutorial.class);
+                        next = new Intent(WelcomeScreen.this, ListActivity.class);
                         break;
                     case PIN:
-                        next = new Intent(FirstScreen.this, PinTutorial.class);
+                        next = new Intent(WelcomeScreen.this, PinActivity.class);
                         break;
                     case PATTERN:
-                        next = new Intent(FirstScreen.this, PatternTutorial.class);
+                        next = new Intent(WelcomeScreen.this, PatternActivity.class);
                         break;
                 }
 
+                next.putExtra(getString(R.string.stage), stage);
                 startActivity(next);
                 finish();
             }
@@ -50,7 +59,7 @@ public class FirstScreen extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_first_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_welcome_screen, menu);
         return true;
     }
 

@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
 import com.example.gilad.fp.utils.TouchData;
+import com.example.gilad.fp.utils.Vals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PatternActivity extends AppCompatActivity {
 
     LockPatternView lockPatternView;
     String[] password = new String[6];
-    MainActivity.Types type;
+    Vals.Types type;
     ArrayList<TouchData> touchLog = new ArrayList<>();
     int stage;
     int timesLeft;
@@ -40,9 +41,9 @@ public class PatternActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pattern);
 
 
-        type = MainActivity.Types.PATTERN;
+        type = Vals.Types.PATTERN;
         stage = getIntent().getIntExtra("stage", 0);
-        timesLeft = DispatchActivity.ITERATIONS[stage];
+        timesLeft = Vals.ITERATIONS[stage];
 
         // Make new ContextThemeWrapper
         Context newContext = new ContextThemeWrapper(this, R.style.Alp_42447968_Theme_Light);
@@ -170,21 +171,19 @@ public class PatternActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (timesLeft != 0) {
-            SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-            for (int i = 0; i < 6; i++) {
-                password[i] = prefs.getString(String.format("char%d", i), "");
-            }
-            if (password[0].equals("")) {
-                Intent next = new Intent(this, PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
+            if (password[0] == null)
+            {
+                SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+                for (int i = 0; i < 6; i++) {
+                    password[i] = prefs.getString(String.format("char%d", i), "");
+                }
             }
             lockPatternView.clearPattern();
         }
         else
         {
             Intent intent = new Intent(this, AlarmSetActivity.class);
-            intent.putExtra("stage", stage);
+            intent.putExtra(getString(R.string.stage), stage);
             startActivity(intent);
             finish();
         }

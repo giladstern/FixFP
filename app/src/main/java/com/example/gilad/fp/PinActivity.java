@@ -15,10 +15,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.example.gilad.fp.utils.TouchData;
+import com.example.gilad.fp.utils.Vals;
 
 public class PinActivity extends AppCompatActivity {
 
-    MainActivity.Types type = MainActivity.Types.PIN;
+    Vals.Types type = Vals.Types.PIN;
     String[] userEntered;
     int curIndex;
     final int PIN_LENGTH = 5;
@@ -30,6 +31,8 @@ public class PinActivity extends AppCompatActivity {
     Button clearButton;
     String[] password;
     ArrayList<TouchData> touchLog = new ArrayList<>();
+    int stage;
+    int timesLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,21 +231,26 @@ public class PinActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-        for (int i = 0; i < PIN_LENGTH; i++) {
-            password[i] = prefs.getString(String.format("char%d", i), "");
+        if (timesLeft != 0) {
+            if (password[0] == null) {
+                SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+                for (int i = 0; i < PIN_LENGTH; i++) {
+                    password[i] = prefs.getString(String.format("char%d", i), "");
+                }
+            }
+            for (int i = 0; i < PIN_LENGTH; i++) {
+                pinBoxArray[i].setText("");
+                userEntered[i] = "";
+            }
+            curIndex = 0;
+            touchLog.clear();
         }
-        if (password[0].equals("")) {
-            Intent next = new Intent(this, PassGenerate.class);
-            next.putExtra("type", type);
-            startActivity(next);
-        }
-        for (int i = 0; i < PIN_LENGTH; i++)
+        else
         {
-            pinBoxArray[i].setText("");
-            userEntered[i] = "";
+            Intent intent = new Intent(this, AlarmSetActivity.class);
+            intent.putExtra(getString(R.string.stage), stage);
+            startActivity(intent);
+            finish();
         }
-        curIndex = 0;
-        touchLog.clear();
     }
 }

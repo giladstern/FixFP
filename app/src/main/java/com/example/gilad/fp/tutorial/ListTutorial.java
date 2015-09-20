@@ -17,12 +17,15 @@ import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.FastPhrase;
+import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class ListTutorial extends AppCompatActivity {
+
+    Vals.Types type = Vals.Types.LIST;
 
     String password[] = new String[6];
     String labels[] = new String[6];
@@ -44,7 +47,7 @@ public class ListTutorial extends AppCompatActivity {
         getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
         Intent passIntent = new Intent(this, PassGenerate.class);
-        passIntent.putExtra("type", MainActivity.Types.LIST);
+        passIntent.putExtra("type", type);
         startActivity(passIntent);
 
         scale = getResources().getDisplayMetrics().density;

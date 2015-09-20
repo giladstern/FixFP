@@ -19,6 +19,7 @@ import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.SuccMsg;
 import com.example.gilad.fp.utils.TouchData;
+import com.example.gilad.fp.utils.Vals;
 
 import org.w3c.dom.Text;
 
@@ -30,9 +31,10 @@ import haibison.android.lockpattern.widget.LockPatternView;
 
 public class PatternTutorial extends AppCompatActivity {
 
+    Vals.Types type = Vals.Types.PATTERN;
+
     LockPatternView lockPatternView;
     String[] password = new String[6];
-    MainActivity.Types type = MainActivity.Types.PATTERN;
     ArrayList<TouchData> touchLog = new ArrayList<>();
 
     static final int START = 0;
@@ -47,8 +49,6 @@ public class PatternTutorial extends AppCompatActivity {
         setContentView(R.layout.activity_pattern_tutorial);
 
         getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
-
-        type = MainActivity.Types.PATTERN;
 
         Intent next = new Intent(this, PassGenerate.class);
         next.putExtra("type", type);
@@ -97,7 +97,6 @@ public class PatternTutorial extends AppCompatActivity {
             public void onPatternDetected(List<LockPatternView.Cell> list) {
                 touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
                 Intent next = new Intent(PatternTutorial.this, TutorialSuccess.class);
-                next.putExtra("type", type);
                 boolean equal = true;
                 if (list.size() != 6)
                 {

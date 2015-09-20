@@ -16,12 +16,13 @@ import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.TouchData;
+import com.example.gilad.fp.utils.Vals;
 
 import java.util.ArrayList;
 
 public class PinTutorial extends AppCompatActivity {
 
-    MainActivity.Types type = MainActivity.Types.PIN;
+    Vals.Types type = Vals.Types.PIN;
     String[] userEntered;
     int curIndex;
     final int PIN_LENGTH = 5;

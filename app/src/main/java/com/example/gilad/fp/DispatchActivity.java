@@ -9,9 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.concurrent.TimeUnit;
+import com.example.gilad.fp.tutorial.FirstScreen;
+import com.example.gilad.fp.utils.Vals.Types;
 
 public class DispatchActivity extends AppCompatActivity {
+
     // In lieu of Enum for SharedPreferences.
     static final int STORY_LIST = 0;
     static final int LIST_STORY = 1;
@@ -24,10 +26,6 @@ public class DispatchActivity extends AppCompatActivity {
     static final int LIST_PATTERN = 8;
     static final int PATTERN_LIST = 9;
 
-    public static final int STAGES = 6;
-    public static final int[] ITERATIONS = {10, 5, 5, 3, 3, 3};
-    public static final int[] GAP = {1, 1, 1, 2, 2, 2};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,201 +35,109 @@ public class DispatchActivity extends AppCompatActivity {
         int stage = preferences.getInt(getString(R.string.stage), 0);
         boolean second = preferences.getBoolean(getString(R.string.second), false);
         long alarmTime = preferences.getLong(getString(R.string.next_alarm), 0);
-        
-        Intent intent = null;
+
+        Intent intent;
+
+        if (order == -1)
+        {
+            order = (int) (Math.random() * 10);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(getString(R.string.order), order);
+            editor.putInt(getString(R.string.stage), 0);
+            editor.putBoolean(getString(R.string.second), false);
+            editor.putLong(getString(R.string.next_alarm), 0);
+        }
+
         if (stage == 0)
         {
             getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
+            intent = new Intent(this, FirstScreen.class);
+        }
+
+        else
+        {
+            intent = new Intent(this, WelcomeScreen.class);
+            intent.putExtra(getString(R.string.stage), stage);
         }
 
         if (alarmTime < System.currentTimeMillis()) {
 
             switch (order) {
-                case -1:
-                    //TODO: Change into choosing mechanism.
-                    order = (int) (Math.random() * 10);
-                    preferences.edit().putInt(getString(R.string.order), order).commit();
                 case STORY_LIST:
                     if (!second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, StoryActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, StoryActivity.class);
-                        }
+                        intent.putExtra("type", Types.TRIPLE_STORY);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, ListActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, ListActivity.class);
-                        }
+                        intent.putExtra("type", Types.LIST);
                     }
                     break;
                 case LIST_STORY:
                     if (second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, StoryActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, StoryActivity.class);
-                        }
+                        intent.putExtra("type", Types.TRIPLE_STORY);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, ListActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, ListActivity.class);
-                        }
+                        intent.putExtra("type", Types.LIST);
                     }
                     break;
                 case STORY_PIN:
                     if (!second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, StoryActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, StoryActivity.class);
-                        }
+                        intent.putExtra("type", Types.TRIPLE_STORY);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PinActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PinActivity.class);
-                        }
+                        intent.putExtra("type", Types.PIN);
                     }
                     break;
                 case PIN_STORY:
                     if (second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, StoryActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, StoryActivity.class);
-                        }
+                        intent.putExtra("type", Types.TRIPLE_STORY);
                     }
                     else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PinActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PinActivity.class);
-                        }
+                        intent.putExtra("type", Types.PIN);
                     }
                     break;
                 case STORY_PATTERN:
                     if (!second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, StoryActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, StoryActivity.class);
-                        }
+                        intent.putExtra("type", Types.TRIPLE_STORY);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PatternActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PatternActivity.class);
-                        }
+                        intent.putExtra("type", Types.PATTERN);
                     }
                     break;
                 case PATTERN_STORY:
                     if (second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, StoryActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, StoryActivity.class);
-                        }
+                        intent.putExtra("type", Types.TRIPLE_STORY);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PatternActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PatternActivity.class);
-                        }
+                        intent.putExtra("type", Types.PATTERN);
                     }
                     break;
                 case LIST_PIN:
                     if (!second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, ListActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, ListActivity.class);
-                        }
+                        intent.putExtra("type", Types.LIST);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PinActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PinActivity.class);
-                        }
+                        intent.putExtra("type", Types.PIN);
                     }
                     break;
                 case PIN_LIST:
                     if (second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, ListActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, ListActivity.class);
-                        }
+                        intent.putExtra("type", Types.LIST);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PinActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PinActivity.class);
-                        }
+                        intent.putExtra("type", Types.PIN);
                     }
                     break;
                 case LIST_PATTERN:
                     if (!second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, ListActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, ListActivity.class);
-                        }
+                        intent.putExtra("type", Types.LIST);
                     } else {
-                        if (stage != 0) {
-                            intent = new Intent(this, PatternActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PatternActivity.class);
-                        }
+                        intent.putExtra("type", Types.PATTERN);
                     }
                     break;
                 case PATTERN_LIST:
                     if (second) {
-                        if (stage != 0) {
-                            intent = new Intent(this, ListActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, ListActivity.class);
-                        }
+                        intent.putExtra("type", Types.LIST);
                     } else {
-
-                        if (stage != 0) {
-                            intent = new Intent(this, PatternActivity.class);
-                        } else {
-                            //TODO: change to tutorial intent.
-                            intent = new Intent(this, PatternActivity.class);
-                        }
+                        intent.putExtra("type", Types.PATTERN);
                     }
                     break;
             }
 
-            intent = new Intent(this, StoryActivity.class);
-
-            if (intent != null) {
-                intent.putExtra(getString(R.string.stage), stage);
-                startActivity(intent);
-                finish();
-            }
+            startActivity(intent);
+            finish();
         }
 
         else

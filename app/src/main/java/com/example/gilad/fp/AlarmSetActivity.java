@@ -9,7 +9,9 @@ import android.view.View;
 
 import java.util.concurrent.TimeUnit;
 
+import com.example.gilad.fp.utils.Alarm;
 import com.example.gilad.fp.utils.AutoResizeTextView;
+import com.example.gilad.fp.utils.Vals;
 
 public class AlarmSetActivity extends AppCompatActivity {
 
@@ -28,8 +30,8 @@ public class AlarmSetActivity extends AppCompatActivity {
         });
         AutoResizeTextView textView = (AutoResizeTextView) findViewById(R.id.exit_message);
 
-        if (stage < DispatchActivity.STAGES - 1) {
-            int gap = DispatchActivity.GAP[stage];
+        if (stage < Vals.STAGES - 1) {
+            int gap = Vals.GAP[stage];
 
             String unit = " day";
 
@@ -56,10 +58,19 @@ public class AlarmSetActivity extends AppCompatActivity {
         else
         {
             textView.setText("Thank you for participating!");
-            SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit();
+            SharedPreferences prefs = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(getString(R.string.stage), 0);
             editor.putLong(getString(R.string.next_alarm), 0);
-            editor.putBoolean(getString(R.string.second), true);
+            if (prefs.getBoolean(getString(R.string.second), true))
+            {
+                //TODO: Some stopping mechanism.
+            }
+
+            else
+            {
+                editor.putBoolean(getString(R.string.second), true);
+            }
             editor.commit();
         }
     }

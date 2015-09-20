@@ -10,18 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.gilad.fp.utils.Vals;
+
 public class MainActivity extends AppCompatActivity {
 
-    public enum Types{
-        LIST, TRIPLE_STORY, PATTERN, PIN
-    }
-    private Types type;
 
-    // In lieu of enum for SharedPrefs, for now?
-    static final int list = 0;
-    static final int story = 1;
-    static final int pattern = 2;
-    static final int pin = 3;
+    private Vals.Types type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +54,16 @@ public class MainActivity extends AppCompatActivity {
 
         switch (passType)
         {
-            case list:
+            case Vals.list:
                 listOnClick(null);
                 break;
-            case story:
+            case Vals.story:
                 storyOnClick(null);
                 break;
-            case pattern:
+            case Vals.pattern:
                 patternOnClick(null);
                 break;
-            case pin:
+            case Vals.pin:
                 pinOnClick(null);
                 break;
             case -1:
@@ -79,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void listOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), list).commit();
+        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.list).commit();
         Intent next = new Intent(this, ListActivity.class);
         startActivity(next);
         finish();
@@ -87,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void storyOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), story).commit();
+        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.story).commit();
         Intent next = new Intent(this, StoryActivity.class);
         startActivity(next);
         finish();
@@ -95,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void patternOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), pattern).commit();
+        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.pattern).commit();
         Intent next = new Intent(this, PatternActivity.class);
         startActivity(next);
         finish();
@@ -103,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void pinOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), pin).commit();
+        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.pin).commit();
         Intent next = new Intent(this, PinActivity.class);
         startActivity(next);
         finish();

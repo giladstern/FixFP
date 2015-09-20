@@ -23,6 +23,7 @@ import haibison.android.lockpattern.widget.LockPatternView;
 
 import com.example.gilad.fp.utils.SingleLineTextView;
 import com.example.gilad.fp.utils.AutoResizeTextView;
+import com.example.gilad.fp.utils.Vals;
 
 
 public class PassGenerate extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class PassGenerate extends AppCompatActivity {
     SharedPreferences prefs;
     RelativeLayout layout;
     TextView views[];
-    MainActivity.Types type;
+    Vals.Types type;
     float scale;
     LockPatternView lockPatternView = null;
 
@@ -51,7 +52,7 @@ public class PassGenerate extends AppCompatActivity {
         Typeface cartoonFont = Typeface.createFromAsset(getAssets(), "fonts/cartoon.ttf");
         Typeface locationFont = Typeface.createFromAsset(getAssets(), "fonts/FamousBuildings.ttf");
 
-        type = (MainActivity.Types) getIntent().getSerializableExtra("type");
+        type = (Vals.Types) getIntent().getSerializableExtra("type");
 
         for (int i = 0 ; i < 6 ; i++)
         {

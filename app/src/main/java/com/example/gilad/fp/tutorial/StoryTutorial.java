@@ -15,10 +15,12 @@ import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.DiagonalStoryFP;
+import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
 
 public class StoryTutorial extends AppCompatActivity {
 
+    Vals.Types type = Vals.Types.TRIPLE_STORY;
     String password[] = new String[6];
     String labels[] = new String[6];
     TextView topInstructions;
@@ -45,7 +47,7 @@ public class StoryTutorial extends AppCompatActivity {
         getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
         Intent passIntent = new Intent(this, PassGenerate.class);
-        passIntent.putExtra("type", MainActivity.Types.TRIPLE_STORY);
+        passIntent.putExtra("type", type);
         startActivity(passIntent);
 
         scale = getResources().getDisplayMetrics().density;

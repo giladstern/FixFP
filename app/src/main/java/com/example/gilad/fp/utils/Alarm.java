@@ -1,4 +1,4 @@
-package com.example.gilad.fp;
+package com.example.gilad.fp.utils;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -10,6 +10,9 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.widget.Toast;
+
+import com.example.gilad.fp.DispatchActivity;
+import com.example.gilad.fp.R;
 
 import java.util.concurrent.TimeUnit;
 
