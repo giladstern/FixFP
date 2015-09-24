@@ -13,6 +13,6 @@
         android:id="@+id/message"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Swipe your finger across the shown pattern\nThe animation will stop once you start"
+        android:text="Swipe your finger across the pattern\nThe animation will stop once you start"
         android:gravity="center" />
 </RelativeLayout>

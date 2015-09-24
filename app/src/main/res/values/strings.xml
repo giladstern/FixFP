@@ -138,5 +138,6 @@
     <string name="title_activity_pin_tutorial">Fast Phrase</string>
     <string name="title_activity_pattern_tutorial">Fast Phrase</string>
     <string name="title_activity_welcome_screen">Fast Phrase</string>
-    <string name="num_left_msg">Enter your pass code %d more times.\nIf you aren\'t sure if you remember your code, try your best.</string>
+    <string name="num_left_msg">Enter your code %d more times.\nIf you don\'t remember it, try your best.</string>
+    <string name="title_activity_loop">LoopActivity</string>
 </resources>

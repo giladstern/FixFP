@@ -4,25 +4,41 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.gilad.fp.WelcomeScreen">
+    tools:context="com.example.gilad.fp.tutorial.LoopActivity">
+
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/view"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
         android:gravity="center"
-        android:text="Welcome back!\n Your best time is ___."
-        android:id="@+id/welcome" />
+        android:layout_marginBottom="50dp"
+        android:text="Would you like to repeat this explanation?"/>
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/dummy"
+        android:visibility="invisible"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="Yes"
+        android:id="@+id/back_button"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/dummy"
+        android:onClick="backOnClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No"
         android:id="@+id/next_button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_toRightOf="@id/dummy"
+        android:onClick="nextOnClick" />
 </RelativeLayout>

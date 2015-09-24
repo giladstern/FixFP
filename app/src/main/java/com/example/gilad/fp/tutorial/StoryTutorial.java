@@ -49,7 +49,7 @@ public class StoryTutorial extends AppCompatActivity {
 
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
-        passIntent.putExtra(getString(R.string.generate), true);
+        passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
         startActivity(passIntent);
 
         scale = getResources().getDisplayMetrics().density;
@@ -170,7 +170,7 @@ public class StoryTutorial extends AppCompatActivity {
                 break;
             case SECOND:
                 topInstructions.getLayoutParams().height = ((int) (150 * scale + 0.5f));
-                topInstructions.setText("You can also enter your code without lifting your finger.\nTry dragging your finger across:");
+                topInstructions.setText("You don\'t have to lift your finger.\nTry swiping your finger across:");
                 leftInstructions.setText(password[3]);
                 middleInstructions.setText(password[4]);
                 rightInstructions.setText(password[5]);
@@ -189,8 +189,8 @@ public class StoryTutorial extends AppCompatActivity {
 //                rightLabel.setText(labels[5]);
 //                break;
             case DONE:
-                Intent next = new Intent(this, StoryActivity.class);
-                next.putExtra(getString(R.string.stage), 0);
+                Intent next = new Intent(this, LoopActivity.class);
+                next.putExtra(getString(R.string.pass_type), type);
                 startActivity(next);
                 finish();
                 break;

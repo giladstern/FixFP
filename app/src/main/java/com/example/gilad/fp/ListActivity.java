@@ -28,6 +28,7 @@ public class ListActivity extends AppCompatActivity {
     int timesLeft;
     int stage;
     TextView topMessage;
+    int timesWrong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,10 @@ public class ListActivity extends AppCompatActivity {
                 }
                 if (equal) {
                     next.putExtra("succCode", true);
+                    timesWrong = 0;
                 } else {
                     next.putExtra("succCode", false);
+                    timesWrong++;
                 }
 
                 next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
@@ -163,6 +166,14 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (timesWrong == Vals.MAX_WRONG)
+        {
+            timesWrong = 0;
+            Intent intent = new Intent(this, PassGenerate.class);
+            intent.putExtra(getString(R.string.pass_type), type);
+            startActivity(intent);
+        }
         if (timesLeft != 0) {
             if (password[0] == null)
             {

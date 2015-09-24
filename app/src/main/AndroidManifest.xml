@@ -51,7 +51,6 @@
             android:name=".StoryActivity"
             android:label="@string/title_activity_story"
             android:screenOrientation="portrait" >
-
         </activity>
         <activity
             android:name=".ListActivity"
@@ -116,7 +115,11 @@
         <activity
             android:name=".WelcomeScreen"
             android:label="@string/title_activity_welcome_screen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".tutorial.LoopActivity"
+            android:label="@string/title_activity_loop" >
         </activity>
     </application>
 

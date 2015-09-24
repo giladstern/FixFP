@@ -62,81 +62,80 @@ public class DispatchActivity extends AppCompatActivity {
 
         if (alarmTime < System.currentTimeMillis()) {
 
-//            switch (order) {
-//                case STORY_LIST:
-//                    if (!second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
-//                    }
-//                    break;
-//                case LIST_STORY:
-//                    if (second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
-//                    }
-//                    break;
-//                case STORY_PIN:
-//                    if (!second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
-//                    }
-//                    break;
-//                case PIN_STORY:
-//                    if (second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
-//                    }
-//                    else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
-//                    }
-//                    break;
-//                case STORY_PATTERN:
-//                    if (!second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
-//                    }
-//                    break;
-//                case PATTERN_STORY:
-//                    if (second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
-//                    }
-//                    break;
-//                case LIST_PIN:
-//                    if (!second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
-//                    }
-//                    break;
-//                case PIN_LIST:
-//                    if (second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
-//                    }
-//                    break;
-//                case LIST_PATTERN:
-//                    if (!second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
-//                    }
-//                    break;
-//                case PATTERN_LIST:
-//                    if (second) {
-//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
-//                    } else {
-//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
-//                    }
-//                    break;
-//            }
+            switch (order) {
+                case STORY_LIST:
+                    if (!second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+                    }
+                    break;
+                case LIST_STORY:
+                    if (second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+                    }
+                    break;
+                case STORY_PIN:
+                    if (!second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+                    }
+                    break;
+                case PIN_STORY:
+                    if (second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+                    }
+                    else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+                    }
+                    break;
+                case STORY_PATTERN:
+                    if (!second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+                    }
+                    break;
+                case PATTERN_STORY:
+                    if (second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+                    }
+                    break;
+                case LIST_PIN:
+                    if (!second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+                    }
+                    break;
+                case PIN_LIST:
+                    if (second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+                    }
+                    break;
+                case LIST_PATTERN:
+                    if (!second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+                    }
+                    break;
+                case PATTERN_LIST:
+                    if (second) {
+                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+                    } else {
+                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+                    }
+                    break;
+            }
 
-            intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
             startActivity(intent);
             finish();
         }

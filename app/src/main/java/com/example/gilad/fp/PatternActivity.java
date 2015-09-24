@@ -32,6 +32,7 @@ public class PatternActivity extends AppCompatActivity {
     int stage;
     int timesLeft;
     TextView topMessage;
+    int timesWrong;
 
     static final int START = 0;
     static final int ADD = 1;
@@ -114,8 +115,10 @@ public class PatternActivity extends AppCompatActivity {
                 }
                 if (equal) {
                     next.putExtra("succCode", true);
+                    timesWrong = 0;
                 } else {
                     next.putExtra("succCode", false);
+                    timesWrong++;
                 }
 
                 next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
@@ -152,6 +155,14 @@ public class PatternActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (timesWrong == Vals.MAX_WRONG)
+        {
+            timesWrong = 0;
+            Intent intent = new Intent(this, PassGenerate.class);
+            intent.putExtra(getString(R.string.pass_type), type);
+            startActivity(intent);
+        }
         if (timesLeft != 0) {
             if (password[0] == null)
             {

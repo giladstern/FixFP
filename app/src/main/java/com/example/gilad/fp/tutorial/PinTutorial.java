@@ -46,7 +46,7 @@ public class PinTutorial extends AppCompatActivity {
 
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
-        passIntent.putExtra(getString(R.string.generate), true);
+        passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
         startActivity(passIntent);
 
         appContext = this;
@@ -213,8 +213,8 @@ public class PinTutorial extends AppCompatActivity {
         super.onResume();
         if (finished)
         {
-            Intent next = new Intent(this, PinActivity.class);
-            next.putExtra(getString(R.string.stage), 0);
+            Intent next = new Intent(this, LoopActivity.class);
+            next.putExtra(getString(R.string.pass_type), type);
             startActivity(next);
             finish();
         }

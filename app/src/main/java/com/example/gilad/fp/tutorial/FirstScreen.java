@@ -40,6 +40,8 @@ public class FirstScreen extends AppCompatActivity {
                         break;
                 }
 
+                next.putExtra(getString(R.string.generate), true);
+
                 startActivity(next);
                 finish();
             }
