@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.Vals;
 
@@ -19,7 +18,7 @@ public class FirstScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_screen);
-        nextType = (Vals.Types) getIntent().getSerializableExtra("type");
+        nextType = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
 
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override

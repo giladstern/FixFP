@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.R;
+import com.example.gilad.fp.StoryActivity;
 import com.example.gilad.fp.utils.DiagonalStoryFP;
 import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
@@ -47,7 +48,8 @@ public class StoryTutorial extends AppCompatActivity {
         getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
         Intent passIntent = new Intent(this, PassGenerate.class);
-        passIntent.putExtra("type", type);
+        passIntent.putExtra(getString(R.string.pass_type), type);
+        passIntent.putExtra(getString(R.string.generate), true);
         startActivity(passIntent);
 
         scale = getResources().getDisplayMetrics().density;
@@ -187,6 +189,9 @@ public class StoryTutorial extends AppCompatActivity {
 //                rightLabel.setText(labels[5]);
 //                break;
             case DONE:
+                Intent next = new Intent(this, StoryActivity.class);
+                next.putExtra(getString(R.string.stage), 0);
+                startActivity(next);
                 finish();
                 break;
         }

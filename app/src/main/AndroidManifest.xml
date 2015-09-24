@@ -51,6 +51,7 @@
             android:name=".StoryActivity"
             android:label="@string/title_activity_story"
             android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".ListActivity"
@@ -61,6 +62,11 @@
             android:name=".DispatchActivity"
             android:label="@string/title_activity_dispatch"
             android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".PatternActivity"
@@ -91,11 +97,6 @@
             android:name=".tutorial.ListTutorial"
             android:label="@string/title_activity_list_tutorial"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".tutorial.StoryTutorial"
@@ -114,7 +115,8 @@
         </activity>
         <activity
             android:name=".WelcomeScreen"
-            android:label="@string/title_activity_welcome_screen" >
+            android:label="@string/title_activity_welcome_screen"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

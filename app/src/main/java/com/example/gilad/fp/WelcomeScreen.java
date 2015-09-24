@@ -25,7 +25,7 @@ public class WelcomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
-        nextType = (Vals.Types) getIntent().getSerializableExtra("type");
+        nextType = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
         stage = getIntent().getIntExtra(getString(R.string.stage), 0);
         //TODO: Add time incentive calculation.
 

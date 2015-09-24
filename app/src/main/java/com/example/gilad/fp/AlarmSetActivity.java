@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +46,8 @@ public class AlarmSetActivity extends AppCompatActivity {
             String text = "Thank you!\nYou will be prompted in " + Integer.valueOf(gap).toString() + unit + ".";
 
             textView.setText(text);
-            long nextAlarm = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(gap);
+//            long nextAlarm = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(gap);
+            long nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
 
             SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit();
 
@@ -62,16 +66,22 @@ public class AlarmSetActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(getString(R.string.stage), 0);
             editor.putLong(getString(R.string.next_alarm), 0);
-            if (prefs.getBoolean(getString(R.string.second), true))
-            {
-                //TODO: Some stopping mechanism.
-            }
 
-            else
+            if (!prefs.getBoolean(getString(R.string.second), false))
             {
                 editor.putBoolean(getString(R.string.second), true);
             }
+            else
+            {
+                editor.putInt(getString(R.string.order), -1);
+                editor.putBoolean(getString(R.string.second), false);
+
+                textView.setText((textView.getText()) + "\nFinito!");
+            }
+
             editor.commit();
+
+            getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
         }
     }
 
@@ -95,5 +105,10 @@ public class AlarmSetActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void exitOnClick(View v)
+    {
+        finish();
     }
 }

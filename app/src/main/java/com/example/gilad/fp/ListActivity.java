@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.TextView;
 
 import com.example.gilad.fp.utils.FastPhrase;
 import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
 import com.example.gilad.fp.utils.TouchData;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ public class ListActivity extends AppCompatActivity {
     WideNoLinesFP.Batch curBatch = WideNoLinesFP.Batch.FIRST;
     int timesLeft;
     int stage;
+    TextView topMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,15 @@ public class ListActivity extends AppCompatActivity {
         type = Vals.Types.LIST;
         stage = getIntent().getIntExtra("stage", 0);
         timesLeft = Vals.ITERATIONS[stage];
+        topMessage = (TextView) findViewById(R.id.top_message);
+
+
+        if (stage == 0)
+        {
+            Intent pass = new Intent(this, PassGenerate.class);
+            pass.putExtra(getString(R.string.pass_type), type);
+            startActivity(pass);
+        }
 
         findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,42 +58,13 @@ public class ListActivity extends AppCompatActivity {
         findViewById(R.id.left).setBackgroundColor(Color.DKGRAY);
         findViewById(R.id.right).setBackgroundColor(Color.GRAY);
 
-        findViewById(R.id.change_type).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), -1).commit();
-                Intent next = new Intent(ListActivity.this, MainActivity.class);
-                startActivity(next);
-                finish();
-            }
-        });
-
-        findViewById(R.id.new_pass).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
-                Intent next = new Intent(v.getContext(), PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
-            }
-        });
-
-        findViewById(R.id.forgot).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(v.getContext(), PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
-            }
-        });
-
         FP.setOnCompleteListener(new FastPhrase.OnCompleteListener() {
             @Override
             public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
 //                FP.reset();
                 timesLeft--;
                 Intent next = new Intent(FP.getContext(), SuccMsg.class);
-                next.putExtra("type", type);
+                next.putExtra(getString(R.string.pass_type), type);
                 boolean equal = true;
                 for (int i = 0 ; i < 6 ; i++)
                 {
@@ -188,6 +171,7 @@ public class ListActivity extends AppCompatActivity {
                     password[i] = prefs.getString(String.format("char%d", i), "");
                 }
             }
+            topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
             FP.reset();
         }
         else

@@ -46,11 +46,11 @@ public class DispatchActivity extends AppCompatActivity {
             editor.putInt(getString(R.string.stage), 0);
             editor.putBoolean(getString(R.string.second), false);
             editor.putLong(getString(R.string.next_alarm), 0);
+            editor.commit();
         }
 
         if (stage == 0)
         {
-            getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
             intent = new Intent(this, FirstScreen.class);
         }
 
@@ -62,80 +62,81 @@ public class DispatchActivity extends AppCompatActivity {
 
         if (alarmTime < System.currentTimeMillis()) {
 
-            switch (order) {
-                case STORY_LIST:
-                    if (!second) {
-                        intent.putExtra("type", Types.TRIPLE_STORY);
-                    } else {
-                        intent.putExtra("type", Types.LIST);
-                    }
-                    break;
-                case LIST_STORY:
-                    if (second) {
-                        intent.putExtra("type", Types.TRIPLE_STORY);
-                    } else {
-                        intent.putExtra("type", Types.LIST);
-                    }
-                    break;
-                case STORY_PIN:
-                    if (!second) {
-                        intent.putExtra("type", Types.TRIPLE_STORY);
-                    } else {
-                        intent.putExtra("type", Types.PIN);
-                    }
-                    break;
-                case PIN_STORY:
-                    if (second) {
-                        intent.putExtra("type", Types.TRIPLE_STORY);
-                    }
-                    else {
-                        intent.putExtra("type", Types.PIN);
-                    }
-                    break;
-                case STORY_PATTERN:
-                    if (!second) {
-                        intent.putExtra("type", Types.TRIPLE_STORY);
-                    } else {
-                        intent.putExtra("type", Types.PATTERN);
-                    }
-                    break;
-                case PATTERN_STORY:
-                    if (second) {
-                        intent.putExtra("type", Types.TRIPLE_STORY);
-                    } else {
-                        intent.putExtra("type", Types.PATTERN);
-                    }
-                    break;
-                case LIST_PIN:
-                    if (!second) {
-                        intent.putExtra("type", Types.LIST);
-                    } else {
-                        intent.putExtra("type", Types.PIN);
-                    }
-                    break;
-                case PIN_LIST:
-                    if (second) {
-                        intent.putExtra("type", Types.LIST);
-                    } else {
-                        intent.putExtra("type", Types.PIN);
-                    }
-                    break;
-                case LIST_PATTERN:
-                    if (!second) {
-                        intent.putExtra("type", Types.LIST);
-                    } else {
-                        intent.putExtra("type", Types.PATTERN);
-                    }
-                    break;
-                case PATTERN_LIST:
-                    if (second) {
-                        intent.putExtra("type", Types.LIST);
-                    } else {
-                        intent.putExtra("type", Types.PATTERN);
-                    }
-                    break;
-            }
+//            switch (order) {
+//                case STORY_LIST:
+//                    if (!second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+//                    }
+//                    break;
+//                case LIST_STORY:
+//                    if (second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+//                    }
+//                    break;
+//                case STORY_PIN:
+//                    if (!second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+//                    }
+//                    break;
+//                case PIN_STORY:
+//                    if (second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+//                    }
+//                    else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+//                    }
+//                    break;
+//                case STORY_PATTERN:
+//                    if (!second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+//                    }
+//                    break;
+//                case PATTERN_STORY:
+//                    if (second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+//                    }
+//                    break;
+//                case LIST_PIN:
+//                    if (!second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+//                    }
+//                    break;
+//                case PIN_LIST:
+//                    if (second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PIN);
+//                    }
+//                    break;
+//                case LIST_PATTERN:
+//                    if (!second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+//                    }
+//                    break;
+//                case PATTERN_LIST:
+//                    if (second) {
+//                        intent.putExtra(getString(R.string.pass_type), Types.LIST);
+//                    } else {
+//                        intent.putExtra(getString(R.string.pass_type), Types.PATTERN);
+//                    }
+//                    break;
+//            }
 
+            intent.putExtra(getString(R.string.pass_type), Types.TRIPLE_STORY);
             startActivity(intent);
             finish();
         }

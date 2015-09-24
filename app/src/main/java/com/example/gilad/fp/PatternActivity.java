@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
@@ -30,6 +31,7 @@ public class PatternActivity extends AppCompatActivity {
     ArrayList<TouchData> touchLog = new ArrayList<>();
     int stage;
     int timesLeft;
+    TextView topMessage;
 
     static final int START = 0;
     static final int ADD = 1;
@@ -44,6 +46,14 @@ public class PatternActivity extends AppCompatActivity {
         type = Vals.Types.PATTERN;
         stage = getIntent().getIntExtra("stage", 0);
         timesLeft = Vals.ITERATIONS[stage];
+        topMessage = (TextView) findViewById(R.id.top_message);
+
+        if (stage == 0)
+        {
+            Intent pass = new Intent(this, PassGenerate.class);
+            pass.putExtra(getString(R.string.pass_type), type);
+            startActivity(pass);
+        }
 
         // Make new ContextThemeWrapper
         Context newContext = new ContextThemeWrapper(this, R.style.Alp_42447968_Theme_Light);
@@ -56,7 +66,7 @@ public class PatternActivity extends AppCompatActivity {
         final RelativeLayout relativeLayout =  ((RelativeLayout) findViewById(R.id.background));
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(relativeLayout.getWidth(), relativeLayout.getWidth());
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        layoutParams.addRule(RelativeLayout.BELOW, topMessage.getId());
 
         relativeLayout.addView(lockPatternView, layoutParams);
 
@@ -79,67 +89,39 @@ public class PatternActivity extends AppCompatActivity {
             public void onPatternCleared() {
 
             }
-        @Override
-        public void onPatternCellAdded(List<LockPatternView.Cell> list) {
-            touchLog.add(new TouchData(System.currentTimeMillis(), ADD, list.get(list.size() - 1).getId(), ""));
-        }
 
-        @Override
-        public void onPatternDetected(List<LockPatternView.Cell> list) {
-            timesLeft--;
-            touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
-            Intent next = new Intent(lockPatternView.getContext(), SuccMsg.class);
-            next.putExtra("type", type);
-            boolean equal = true;
-            if (list.size() != 6)
-            {
-                equal = false;
+            @Override
+            public void onPatternCellAdded(List<LockPatternView.Cell> list) {
+                touchLog.add(new TouchData(System.currentTimeMillis(), ADD, list.get(list.size() - 1).getId(), ""));
             }
-            else {
-                for (int i = 0; i < 6; i++) {
-                    if (!(Integer.valueOf(list.get(i).getId()).toString().equals(password[i]))) {
-                        equal = false;
-                        break;
+
+            @Override
+            public void onPatternDetected(List<LockPatternView.Cell> list) {
+                timesLeft--;
+                touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
+                Intent next = new Intent(lockPatternView.getContext(), SuccMsg.class);
+                next.putExtra(getString(R.string.pass_type), type);
+                boolean equal = true;
+                if (list.size() != 6) {
+                    equal = false;
+                } else {
+                    for (int i = 0; i < 6; i++) {
+                        if (!(Integer.valueOf(list.get(i).getId()).toString().equals(password[i]))) {
+                            equal = false;
+                            break;
+                        }
                     }
                 }
-            }
-            if (equal) {
-                next.putExtra("succCode", true);
-            } else {
-                next.putExtra("succCode", false);
-            }
+                if (equal) {
+                    next.putExtra("succCode", true);
+                } else {
+                    next.putExtra("succCode", false);
+                }
 
-            next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
+                next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
 
-            startActivity(next);
-        }
-    });
+                touchLog.clear();
 
-        findViewById(R.id.change_type).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), -1).commit();
-                Intent next = new Intent(v.getContext(), MainActivity.class);
-                startActivity(next);
-                finish();
-            }
-        });
-
-        findViewById(R.id.new_pass).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
-                Intent next = new Intent(v.getContext(), PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
-            }
-        });
-
-        findViewById(R.id.forgot).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(v.getContext(), PassGenerate.class);
-                next.putExtra("type", type);
                 startActivity(next);
             }
         });
@@ -178,6 +160,7 @@ public class PatternActivity extends AppCompatActivity {
                     password[i] = prefs.getString(String.format("char%d", i), "");
                 }
             }
+            topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
             lockPatternView.clearPattern();
         }
         else

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
+import com.example.gilad.fp.PinActivity;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
@@ -43,9 +44,10 @@ public class PinTutorial extends AppCompatActivity {
 
         getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
-        Intent next = new Intent(this, PassGenerate.class);
-        next.putExtra("type", type);
-        startActivity(next);
+        Intent passIntent = new Intent(this, PassGenerate.class);
+        passIntent.putExtra(getString(R.string.pass_type), type);
+        passIntent.putExtra(getString(R.string.generate), true);
+        startActivity(passIntent);
 
         appContext = this;
         userEntered = new String[PIN_LENGTH];
@@ -211,6 +213,9 @@ public class PinTutorial extends AppCompatActivity {
         super.onResume();
         if (finished)
         {
+            Intent next = new Intent(this, PinActivity.class);
+            next.putExtra(getString(R.string.stage), 0);
+            startActivity(next);
             finish();
         }
         else

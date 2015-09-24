@@ -36,6 +36,7 @@ public class PassGenerate extends AppCompatActivity {
     Vals.Types type;
     float scale;
     LockPatternView lockPatternView = null;
+    boolean generate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,27 +53,19 @@ public class PassGenerate extends AppCompatActivity {
         Typeface cartoonFont = Typeface.createFromAsset(getAssets(), "fonts/cartoon.ttf");
         Typeface locationFont = Typeface.createFromAsset(getAssets(), "fonts/FamousBuildings.ttf");
 
-        type = (Vals.Types) getIntent().getSerializableExtra("type");
+        type = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
+        generate = getIntent().getBooleanExtra(getString(R.string.generate), false);
+        generate = true;
 
-        for (int i = 0 ; i < 6 ; i++)
-        {
-            password[i] = prefs.getString(String.format("char%d", i), "");
-            labels[i] = prefs.getString(String.format("label%d", i), "");
-        }
+        if (generate) {
+            int[] indices = new int[6];
 
-        if (password[0].equals(""))
-        {
-            int [] indices = new int[6];
-
-            for (int i = 0 ; i < 6 ; i++)
-            {
-                indices[i] = (int)(Math.random() * 5);
+            for (int i = 0; i < 6; i++) {
+                indices[i] = (int) (Math.random() * 5);
             }
-            switch (type)
-            {
+            switch (type) {
                 case LIST:
-                    for (int i = 0 ; i < 3 ; i ++)
-                    {
+                    for (int i = 0; i < 3; i++) {
                         password[2 * i] = res.getStringArray(R.array.numbers)[indices[2 * i]];
                         labels[2 * i] = "";
                     }
@@ -98,19 +91,15 @@ public class PassGenerate extends AppCompatActivity {
                     labels[5] = res.getStringArray(R.array.food_text)[indices[5]];
                     break;
                 case PIN:
-                    for (int i = 0; i < 4 ; i++)
-                    {
+                    for (int i = 0; i < 4; i++) {
                         int digit = (int) (Math.random() * 10);
                         password[i] = Integer.valueOf(digit).toString();
                         labels[i] = "";
                     }
 
-                    if (Math.random() < 0.5)
-                    {
-                        password[4] ="*";
-                    }
-                    else
-                    {
+                    if (Math.random() < 0.5) {
+                        password[4] = "*";
+                    } else {
                         password[4] = "#";
                     }
                     labels[4] = "";
@@ -122,8 +111,7 @@ public class PassGenerate extends AppCompatActivity {
                     List<Integer> possible = new ArrayList<>();
                     List<Integer> code = new ArrayList<>();
 
-                    for (int i = 0; i < 9 ; i++)
-                    {
+                    for (int i = 0; i < 9; i++) {
                         possible.add(i);
                     }
 
@@ -133,41 +121,28 @@ public class PassGenerate extends AppCompatActivity {
                     password[0] = Integer.valueOf(current).toString();
                     labels[0] = "";
 
-                    for (int i = 1 ; i < 6 ; i++)
-                    {
+                    for (int i = 1; i < 6; i++) {
                         List<Integer> legalVals = new ArrayList<>(possible);
-                        if (current < 3 && !code.contains(current + 3))
-                        {
+                        if (current < 3 && !code.contains(current + 3)) {
                             legalVals.remove(Integer.valueOf(current + 6));
                         }
-                        if (current > 5 && !code.contains(current - 3))
-                        {
+                        if (current > 5 && !code.contains(current - 3)) {
                             legalVals.remove(Integer.valueOf(current - 6));
                         }
-                        if (current % 3 == 0 && !code.contains(current + 1))
-                        {
+                        if (current % 3 == 0 && !code.contains(current + 1)) {
                             legalVals.remove(Integer.valueOf(current + 2));
                         }
-                        if (current % 3 == 2 && !code.contains(current - 1))
-                        {
+                        if (current % 3 == 2 && !code.contains(current - 1)) {
                             legalVals.remove(Integer.valueOf(current - 2));
                         }
-                        if (!code.contains(4))
-                        {
-                            if (current == 0)
-                            {
+                        if (!code.contains(4)) {
+                            if (current == 0) {
                                 legalVals.remove(Integer.valueOf(8));
-                            }
-                            else if (current == 2)
-                            {
+                            } else if (current == 2) {
                                 legalVals.remove(Integer.valueOf(6));
-                            }
-                            else if (current == 6)
-                            {
+                            } else if (current == 6) {
                                 legalVals.remove(Integer.valueOf(2));
-                            }
-                            else if (current == 8)
-                            {
+                            } else if (current == 8) {
                                 legalVals.remove(Integer.valueOf(0));
                             }
                         }
@@ -183,29 +158,30 @@ public class PassGenerate extends AppCompatActivity {
 
             SharedPreferences.Editor editor = prefs.edit();
 
-            for (int i = 0 ; i < 6 ; i ++)
-            {
+            for (int i = 0; i < 6; i++) {
                 editor.putString(String.format("char%d", i), password[i]);
                 editor.putString(String.format("label%d", i), labels[i]);
             }
             editor.commit();
+        } else {
+            for (int i = 0; i < 6; i++) {
+                password[i] = prefs.getString(String.format("char%d", i), "");
+                labels[i] = prefs.getString(String.format("label%d", i), "");
+            }
         }
 
-        switch (type)
-        {
+        switch (type) {
             case LIST:
                 views = new TextView[9];
 
-                for (int i = 0 ; i < 9 ; i ++)
-                {
+                for (int i = 0; i < 9; i++) {
                     AutoResizeTextView textView = new AutoResizeTextView(this);
                     layout.addView(textView, i);
                     textView.setId(i + 1);
                     views[i] = textView;
                     textView.setGravity(Gravity.CENTER);
                 }
-                for (int i = 0 ; i < 3 ; i ++)
-                {
+                for (int i = 0; i < 3; i++) {
                     views[2 * i].setText(password[2 * i]);
                     views[2 * i + 1].setText(password[2 * i + 1]);
                     views[2 * i + 1].setTypeface(emojiFont);
@@ -215,15 +191,13 @@ public class PassGenerate extends AppCompatActivity {
                 ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
 
-                for (int i = 1; i < 3 ; i ++)
-                {
+                for (int i = 1; i < 3; i++) {
                     ((RelativeLayout.LayoutParams) views[i * 2].getLayoutParams()).addRule(RelativeLayout.ALIGN_LEFT, views[(i - 1) * 2].getId());
                     ((RelativeLayout.LayoutParams) views[i * 2].getLayoutParams()).addRule(RelativeLayout.BELOW, views[(i - 1) * 2].getId());
                     ((RelativeLayout.LayoutParams) views[i * 2].getLayoutParams()).setMargins(0, (int) (30 * scale + 0.5f), 0, 0);
                 }
 
-                for (int i = 0 ; i < 3 ; i++)
-                {
+                for (int i = 0; i < 3; i++) {
                     ((RelativeLayout.LayoutParams) views[i * 2 + 1].getLayoutParams()).addRule(RelativeLayout.ALIGN_TOP, views[i * 2].getId());
                     ((RelativeLayout.LayoutParams) views[i * 2 + 1].getLayoutParams()).addRule(RelativeLayout.RIGHT_OF, views[i * 2].getId());
                     ((RelativeLayout.LayoutParams) views[i + 6].getLayoutParams()).addRule(RelativeLayout.BELOW, views[i * 2 + 1].getId());
@@ -233,8 +207,7 @@ public class PassGenerate extends AppCompatActivity {
                 break;
             case TRIPLE_STORY:
                 views = new TextView[17];
-                for (int i = 0 ; i < 12 ; i ++)
-                {
+                for (int i = 0; i < 12; i++) {
                     AutoResizeTextView textView = new AutoResizeTextView(this);
                     textView.full();
                     layout.addView(textView, i);
@@ -243,8 +216,7 @@ public class PassGenerate extends AppCompatActivity {
                     views[i].setGravity(Gravity.CENTER);
                     views[i].setTextColor(Color.BLACK);
                 }
-                for (int i = 12 ; i < 16; i++)
-                {
+                for (int i = 12; i < 16; i++) {
                     SingleLineTextView textView = new SingleLineTextView(this);
                     layout.addView(textView, i);
                     textView.setId(i + 1);
@@ -260,8 +232,7 @@ public class PassGenerate extends AppCompatActivity {
                 views[16].setTextColor(Color.GRAY);
                 views[16].setId(16 + 1);
 
-                for (int i = 0 ; i < 6 ; i ++)
-                {
+                for (int i = 0; i < 6; i++) {
                     views[i].setText(password[i]);
                     views[i + 6].setText(labels[i]);
                     ((RelativeLayout.LayoutParams) views[i + 6].getLayoutParams()).addRule(RelativeLayout.ALIGN_LEFT, views[i].getId());
@@ -287,10 +258,8 @@ public class PassGenerate extends AppCompatActivity {
                 ((RelativeLayout.LayoutParams) views[3].getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 ((RelativeLayout.LayoutParams) views[3].getLayoutParams()).addRule(RelativeLayout.BELOW, views[16].getId());
 
-                for (int i = 0 ; i < 2 ; i ++)
-                {
-                    for (int j = 0 ; j < 2 ; j ++)
-                    {
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 2; j++) {
                         ((RelativeLayout.LayoutParams) views[j + i * 2 + 12].getLayoutParams()).addRule(RelativeLayout.RIGHT_OF, views[j + 3 * i].getId());
                         ((RelativeLayout.LayoutParams) views[j + i * 2 + 12].getLayoutParams()).addRule(RelativeLayout.ALIGN_TOP, views[j + 3 * i].getId());
                         ((RelativeLayout.LayoutParams) views[j + i * 3 + 1].getLayoutParams()).addRule(RelativeLayout.RIGHT_OF, views[j + i * 2 + 12].getId());
@@ -321,9 +290,8 @@ public class PassGenerate extends AppCompatActivity {
 
                 layout.addView(lockPatternView, layoutParams);
 
-                ArrayList<LockPatternView.Cell> pattern =  new ArrayList<>();
-                for (int i = 0; i < 6 ; i++)
-                {
+                ArrayList<LockPatternView.Cell> pattern = new ArrayList<>();
+                for (int i = 0; i < 6; i++) {
                     int pass = Integer.parseInt(password[i]);
                     pattern.add(LockPatternView.Cell.of(pass));
                 }
@@ -382,7 +350,6 @@ public class PassGenerate extends AppCompatActivity {
             }
         });
     }
-
 
     public void buttonOnClick(View v)
     {

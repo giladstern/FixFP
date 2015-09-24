@@ -16,6 +16,7 @@ import com.example.gilad.fp.AlarmSetActivity;
 import com.example.gilad.fp.DispatchActivity;
 import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
+import com.example.gilad.fp.PatternActivity;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.SuccMsg;
 import com.example.gilad.fp.utils.TouchData;
@@ -50,9 +51,10 @@ public class PatternTutorial extends AppCompatActivity {
 
         getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
-        Intent next = new Intent(this, PassGenerate.class);
-        next.putExtra("type", type);
-        startActivity(next);
+        Intent passIntent = new Intent(this, PassGenerate.class);
+        passIntent.putExtra(getString(R.string.pass_type), type);
+        passIntent.putExtra(getString(R.string.generate), true);
+        startActivity(passIntent);
 
         // Make new ContextThemeWrapper
         Context newContext = new ContextThemeWrapper(this, R.style.Alp_42447968_Theme_Light);
@@ -149,6 +151,9 @@ public class PatternTutorial extends AppCompatActivity {
         super.onResume();
         if (finished)
         {
+            Intent next = new Intent(this, PatternActivity.class);
+            next.putExtra(getString(R.string.stage), 0);
+            startActivity(next);
             finish();
         }
         else

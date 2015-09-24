@@ -28,7 +28,6 @@ public class Alarm extends WakefulBroadcastReceiver
     {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED))
         {
-            Toast.makeText(context, "here", Toast.LENGTH_SHORT).show();
             long time = context.getSharedPreferences("times", Context.MODE_PRIVATE).getLong("nextAlarm", 0);
             if (time != 0)
             {
@@ -43,8 +42,8 @@ public class Alarm extends WakefulBroadcastReceiver
         else if (intent.getAction().equals(ALARM_ACTION)){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.notification_template_icon_bg)
-                    .setContentTitle("Testing Title")
-                    .setContentText("Testing Test")
+                    .setContentTitle("Fast Phrase")
+                    .setContentText("Time to enter passcode.")
                     .setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL);
             Intent resultIntent = new Intent(context, DispatchActivity.class);

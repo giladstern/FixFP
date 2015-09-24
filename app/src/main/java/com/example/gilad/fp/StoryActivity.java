@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.DiagonalStoryFP;
 import com.example.gilad.fp.utils.FastPhrase;
 import com.example.gilad.fp.utils.Vals;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,7 @@ public class StoryActivity extends AppCompatActivity {
     Vals.Types type;
     int stage;
     int timesLeft;
+    TextView topMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,40 +40,19 @@ public class StoryActivity extends AppCompatActivity {
         type = Vals.Types.TRIPLE_STORY;
         stage = getIntent().getIntExtra("stage", 0);
         timesLeft = Vals.ITERATIONS[stage];
+        topMessage = (TextView) findViewById(R.id.top_message);
+
+        if (stage == 0)
+        {
+            Intent pass = new Intent(this, PassGenerate.class);
+            pass.putExtra(getString(R.string.pass_type), type);
+            startActivity(pass);
+        }
 
         findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FP.reset();
-            }
-        });
-
-        findViewById(R.id.change_type).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), -1).commit();
-                Intent next = new Intent(v.getContext(), MainActivity.class);
-                startActivity(next);
-                finish();
-            }
-        });
-
-        findViewById(R.id.new_pass).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
-                Intent next = new Intent(v.getContext(), PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
-            }
-        });
-
-        findViewById(R.id.forgot).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(v.getContext(), PassGenerate.class);
-                next.putExtra("type", type);
-                startActivity(next);
             }
         });
 
@@ -79,7 +62,7 @@ public class StoryActivity extends AppCompatActivity {
 //                FP.reset();
                 timesLeft--;
                 Intent next = new Intent(FP.getContext(), SuccMsg.class);
-                next.putExtra("type", type);
+                next.putExtra(getString(R.string.pass_type), type);
                 boolean equal = true;
                 for (int i = 0 ; i < 6 ; i++)
                 {
@@ -137,6 +120,7 @@ public class StoryActivity extends AppCompatActivity {
                     password[i] = prefs.getString(String.format("char%d", i), "");
                 }
             }
+            topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
             FP.reset();
         }
         else

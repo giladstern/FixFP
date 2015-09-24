@@ -2,7 +2,7 @@
     <string name="app_name">FP</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="filename">stored_info</string>
+    <string name="filename">pass_info</string>
     <string name="pass">password</string>
     <string-array name="numbers">
         <item>1</item>
@@ -122,6 +122,7 @@
     <string name="second">second</string>
     <string name="next_alarm">next_alarm</string>
     <string name="success">success</string>
+    <string name="generate">generate</string>
     <string name="title_activity_pass_generate">Fast Phrase</string>
     <string name="title_activity_succ_msg">Fast Phrase</string>
     <string name="title_activity_story">Fast Phrase</string>
@@ -129,12 +130,13 @@
     <string name="title_activity_dispatch">Fast Phrase</string>
     <string name="title_activity_pattern">Fast Phrase</string>
     <string name="title_activity_pin">Fast Phrase</string>
-    <string name="title_activity_alarm_set">AlarmSetActivity</string>
-    <string name="title_activity_first_screen">FirstScreen</string>
-    <string name="title_activity_list_tutorial">ListTutorial</string>
-    <string name="title_activity_tutorial_success">TutorialSuccess</string>
-    <string name="title_activity_story_tutorial">StoryTutorial</string>
-    <string name="title_activity_pin_tutorial">PinTutorial</string>
-    <string name="title_activity_pattern_tutorial">PatternTutorial</string>
-    <string name="title_activity_welcome_screen">WelcomeScreen</string>
+    <string name="title_activity_alarm_set">Fast Phrase</string>
+    <string name="title_activity_first_screen">Fast Phrase</string>
+    <string name="title_activity_list_tutorial">Fast Phrase</string>
+    <string name="title_activity_tutorial_success">Fast Phrase</string>
+    <string name="title_activity_story_tutorial">Fast Phrase</string>
+    <string name="title_activity_pin_tutorial">Fast Phrase</string>
+    <string name="title_activity_pattern_tutorial">Fast Phrase</string>
+    <string name="title_activity_welcome_screen">Fast Phrase</string>
+    <string name="num_left_msg">Enter your pass code %d more times.\nIf you aren\'t sure if you remember your code, try your best.</string>
 </resources>
