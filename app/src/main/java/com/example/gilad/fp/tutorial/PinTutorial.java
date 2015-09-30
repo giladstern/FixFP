@@ -1,6 +1,8 @@
 package com.example.gilad.fp.tutorial;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +28,7 @@ public class PinTutorial extends AppCompatActivity {
     Vals.Types type = Vals.Types.PIN;
     String[] userEntered;
     int curIndex;
-    final int PIN_LENGTH = 5;
+    final int PIN_LENGTH = PinActivity.PIN_LENGTH;
     Context appContext;
     TextView titleView;
     TextView[] pinBoxArray;
@@ -35,14 +37,14 @@ public class PinTutorial extends AppCompatActivity {
     Button clearButton;
     String[] password;
     ArrayList<TouchData> touchLog = new ArrayList<>();
-    boolean finished = false;
+    boolean prevEqual = false;
+    boolean consecEqual = false;
+    int timesEqual = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin_tutorial);
-
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
@@ -52,7 +54,7 @@ public class PinTutorial extends AppCompatActivity {
         appContext = this;
         userEntered = new String[PIN_LENGTH];
         password = new String[PIN_LENGTH];
-        buttons = new Button[12];
+        buttons = new Button[11];
         curIndex = 0;
 
         //Typeface xpressive = Typeface.createFromAsset(getAssets(), "fonts/XpressiveBold.ttf");
@@ -83,7 +85,6 @@ public class PinTutorial extends AppCompatActivity {
         pinBoxArray[1] = (TextView) findViewById(R.id.pinBox1);
         pinBoxArray[2] = (TextView) findViewById(R.id.pinBox2);
         pinBoxArray[3] = (TextView) findViewById(R.id.pinBox3);
-        pinBoxArray[4] = (TextView) findViewById(R.id.pinBox4);
 
 
 //		statusView.setTypeface(xpressive);
@@ -109,19 +110,12 @@ public class PinTutorial extends AppCompatActivity {
                 if (curIndex == PIN_LENGTH){
 
                     //TODO: check password.
-                    Intent next = new Intent(PinTutorial.this, TutorialSuccess.class);
                     boolean equal = true;
                     for (int i = 0; i < PIN_LENGTH; i++) {
                         if (!userEntered[i].equals(password[i])) {
                             equal = false;
                             break;
                         }
-                    }
-                    if (equal) {
-                        next.putExtra(getString(R.string.success), true);
-                        finished = true;
-                    } else {
-                        next.putExtra(getString(R.string.success), false);
                     }
 
                     touchLog.clear();
@@ -132,7 +126,21 @@ public class PinTutorial extends AppCompatActivity {
                         userEntered[i] = "";
                     }
                     curIndex = 0;
-                    startActivity(next);
+
+                    if (equal)
+                    {
+                        if (prevEqual)
+                        {
+                            consecEqual = true;
+                        }
+                        prevEqual = true;
+                        timesEqual++;
+                    }
+                    else
+                    {
+                        prevEqual = false;
+                    }
+                    alert(equal);
                 }
             }
         };
@@ -147,10 +155,9 @@ public class PinTutorial extends AppCompatActivity {
         buttons[7] = (Button) findViewById(R.id.button7);
         buttons[8] = (Button) findViewById(R.id.button8);
         buttons[9] = (Button) findViewById(R.id.button9);
-        buttons[10] = (Button) findViewById(R.id.buttonAstrix);
-        buttons[11] = (Button) findViewById(R.id.buttonPound);
+        buttons[10] = (Button) findViewById(R.id.buttonA);
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 11; i++)
         {
             buttons[i].setOnClickListener(pinButtonHandler);
             buttons[i].setId(i + 1);
@@ -211,10 +218,9 @@ public class PinTutorial extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        if (finished)
+        if (consecEqual && timesEqual >= 4)
         {
-            Intent next = new Intent(this, LoopActivity.class);
-            next.putExtra(getString(R.string.pass_type), type);
+            Intent next = new Intent(this, PinActivity.class);
             startActivity(next);
             finish();
         }
@@ -238,5 +244,39 @@ public class PinTutorial extends AppCompatActivity {
             curIndex = 0;
             touchLog.clear();
         }
+    }
+
+    private void alert(boolean success)
+    {
+        String title;
+        String message = null;
+        if (success)
+        {
+            title = "Correct";
+            message = "Once More!";
+        }
+        else
+        {
+            title = "Incorrect";
+            message = "Try Again.";
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+            }
+        });
+        if (message != null)
+        {
+            builder.setMessage(message);
+        }
+        builder.show();
     }
 }

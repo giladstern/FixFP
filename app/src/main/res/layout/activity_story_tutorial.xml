@@ -8,61 +8,88 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:id="@+id/story_fp"
-        android:layout_below="@+id/left_label"
+        android:layout_below="@+id/top_instructions"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"/>
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="150dp"
         android:id="@+id/top_instructions"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center" />
-
-    <com.example.gilad.fp.utils.AutoResizeTextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/left_instructions"
-        android:layout_below="@+id/top_instructions"
-        android:layout_alignLeft="@+id/top_instructions"
-        android:gravity="center" />
-    <com.example.gilad.fp.utils.AutoResizeTextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/middle_instructions"
-        android:layout_alignTop="@+id/left_instructions"
-        android:layout_toRightOf="@+id/left_instructions"
-        android:gravity="center" />
-    <com.example.gilad.fp.utils.AutoResizeTextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/right_instructions"
-        android:layout_alignTop="@+id/middle_instructions"
-        android:layout_toRightOf="@+id/middle_instructions"
-        android:gravity="center" />
-    <com.example.gilad.fp.utils.AutoResizeTextView
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:id="@+id/left_label"
         android:gravity="center"
-        android:layout_below="@+id/left_instructions"
-        android:layout_alignLeft="@+id/left_instructions"
-        android:layout_alignTop="@+id/list_fp"
-        />
-    <com.example.gilad.fp.utils.AutoResizeTextView
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:id="@+id/left_instructions"-->
+        <!--android:layout_below="@+id/top_instructions"-->
+        <!--android:layout_alignLeft="@+id/top_instructions"-->
+        <!--android:gravity="center" />-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:id="@+id/middle_instructions"-->
+        <!--android:layout_alignTop="@+id/left_instructions"-->
+        <!--android:layout_toRightOf="@+id/left_arrow"-->
+        <!--android:gravity="center" />-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:id="@+id/right_instructions"-->
+        <!--android:layout_alignTop="@+id/middle_instructions"-->
+        <!--android:layout_toRightOf="@+id/right_arrow"-->
+        <!--android:gravity="center" />-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:id="@+id/left_label"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_below="@+id/left_instructions"-->
+        <!--android:layout_alignLeft="@+id/left_instructions"-->
+        <!--android:layout_alignTop="@+id/list_fp"-->
+        <!--/>-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:id="@+id/middle_label"-->
+        <!--android:layout_below="@+id/middle_instructions"-->
+        <!--android:layout_alignLeft="@+id/middle_instructions"-->
+        <!--android:gravity="center" />-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="25dp"-->
+        <!--android:id="@+id/right_label"-->
+        <!--android:layout_below="@+id/right_instructions"-->
+        <!--android:layout_alignLeft="@+id/right_instructions"-->
+        <!--android:gravity="center" />-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:id="@+id/left_arrow"-->
+        <!--android:text="⇒"-->
+        <!--android:layout_alignTop="@+id/right_instructions"-->
+        <!--android:layout_toRightOf="@+id/left_instructions"-->
+        <!--android:gravity="center" />-->
+    <!--<com.example.gilad.fp.utils.AutoResizeTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:id="@+id/right_arrow"-->
+        <!--android:text="⇒"-->
+        <!--android:layout_alignTop="@+id/right_instructions"-->
+        <!--android:layout_toRightOf="@+id/middle_instructions"-->
+        <!--android:gravity="center" />-->
+
+    <com.example.gilad.fp.utils.Overlay
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:id="@+id/middle_label"
-        android:layout_below="@+id/middle_instructions"
-        android:layout_alignLeft="@+id/middle_instructions"
-        android:gravity="center" />
-    <com.example.gilad.fp.utils.AutoResizeTextView
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:id="@+id/right_label"
-        android:layout_below="@+id/right_instructions"
-        android:layout_alignLeft="@+id/right_instructions"
-        android:gravity="center" />
+        android:layout_height="300dp"
+        android:id="@+id/overlay"
+        android:layout_alignTop="@+id/story_fp"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -60,4 +60,5 @@
         android:layout_alignLeft="@+id/storyButton"
         android:layout_alignStart="@+id/storyButton"
         android:onClick="pinOnClick" />
+
 </RelativeLayout>

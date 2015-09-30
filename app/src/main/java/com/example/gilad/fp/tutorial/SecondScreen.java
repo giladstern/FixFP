@@ -10,14 +10,14 @@ import android.view.View;
 import com.example.gilad.fp.R;
 import com.example.gilad.fp.utils.Vals;
 
-public class FirstScreen extends AppCompatActivity {
+public class SecondScreen extends AppCompatActivity {
 
     private Vals.Types nextType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_screen);
+        setContentView(R.layout.activity_second_screen);
         nextType = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
 
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
@@ -26,16 +26,16 @@ public class FirstScreen extends AppCompatActivity {
                 Intent next = null;
                 switch (nextType) {
                     case TRIPLE_STORY:
-                        next = new Intent(FirstScreen.this, StoryTutorial.class);
+                        next = new Intent(SecondScreen.this, StoryTutorial.class);
                         break;
                     case LIST:
-                        next = new Intent(FirstScreen.this, ListTutorial.class);
+                        next = new Intent(SecondScreen.this, ListTutorial.class);
                         break;
                     case PIN:
-                        next = new Intent(FirstScreen.this, PinTutorial.class);
+                        next = new Intent(SecondScreen.this, PinTutorial.class);
                         break;
                     case PATTERN:
-                        next = new Intent(FirstScreen.this, PatternTutorial.class);
+                        next = new Intent(SecondScreen.this, PatternTutorial.class);
                         break;
                 }
 
@@ -50,7 +50,7 @@ public class FirstScreen extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_first_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_second_screen, menu);
         return true;
     }
 

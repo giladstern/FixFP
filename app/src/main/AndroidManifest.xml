@@ -41,6 +41,7 @@
             android:name=".PassGenerate"
             android:label="@string/title_activity_pass_generate"
             android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".SuccMsg"
@@ -76,6 +77,7 @@
             android:name=".PinActivity"
             android:label="@string/title_activity_pin"
             android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".AlarmSetActivity"
@@ -101,6 +103,7 @@
             android:name=".tutorial.StoryTutorial"
             android:label="@string/title_activity_story_tutorial"
             android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".tutorial.PinTutorial"
@@ -119,7 +122,18 @@
         </activity>
         <activity
             android:name=".tutorial.LoopActivity"
-            android:label="@string/title_activity_loop" >
+            android:label="@string/title_activity_loop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".tutorial.SecondScreen"
+            android:label="@string/title_activity_second_screen"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".tutorial.TutorialEnd"
+            android:label="@string/title_activity_tutorial_end"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

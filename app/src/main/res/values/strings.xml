@@ -140,4 +140,6 @@
     <string name="title_activity_welcome_screen">Fast Phrase</string>
     <string name="num_left_msg">Enter your code %d more times.\nIf you don\'t remember it, try your best.</string>
     <string name="title_activity_loop">LoopActivity</string>
+    <string name="title_activity_second_screen">SecondScreen</string>
+    <string name="title_activity_tutorial_end">TutorialEnd</string>
 </resources>

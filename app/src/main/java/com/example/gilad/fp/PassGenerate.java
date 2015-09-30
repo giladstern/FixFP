@@ -55,7 +55,6 @@ public class PassGenerate extends AppCompatActivity {
 
         type = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
         generate = getIntent().getBooleanExtra(getString(R.string.generate), false);
-        generate = true;
 
         if (generate) {
             int[] indices = new int[6];
@@ -91,27 +90,26 @@ public class PassGenerate extends AppCompatActivity {
                     labels[5] = res.getStringArray(R.array.food_text)[indices[5]];
                     break;
                 case PIN:
-                    for (int i = 0; i < 4; i++) {
-                        int digit = (int) (Math.random() * 10);
-                        password[i] = Integer.valueOf(digit).toString();
+                    for (int i = 0; i < PinActivity.PIN_LENGTH; i++) {
+                        int digit = (int) (Math.random() * 11);
+                        if (digit < 10) {
+                            password[i] = Integer.valueOf(digit).toString();
+                        }
+                        else
+                        {
+                            password[i] = "A";
+                        }
                         labels[i] = "";
                     }
-
-                    if (Math.random() < 0.5) {
-                        password[4] = "*";
-                    } else {
-                        password[4] = "#";
-                    }
                     labels[4] = "";
-                    password[5] = "";
-                    labels[5] = "";
 
                     break;
                 case PATTERN:
                     List<Integer> possible = new ArrayList<>();
                     List<Integer> code = new ArrayList<>();
 
-                    for (int i = 0; i < 9; i++) {
+                    for (int i = 0; i < 9 ; i++)
+                    {
                         possible.add(i);
                     }
 
@@ -119,30 +117,83 @@ public class PassGenerate extends AppCompatActivity {
                     possible.remove(current);
                     code.add(current);
                     password[0] = Integer.valueOf(current).toString();
-                    labels[0] = "";
 
-                    for (int i = 1; i < 6; i++) {
+                    for (int i = 1 ; i < 6 ; i++)
+                    {
                         List<Integer> legalVals = new ArrayList<>(possible);
-                        if (current < 3 && !code.contains(current + 3)) {
-                            legalVals.remove(Integer.valueOf(current + 6));
+                        if (current < 3)
+                        {
+                            if (!code.contains(current + 3)) {
+                                legalVals.remove(Integer.valueOf(current + 6));
+                            }
+                            if ((current == 0 || current == 1) && (!code.contains(current + 3) && !code.contains(current + 4)))
+                            {
+                                legalVals.remove(Integer.valueOf(current + 7));
+                            }
+                            if ((current == 2 || current == 1) && (!code.contains(current + 3) && !code.contains(current + 2)))
+                            {
+                                legalVals.remove(Integer.valueOf(current + 5));
+                            }
                         }
-                        if (current > 5 && !code.contains(current - 3)) {
-                            legalVals.remove(Integer.valueOf(current - 6));
+                        if (current > 5)
+                        {
+                            if (!code.contains(current - 3)) {
+                                legalVals.remove(Integer.valueOf(current - 6));
+                            }
+                            if ((current == 8 || current == 7) && (!code.contains(current - 3) && !code.contains(current - 4)))
+                            {
+                                legalVals.remove(Integer.valueOf(current - 7));
+                            }
+                            if ((current == 6 || current == 7) && (!code.contains(current - 3) && !code.contains(current - 2)))
+                            {
+                                legalVals.remove(Integer.valueOf(current - 5));
+                            }
                         }
-                        if (current % 3 == 0 && !code.contains(current + 1)) {
-                            legalVals.remove(Integer.valueOf(current + 2));
+                        if (current % 3 == 0)
+                        {
+                            if(!code.contains(current + 1)) {
+                                legalVals.remove(Integer.valueOf(current + 2));
+                            }
+                            if ((current == 0 || current == 3) && (!code.contains(current + 1) && !code.contains(current + 4)))
+                            {
+                                legalVals.remove(Integer.valueOf(current + 5));
+                            }
+                            if ((current == 6 || current == 3) && (!code.contains(current + 1) && !code.contains(current - 2)))
+                            {
+                                legalVals.remove(Integer.valueOf(current - 1));
+                            }
                         }
-                        if (current % 3 == 2 && !code.contains(current - 1)) {
-                            legalVals.remove(Integer.valueOf(current - 2));
+                        if (current % 3 == 2)
+                        {
+                            if (!code.contains(current - 1)) {
+                                legalVals.remove(Integer.valueOf(current - 2));
+                            }
+                            if ((current == 8 || current == 5) && (!code.contains(current - 1) && !code.contains(current - 4)))
+                            {
+                                legalVals.remove(Integer.valueOf(current - 5));
+                            }
+                            if ((current == 2 || current == 5) && (!code.contains(current - 1) && !code.contains(current + 2)))
+                            {
+                                legalVals.remove(Integer.valueOf(current + 1));
+                            }
                         }
-                        if (!code.contains(4)) {
-                            if (current == 0) {
+
+                        if (!code.contains(4))
+                        {
+                            if (current == 0)
+                            {
                                 legalVals.remove(Integer.valueOf(8));
-                            } else if (current == 2) {
+                            }
+                            else if (current == 2)
+                            {
                                 legalVals.remove(Integer.valueOf(6));
-                            } else if (current == 6) {
+                            }
+                            else if (current == 6)
+                            {
                                 legalVals.remove(Integer.valueOf(2));
-                            } else if (current == 8) {
+                            }
+                            else if (current == 8)
+                            {
                                 legalVals.remove(Integer.valueOf(0));
                             }
                         }
@@ -151,7 +202,6 @@ public class PassGenerate extends AppCompatActivity {
                         code.add(current);
                         possible.remove(Integer.valueOf(current));
                         password[i] = Integer.valueOf(current).toString();
-                        labels[i] = "";
                     }
                     break;
             }
@@ -272,7 +322,7 @@ public class PassGenerate extends AppCompatActivity {
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (200 * scale + 0.5f));
                 layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
                 textView.setGravity(Gravity.CENTER);
-                textView.setText(password[0] + " " + password[1] + " " + password[2] + " " + password[3] + " " + password[4]);
+                textView.setText(password[0] + " " + password[1] + " " + password[2] + " " + password[3]);
                 layout.addView(textView, layoutParams);
                 break;
 

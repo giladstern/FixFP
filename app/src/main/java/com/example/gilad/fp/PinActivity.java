@@ -1,9 +1,12 @@
 package com.example.gilad.fp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.example.gilad.fp.utils.AutoResizeTextView;
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
 
@@ -21,7 +25,7 @@ public class PinActivity extends AppCompatActivity {
     Vals.Types type = Vals.Types.PIN;
     String[] userEntered;
     int curIndex;
-    final int PIN_LENGTH = 5;
+    public final static int PIN_LENGTH = 4;
     TextView titleView;
     TextView[] pinBoxArray;
     Button[] buttons;
@@ -50,7 +54,7 @@ public class PinActivity extends AppCompatActivity {
 
         userEntered = new String[PIN_LENGTH];
         password = new String[PIN_LENGTH];
-        buttons = new Button[12];
+        buttons = new Button[11];
         curIndex = 0;
 
         //Typeface xpressive = Typeface.createFromAsset(getAssets(), "fonts/XpressiveBold.ttf");
@@ -81,7 +85,6 @@ public class PinActivity extends AppCompatActivity {
         pinBoxArray[1] = (TextView) findViewById(R.id.pinBox1);
         pinBoxArray[2] = (TextView) findViewById(R.id.pinBox2);
         pinBoxArray[3] = (TextView) findViewById(R.id.pinBox3);
-        pinBoxArray[4] = (TextView) findViewById(R.id.pinBox4);
 
 
 //		statusView.setTypeface(xpressive);
@@ -105,8 +108,7 @@ public class PinActivity extends AppCompatActivity {
 //                        statusView.setText("initializing.. please wait");
 //                    }
                 if (curIndex == PIN_LENGTH){
-                    Intent next = new Intent(PinActivity.this, SuccMsg.class);
-                    next.putExtra(getString(R.string.pass_type), type);
+
                     boolean equal = true;
                     for (int i = 0; i < PIN_LENGTH; i++) {
                         if (!userEntered[i].equals(password[i])) {
@@ -114,15 +116,7 @@ public class PinActivity extends AppCompatActivity {
                             break;
                         }
                     }
-                    if (equal) {
-                        next.putExtra("succCode", true);
-                        timesWrong = 0;
-                    } else {
-                        next.putExtra("succCode", false);
-                        timesWrong++;
-                    }
 
-                    next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
                     touchLog.clear();
 
                     for (int i = 0; i < PIN_LENGTH; i++)
@@ -132,7 +126,7 @@ public class PinActivity extends AppCompatActivity {
                     }
                     curIndex = 0;
                     timesLeft--;
-                    startActivity(next);
+                    alert(equal);
                 }
             }
         };
@@ -147,10 +141,9 @@ public class PinActivity extends AppCompatActivity {
         buttons[7] = (Button) findViewById(R.id.button7);
         buttons[8] = (Button) findViewById(R.id.button8);
         buttons[9] = (Button) findViewById(R.id.button9);
-        buttons[10] = (Button) findViewById(R.id.buttonAstrix);
-        buttons[11] = (Button) findViewById(R.id.buttonPound);
+        buttons[10] = (Button) findViewById(R.id.buttonA);
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 11; i++)
         {
             buttons[i].setOnClickListener(pinButtonHandler);
             buttons[i].setId(i + 1);
@@ -219,7 +212,7 @@ public class PinActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.pass_type), type);
             startActivity(intent);
         }
-        if (timesLeft != 0) {
+        else if (timesLeft != 0) {
             if (password[0] == null) {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
                 for (int i = 0; i < PIN_LENGTH; i++) {
@@ -241,5 +234,34 @@ public class PinActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private void alert(boolean success)
+    {
+        String text;
+        if (success)
+        {
+            text = "Correct";
+            timesWrong = 0;
+        }
+        else
+        {
+            text = "Incorrect";
+            timesWrong++;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(text)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+            }
+        });
+        builder.show();
     }
 }

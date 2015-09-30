@@ -1,6 +1,8 @@
 package com.example.gilad.fp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -100,8 +102,6 @@ public class PatternActivity extends AppCompatActivity {
             public void onPatternDetected(List<LockPatternView.Cell> list) {
                 timesLeft--;
                 touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
-                Intent next = new Intent(lockPatternView.getContext(), SuccMsg.class);
-                next.putExtra(getString(R.string.pass_type), type);
                 boolean equal = true;
                 if (list.size() != 6) {
                     equal = false;
@@ -113,19 +113,10 @@ public class PatternActivity extends AppCompatActivity {
                         }
                     }
                 }
-                if (equal) {
-                    next.putExtra("succCode", true);
-                    timesWrong = 0;
-                } else {
-                    next.putExtra("succCode", false);
-                    timesWrong++;
-                }
-
-                next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
 
                 touchLog.clear();
 
-                startActivity(next);
+                alert(equal);
             }
         });
     }
@@ -163,7 +154,7 @@ public class PatternActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.pass_type), type);
             startActivity(intent);
         }
-        if (timesLeft != 0) {
+        else if (timesLeft != 0) {
             if (password[0] == null)
             {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
@@ -181,5 +172,34 @@ public class PatternActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private void alert(boolean success)
+    {
+        String text;
+        if (success)
+        {
+            text = "Correct";
+            timesWrong = 0;
+        }
+        else
+        {
+            text = "Incorrect";
+            timesWrong++;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(text)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+            }
+        });
+        builder.show();
     }
 }

@@ -7,41 +7,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.gilad.fp.ListActivity;
+import com.example.gilad.fp.PatternActivity;
+import com.example.gilad.fp.PinActivity;
 import com.example.gilad.fp.R;
+import com.example.gilad.fp.StoryActivity;
 import com.example.gilad.fp.utils.Vals;
 
-public class FirstScreen extends AppCompatActivity {
+public class TutorialEnd extends AppCompatActivity {
 
-    private Vals.Types nextType;
+    Vals.Types type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_screen);
-        nextType = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
+        setContentView(R.layout.activity_tutorial_end);
+
+        type= (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
 
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent next = null;
-                switch (nextType) {
-                    case TRIPLE_STORY:
-                        next = new Intent(FirstScreen.this, StoryTutorial.class);
-                        break;
+                Intent intent = null;
+                switch(type)
+                {
                     case LIST:
-                        next = new Intent(FirstScreen.this, ListTutorial.class);
+                        intent = new Intent(TutorialEnd.this, ListActivity.class);
+                        break;
+                    case TRIPLE_STORY:
+                        intent = new Intent(TutorialEnd.this, StoryActivity.class);
                         break;
                     case PIN:
-                        next = new Intent(FirstScreen.this, PinTutorial.class);
+                        intent = new Intent(TutorialEnd.this, PinActivity.class);
                         break;
                     case PATTERN:
-                        next = new Intent(FirstScreen.this, PatternTutorial.class);
+                        intent = new Intent(TutorialEnd.this, PatternActivity.class);
                         break;
                 }
 
-                next.putExtra(getString(R.string.generate), true);
-
-                startActivity(next);
+                intent.putExtra(getString(R.string.stage), 0);
+                startActivity(intent);
                 finish();
             }
         });
@@ -50,7 +55,7 @@ public class FirstScreen extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_first_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_tutorial_end, menu);
         return true;
     }
 

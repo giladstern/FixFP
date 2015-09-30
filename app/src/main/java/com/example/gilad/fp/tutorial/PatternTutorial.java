@@ -1,6 +1,8 @@
 package com.example.gilad.fp.tutorial;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import com.example.gilad.fp.SuccMsg;
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
 
+import org.json.JSONArray;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -42,14 +45,14 @@ public class PatternTutorial extends AppCompatActivity {
     static final int ADD = 1;
     static final int FINISH = 0;
 
-    boolean finished = false;
+    boolean prevEqual = false;
+    boolean consecEqual = false;
+    int timesEqual = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pattern_tutorial);
-
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putString("char0", "").commit();
 
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
@@ -98,7 +101,6 @@ public class PatternTutorial extends AppCompatActivity {
             @Override
             public void onPatternDetected(List<LockPatternView.Cell> list) {
                 touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
-                Intent next = new Intent(PatternTutorial.this, TutorialSuccess.class);
                 boolean equal = true;
                 if (list.size() != 6)
                 {
@@ -112,14 +114,20 @@ public class PatternTutorial extends AppCompatActivity {
                         }
                     }
                 }
-                if (equal) {
-                    next.putExtra(getString(R.string.success), true);
-                    finished = true;
-                } else {
-                    next.putExtra(getString(R.string.success), false);
+                if (equal)
+                {
+                    if (prevEqual)
+                    {
+                        consecEqual = true;
+                    }
+                    prevEqual = true;
+                    timesEqual++;
                 }
-
-                startActivity(next);
+                else
+                {
+                    prevEqual = false;
+                }
+                alert(equal);
             }
         });
     }
@@ -149,9 +157,9 @@ public class PatternTutorial extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (finished)
+        if (consecEqual && timesEqual >= 4)
         {
-            Intent next = new Intent(this, LoopActivity.class);
+            Intent next = new Intent(this, PatternActivity.class);
             next.putExtra(getString(R.string.pass_type), type);
             startActivity(next);
             finish();
@@ -176,5 +184,39 @@ public class PatternTutorial extends AppCompatActivity {
             }
             touchLog.clear();
         }
+    }
+
+    private void alert(boolean success)
+    {
+        String title;
+        String message = null;
+        if (success)
+        {
+            title = "Correct";
+            message = "Once More!";
+        }
+        else
+        {
+            title = "Incorrect";
+            message = "Try Again.";
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+            }
+        });
+        if (message != null)
+        {
+            builder.setMessage(message);
+        }
+        builder.show();
     }
 }

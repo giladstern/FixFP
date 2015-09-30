@@ -6,11 +6,14 @@
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/top_message"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
     <com.example.gilad.fp.utils.DiagonalStoryFP
         android:layout_width="fill_parent"

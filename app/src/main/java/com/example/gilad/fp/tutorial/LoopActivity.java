@@ -76,24 +76,9 @@ public class LoopActivity extends AppCompatActivity {
 
     public void nextOnClick(View v)
     {
-        Intent intent = null;
-        switch(type)
-        {
-            case LIST:
-                intent = new Intent(this, ListActivity.class);
-                break;
-            case TRIPLE_STORY:
-                intent = new Intent(this, StoryActivity.class);
-                break;
-            case PIN:
-                intent = new Intent(this, PinActivity.class);
-                break;
-            case PATTERN:
-                intent = new Intent(this, PatternActivity.class);
-                break;
-        }
+        Intent intent = new Intent(this, TutorialEnd.class);
 
-        intent.putExtra(getString(R.string.stage), 0);
+        intent.putExtra(getString(R.string.pass_type), type);
         startActivity(intent);
         finish();
     }

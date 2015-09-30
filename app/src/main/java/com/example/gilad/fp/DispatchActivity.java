@@ -1,5 +1,7 @@
 package com.example.gilad.fp;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +38,13 @@ public class DispatchActivity extends AppCompatActivity {
         boolean second = preferences.getBoolean(getString(R.string.second), false);
         long alarmTime = preferences.getLong(getString(R.string.next_alarm), 0);
 
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancelAll();
+
         Intent intent;
+
+        stage = 0;
+        order = STORY_LIST;
 
         if (order == -1)
         {
@@ -52,6 +60,7 @@ public class DispatchActivity extends AppCompatActivity {
         if (stage == 0)
         {
             intent = new Intent(this, FirstScreen.class);
+            getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
         }
 
         else

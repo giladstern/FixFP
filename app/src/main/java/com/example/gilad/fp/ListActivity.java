@@ -1,5 +1,7 @@
 package com.example.gilad.fp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -64,8 +66,7 @@ public class ListActivity extends AppCompatActivity {
             public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
 //                FP.reset();
                 timesLeft--;
-                Intent next = new Intent(FP.getContext(), SuccMsg.class);
-                next.putExtra(getString(R.string.pass_type), type);
+
                 boolean equal = true;
                 for (int i = 0 ; i < 6 ; i++)
                 {
@@ -75,17 +76,7 @@ public class ListActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if (equal) {
-                    next.putExtra("succCode", true);
-                    timesWrong = 0;
-                } else {
-                    next.putExtra("succCode", false);
-                    timesWrong++;
-                }
-
-                next.putExtra("time", touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
-
-                startActivity(next);
+                alert(equal);
             }
         });
 
@@ -174,7 +165,7 @@ public class ListActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.pass_type), type);
             startActivity(intent);
         }
-        if (timesLeft != 0) {
+        else if (timesLeft != 0) {
             if (password[0] == null)
             {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
@@ -192,5 +183,34 @@ public class ListActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private void alert(boolean success)
+    {
+        String text;
+        if (success)
+        {
+            text = "Correct";
+            timesWrong = 0;
+        }
+        else
+        {
+            text = "Incorrect";
+            timesWrong++;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(text)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+            }
+        });
+        builder.show();
     }
 }
