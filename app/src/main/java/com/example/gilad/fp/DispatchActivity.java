@@ -178,8 +178,8 @@ public class DispatchActivity extends AppCompatActivity {
                 dayString += "s";
             }
 
-            String message = String.format("It is not time yet.\nYou have:\n%d " + dayString + ", %d " +
-                    hourString + " and %d " + minuteString + "\nleft until your next usage.", days, hours, minutes);
+            String message = String.format("You have %d " + dayString + ", %d " +
+                    hourString + " and %d " + minuteString + " until your next session.\nThank you!", days, hours, minutes);
 
             ((TextView) findViewById(R.id.message)).setText(message);
         }

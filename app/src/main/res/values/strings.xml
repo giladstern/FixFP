@@ -143,4 +143,10 @@
     <string name="title_activity_loop">LoopActivity</string>
     <string name="title_activity_second_screen">SecondScreen</string>
     <string name="title_activity_tutorial_end">TutorialEnd</string>
+    <string name="retry">Try again</string>
+    <string name="ok">OK</string>
+    <string name="correct">Excellent!</string>
+    <string name="incorrect">Wrong Code</string>
+    <string name="forgot">Code Reminder</string>
+    <string name="again">Once Again</string>
 </resources>

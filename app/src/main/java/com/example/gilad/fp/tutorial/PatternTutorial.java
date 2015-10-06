@@ -221,18 +221,16 @@ public class PatternTutorial extends AppCompatActivity {
         String title;
         String message;
         if (success) {
-            title = "Correct";
-            if (consecEqual && timesEqual >= 3)
-            {
-                message = "OK";
+            title = getString(R.string.correct);
+            if (consecEqual && timesEqual >= 3) {
+                message = getString(R.string.ok);
             }
-            else
-            {
-                message = "Once again.";
+            else {
+                message = getString(R.string.again);
             }
         } else {
-            title = "Incorrect";
-            message = "Try again";
+            title = getString(R.string.incorrect);
+            message = getString(R.string.retry);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
@@ -240,33 +238,33 @@ public class PatternTutorial extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
-                        if (prevWrong) {
-                            Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
-                            intent.putExtra(getString(R.string.generate), false);
-                            intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
-                            startActivity(intent);
-                        }
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 onResume();
-                if (prevWrong) {
+            }
+        });
+        if (!success)
+        {
+            builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
                     intent.putExtra(getString(R.string.generate), false);
                     intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
                     startActivity(intent);
                 }
-            }
-        });
+            });
+        }
         builder.show();
     }
 
     private void midwayAlert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Correct")
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.correct))
+                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();

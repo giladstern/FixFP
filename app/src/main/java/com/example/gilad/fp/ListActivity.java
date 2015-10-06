@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.gilad.fp.tutorial.ListTutorial;
 import com.example.gilad.fp.utils.FastPhrase;
 import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
@@ -200,13 +201,13 @@ public class ListActivity extends AppCompatActivity {
     private void alert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Incorrect")
-                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.incorrect)
+                .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
                     }
-                }).setPositiveButton("Code Reminder", new DialogInterface.OnClickListener() {
+                }).setPositiveButton(R.string.forgot, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         passShown++;

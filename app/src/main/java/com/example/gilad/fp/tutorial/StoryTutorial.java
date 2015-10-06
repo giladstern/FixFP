@@ -84,8 +84,6 @@ public class StoryTutorial extends AppCompatActivity {
                     }
                 }
 
-                String message = null;
-
                 if(equal)
                 {
                     if (batch == DiagonalStoryFP.Batch.FIRST)
@@ -119,7 +117,6 @@ public class StoryTutorial extends AppCompatActivity {
 
                 else
                 {
-                    message = "Try again.";
                     prevEqual = false;
                     if (batch == DiagonalStoryFP.Batch.DONE)
                     {
@@ -127,7 +124,7 @@ public class StoryTutorial extends AppCompatActivity {
                     }
                 }
 
-                alert(equal, message);
+                alert(equal);
             }
         });
 
@@ -205,26 +202,21 @@ public class StoryTutorial extends AppCompatActivity {
         }
     }
 
-    private void alert(boolean success, String message)
+    private void alert(boolean success)
     {
         String title;
+        String message;
         if (success) {
-            title = "Correct";
-            if (message == null)
-            {
-                if (consecEqual && timesEqual >= 3) {
-                    message = "OK";
-                }
-                else {
-                    message = "Once again";
-                }
+            title = getString(R.string.correct);
+            if (consecEqual && timesEqual >= 3 || batch != DiagonalStoryFP.Batch.DONE) {
+                message = getString(R.string.ok);
+            }
+            else {
+                message = getString(R.string.again);
             }
         } else {
-            title = "Incorrect";
-            if (message == null)
-            {
-                message = "Try again";
-            }
+            title = getString(R.string.incorrect);
+            message = getString(R.string.retry);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
@@ -232,33 +224,33 @@ public class StoryTutorial extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
-                        if (prevWrong) {
-                            Intent intent = new Intent(StoryTutorial.this, PassGenerate.class);
-                            intent.putExtra(getString(R.string.generate), false);
-                            intent.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
-                            startActivity(intent);
-                        }
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 onResume();
-                if (prevWrong) {
+            }
+        });
+        if (!success)
+        {
+            builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(StoryTutorial.this, PassGenerate.class);
                     intent.putExtra(getString(R.string.generate), false);
                     intent.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
                     startActivity(intent);
                 }
-            }
-        });
+            });
+        }
         builder.show();
     }
 
     private void midwayAlert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Correct")
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.correct))
+                .setNeutralButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();

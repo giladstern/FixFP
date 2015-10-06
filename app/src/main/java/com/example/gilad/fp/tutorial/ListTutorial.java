@@ -101,12 +101,9 @@ public class ListTutorial extends AppCompatActivity {
                     }
                 }
 
-                String message = null;
-
                 if (equal) {
                     if (batch == WideNoLinesFP.Batch.FIRST) {
                         batch = WideNoLinesFP.Batch.SECOND;
-                        message = "OK";
                     } else if (batch == WideNoLinesFP.Batch.SECOND) {
                         batch = WideNoLinesFP.Batch.DONE;
                         overlay.off();
@@ -130,7 +127,7 @@ public class ListTutorial extends AppCompatActivity {
                     }
                 }
 
-                alert(equal, message);
+                alert(equal);
             }
         });
     }
@@ -190,25 +187,21 @@ public class ListTutorial extends AppCompatActivity {
         }
     }
 
-    private void alert(boolean success, String message) {
+    private void alert(boolean success)
+    {
         String title;
+        String message;
         if (success) {
-            title = "Correct";
-            if (message == null)
-            {
-                if (consecEqual && timesEqual >= 3) {
-                    message = "OK";
-                }
-                else {
-                    message = "Once again";
-                }
+            title = getString(R.string.correct);
+            if (consecEqual && timesEqual >= 3 || batch != WideNoLinesFP.Batch.DONE) {
+                message = getString(R.string.ok);
+            }
+            else {
+                message = getString(R.string.again);
             }
         } else {
-            title = "Incorrect";
-            if (message == null)
-            {
-                message = "Try again";
-            }
+            title = getString(R.string.incorrect);
+            message = getString(R.string.retry);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
@@ -216,12 +209,6 @@ public class ListTutorial extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
-                        if (prevWrong) {
-                            Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
-                            intent.putExtra(getString(R.string.generate), false);
-                            intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
-                            startActivity(intent);
-                        }
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -229,13 +216,25 @@ public class ListTutorial extends AppCompatActivity {
                 onResume();
             }
         });
+        if (!success)
+        {
+            builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
+                    intent.putExtra(getString(R.string.generate), false);
+                    intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
+                    startActivity(intent);
+                }
+            });
+        }
         builder.show();
     }
 
     private void midwayAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Correct")
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.correct))
+                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
