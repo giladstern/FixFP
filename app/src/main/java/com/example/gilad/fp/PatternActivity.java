@@ -34,6 +34,10 @@ public class PatternActivity extends AppCompatActivity {
     int timesLeft;
     TextView topMessage;
     int passShown = 0;
+    ArrayList<String> stringData = new ArrayList<>();
+    ArrayList<Boolean> successData  = new ArrayList<>();
+    ArrayList<Boolean> forgotData  = new ArrayList<>();
+    ArrayList<Long> timeData  = new ArrayList<>();
 
     static final int START = 0;
     static final int ADD = 1;
@@ -87,7 +91,6 @@ public class PatternActivity extends AppCompatActivity {
         lockPatternView.setOnPatternListener(new LockPatternView.OnPatternListener() {
             @Override
             public void onPatternStart() {
-                touchLog.add(new TouchData(System.currentTimeMillis(), START, -1, ""));
             }
 
             @Override
@@ -102,8 +105,14 @@ public class PatternActivity extends AppCompatActivity {
 
             @Override
             public void onPatternDetected(List<LockPatternView.Cell> list) {
-
-                touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
+                stringData.add(TouchData.toJSONArray(touchLog).toString());
+                if (touchLog.size() == 0)
+                {
+                    timeData.add(0l);
+                }
+                else {
+                    timeData.add(touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
+                }
                 boolean equal = true;
                 if (list.size() != 6) {
                     equal = false;
@@ -119,11 +128,14 @@ public class PatternActivity extends AppCompatActivity {
                 if (equal)
                 {
                     timesLeft--;
+                    successData.add(true);
+                    forgotData.add(false);
                     topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
                 }
 
                 else
                 {
+                    successData.add(false);
                     alert();
                 }
 
@@ -133,6 +145,10 @@ public class PatternActivity extends AppCompatActivity {
                 {
                     Intent intent = new Intent(PatternActivity.this, AlarmSetActivity.class);
                     intent.putExtra(getString(R.string.stage), stage);
+                    intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+                    intent.putExtra(getString(R.string.success_data), successData);
+                    intent.putExtra(getString(R.string.forgot_data), forgotData);
+                    intent.putExtra(getString(R.string.time_data), timeData);
                     startActivity(intent);
                     finish();
                 }
@@ -181,6 +197,10 @@ public class PatternActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(this, AlarmSetActivity.class);
             intent.putExtra(getString(R.string.stage), stage);
+            intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+            intent.putExtra(getString(R.string.success_data), successData);
+            intent.putExtra(getString(R.string.forgot_data), forgotData);
+            intent.putExtra(getString(R.string.time_data), timeData);
             startActivity(intent);
             finish();
         }
@@ -193,11 +213,13 @@ public class PatternActivity extends AppCompatActivity {
                 .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        forgotData.add(false);
                         onResume();
                     }
                 }).setPositiveButton(R.string.forgot, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        forgotData.add(true);
                         passShown++;
                         Intent intent = new Intent(PatternActivity.this, PassGenerate.class);
                         intent.putExtra(getString(R.string.generate), false);
@@ -209,6 +231,7 @@ public class PatternActivity extends AppCompatActivity {
         ).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                forgotData.add(false);
                 onResume();
             }
         });

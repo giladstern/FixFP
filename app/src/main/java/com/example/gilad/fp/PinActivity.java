@@ -34,6 +34,10 @@ public class PinActivity extends AppCompatActivity {
     int stage;
     int timesLeft;
     int passShown;
+    ArrayList<String> stringData = new ArrayList<>();
+    ArrayList<Boolean> successData  = new ArrayList<>();
+    ArrayList<Boolean> forgotData  = new ArrayList<>();
+    ArrayList<Long> timeData  = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +113,8 @@ public class PinActivity extends AppCompatActivity {
 //                        statusView.setText("initializing.. please wait");
 //                    }
                 if (curIndex == PIN_LENGTH){
-
+                    stringData.add(TouchData.toJSONArray(touchLog).toString());
+                    timeData.add(touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
                     boolean equal = true;
                     for (int i = 0; i < PIN_LENGTH; i++) {
                         if (!userEntered[i].equals(password[i])) {
@@ -130,11 +135,14 @@ public class PinActivity extends AppCompatActivity {
                     if (equal)
                     {
                         timesLeft--;
+                        successData.add(true);
+                        forgotData.add(false);
                         titleView.setText(String.format(getString(R.string.num_left_msg), timesLeft));
                     }
 
                     else
                     {
+                        successData.add(false);
                         alert();
                     }
 
@@ -142,6 +150,10 @@ public class PinActivity extends AppCompatActivity {
                     {
                         Intent intent = new Intent(PinActivity.this, AlarmSetActivity.class);
                         intent.putExtra(getString(R.string.stage), stage);
+                        intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+                        intent.putExtra(getString(R.string.success_data), successData);
+                        intent.putExtra(getString(R.string.forgot_data), forgotData);
+                        intent.putExtra(getString(R.string.time_data), timeData);
                         startActivity(intent);
                         finish();
                     }
@@ -241,6 +253,10 @@ public class PinActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(this, AlarmSetActivity.class);
             intent.putExtra(getString(R.string.stage), stage);
+            intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+            intent.putExtra(getString(R.string.success_data), successData);
+            intent.putExtra(getString(R.string.forgot_data), forgotData);
+            intent.putExtra(getString(R.string.time_data), timeData);
             startActivity(intent);
             finish();
         }
@@ -253,11 +269,13 @@ public class PinActivity extends AppCompatActivity {
                 .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        forgotData.add(false);
                         onResume();
                     }
                 }).setPositiveButton(R.string.forgot, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        forgotData.add(true);
                         passShown++;
                         Intent intent = new Intent(PinActivity.this, PassGenerate.class);
                         intent.putExtra(getString(R.string.generate), false);
@@ -269,6 +287,7 @@ public class PinActivity extends AppCompatActivity {
         ).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                forgotData.add(false);
                 onResume();
             }
         });

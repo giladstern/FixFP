@@ -18,6 +18,8 @@ import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
 import com.example.gilad.fp.utils.TouchData;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,10 @@ public class ListActivity extends AppCompatActivity {
     int stage;
     TextView topMessage;
     int passShown;
+    ArrayList<String> stringData = new ArrayList<>();
+    ArrayList<Boolean> successData  = new ArrayList<>();
+    ArrayList<Boolean> forgotData  = new ArrayList<>();
+    ArrayList<Long> timeData  = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,8 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
 
+                stringData.add(TouchData.toJSONArray(touchLog).toString());
+                timeData.add(touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
                 boolean equal = true;
                 for (int i = 0 ; i < 6 ; i++)
                 {
@@ -80,11 +88,14 @@ public class ListActivity extends AppCompatActivity {
                 if (equal)
                 {
                     timesLeft--;
+                    successData.add(true);
+                    forgotData.add(false);
                     topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
                 }
 
                 else
                 {
+                    successData.add(false);
                     alert();
                 }
 
@@ -94,6 +105,10 @@ public class ListActivity extends AppCompatActivity {
                 {
                     Intent intent = new Intent(ListActivity.this, AlarmSetActivity.class);
                     intent.putExtra(getString(R.string.stage), stage);
+                    intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+                    intent.putExtra(getString(R.string.success_data), successData);
+                    intent.putExtra(getString(R.string.forgot_data), forgotData);
+                    intent.putExtra(getString(R.string.time_data), timeData);
                     startActivity(intent);
                     finish();
                 }
@@ -193,6 +208,10 @@ public class ListActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(this, AlarmSetActivity.class);
             intent.putExtra(getString(R.string.stage), stage);
+            intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+            intent.putExtra(getString(R.string.success_data), successData);
+            intent.putExtra(getString(R.string.forgot_data), forgotData);
+            intent.putExtra(getString(R.string.time_data), timeData);
             startActivity(intent);
             finish();
         }
@@ -206,11 +225,13 @@ public class ListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
+                        forgotData.add(false);
                     }
                 }).setPositiveButton(R.string.forgot, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         passShown++;
+                        forgotData.add(true);
                         Intent intent = new Intent(ListActivity.this, PassGenerate.class);
                         intent.putExtra(getString(R.string.generate), false);
                         intent.putExtra(getString(R.string.pass_type), type);
@@ -221,6 +242,7 @@ public class ListActivity extends AppCompatActivity {
         ).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                forgotData.add(false);
                 onResume();
             }
         });

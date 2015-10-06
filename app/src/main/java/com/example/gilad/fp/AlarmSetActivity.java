@@ -1,8 +1,10 @@
 package com.example.gilad.fp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import com.example.gilad.fp.utils.Alarm;
@@ -32,6 +35,29 @@ public class AlarmSetActivity extends AppCompatActivity {
             }
         });
         AutoResizeTextView textView = (AutoResizeTextView) findViewById(R.id.exit_message);
+
+        Intent intent = getIntent();
+        ArrayList<String> stringData = intent.getStringArrayListExtra(getString(R.string.log_data));
+        ArrayList<Boolean> successData  = (ArrayList<Boolean>) intent.getSerializableExtra(getString(R.string.success_data));
+        ArrayList<Boolean> forgotData  = (ArrayList<Boolean>) intent.getSerializableExtra(getString(R.string.forgot_data));
+        ArrayList<Long> timeData  = (ArrayList<Long>) intent.getSerializableExtra(getString(R.string.time_data));
+
+
+        if (stringData.size() == successData.size() && successData.size() == forgotData.size())
+        {
+            Log.d("Debug", "AwesomeSauce");
+            for (int i = 0; i < stringData.size() ; i++)
+            {
+                Log.d(String.format("Run %d", i), successData.get(i).toString() + " " +
+                        forgotData.get(i).toString() + " " +
+                stringData.get(i));
+            }
+        }
+
+        else
+        {
+            Log.d("Num", String.format("String: %d, Success: %d, Forgot: %d", stringData.size(), successData.size(), forgotData.size()));
+        }
 
         if (stage < Vals.STAGES - 1) {
             int gap = Vals.GAP[stage];
