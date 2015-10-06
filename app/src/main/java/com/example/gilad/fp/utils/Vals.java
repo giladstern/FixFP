@@ -17,6 +17,5 @@ public class Vals {
 
     public static final int STAGES = 6;
     public static final int[] ITERATIONS = {10, 5, 5, 3, 3, 3};
-    public static final int[] GAP = {1, 1, 1, 2, 2, 2};
-    public static final int MAX_WRONG = 3;
+    public static final int[] GAP = {1, 1, 1, 2, 2, 1};
 }

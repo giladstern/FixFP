@@ -7,15 +7,22 @@
     tools:context="com.example.gilad.fp.PassGenerate"
     android:id="@+id/inner_rel_layout">
 
-    <com.example.gilad.fp.utils.AutoResizeTextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:id="@+id/message"
+        android:layout_height="150dp"
+        android:id="@+id/scrollView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:text="Your code is:" />
+        android:background="#20ffff00">
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Reminder, your code is:"
+            android:padding="10dp"
+            />
+    </ScrollView>
 
     <Button
         android:layout_width="wrap_content"

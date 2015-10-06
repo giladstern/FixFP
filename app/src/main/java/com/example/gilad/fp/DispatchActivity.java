@@ -42,10 +42,7 @@ public class DispatchActivity extends AppCompatActivity {
         manager.cancelAll();
 
         Intent intent;
-
-        stage = 0;
-        order = STORY_LIST;
-
+        
         if (order == -1)
         {
             order = (int) (Math.random() * 10);

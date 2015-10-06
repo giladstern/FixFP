@@ -53,6 +53,13 @@ public class PassGenerate extends AppCompatActivity {
         Typeface cartoonFont = Typeface.createFromAsset(getAssets(), "fonts/cartoon.ttf");
         Typeface locationFont = Typeface.createFromAsset(getAssets(), "fonts/FamousBuildings.ttf");
 
+        String message = getIntent().getStringExtra(getString(R.string.message));
+
+        if (message != null)
+        {
+            ((TextView) findViewById(R.id.message)).setText(message);
+        }
+
         type = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
         generate = getIntent().getBooleanExtra(getString(R.string.generate), false);
 
@@ -239,7 +246,7 @@ public class PassGenerate extends AppCompatActivity {
                 }
 
                 ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
+                ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.BELOW, findViewById(R.id.scrollView).getId());
 
                 for (int i = 1; i < 3; i++) {
                     ((RelativeLayout.LayoutParams) views[i * 2].getLayoutParams()).addRule(RelativeLayout.ALIGN_LEFT, views[(i - 1) * 2].getId());
@@ -302,7 +309,7 @@ public class PassGenerate extends AppCompatActivity {
                 views[5].setTypeface(emojiFont);
 
                 ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
+                ((RelativeLayout.LayoutParams) views[0].getLayoutParams()).addRule(RelativeLayout.BELOW, findViewById(R.id.scrollView).getId());
                 ((RelativeLayout.LayoutParams) views[16].getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 ((RelativeLayout.LayoutParams) views[16].getLayoutParams()).addRule(RelativeLayout.BELOW, views[6].getId());
                 ((RelativeLayout.LayoutParams) views[3].getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -320,9 +327,9 @@ public class PassGenerate extends AppCompatActivity {
             case PIN:
                 AutoResizeTextView textView = new AutoResizeTextView(this);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (200 * scale + 0.5f));
-                layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
+                layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.scrollView).getId());
                 textView.setGravity(Gravity.CENTER);
-                textView.setText(password[0] + " " + password[1] + " " + password[2] + " " + password[3]);
+                textView.setText(String.format("%s %s %s %s", password[0], password[1], password[2], password[3]));
                 layout.addView(textView, layoutParams);
                 break;
 
@@ -336,7 +343,7 @@ public class PassGenerate extends AppCompatActivity {
                 lockPatternView = new LockPatternView(newContext);
 
                 layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
+                layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.scrollView).getId());
 
                 layout.addView(lockPatternView, layoutParams);
 

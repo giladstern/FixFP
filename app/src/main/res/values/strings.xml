@@ -123,6 +123,7 @@
     <string name="next_alarm">next_alarm</string>
     <string name="success">success</string>
     <string name="generate">generate</string>
+    <string name="message">message</string>
     <string name="title_activity_pass_generate">Fast Phrase</string>
     <string name="title_activity_succ_msg">Fast Phrase</string>
     <string name="title_activity_story">Fast Phrase</string>

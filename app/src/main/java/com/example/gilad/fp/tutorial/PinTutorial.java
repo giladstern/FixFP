@@ -38,8 +38,10 @@ public class PinTutorial extends AppCompatActivity {
     String[] password;
     ArrayList<TouchData> touchLog = new ArrayList<>();
     boolean prevEqual = false;
+    boolean prevWrong = false;
     boolean consecEqual = false;
     int timesEqual = 0;
+    boolean secondPart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class PinTutorial extends AppCompatActivity {
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
+        passIntent.putExtra(getString(R.string.message), "This is your code.\n" +
+                "For now, take a look at it, but don’t try to memorize it.");
         startActivity(passIntent);
 
         appContext = this;
@@ -107,7 +111,7 @@ public class PinTutorial extends AppCompatActivity {
 //                    if (userEntered.length() == PIN_LENGTH) {
 //                        statusView.setText("initializing.. please wait");
 //                    }
-                if (curIndex == PIN_LENGTH){
+                if (curIndex == PIN_LENGTH) {
 
                     //TODO: check password.
                     boolean equal = true;
@@ -120,26 +124,42 @@ public class PinTutorial extends AppCompatActivity {
 
                     touchLog.clear();
 
-                    for (int i = 0; i < PIN_LENGTH; i++)
-                    {
+                    for (int i = 0; i < PIN_LENGTH; i++) {
                         pinBoxArray[i].setText("");
                         userEntered[i] = "";
                     }
                     curIndex = 0;
 
-                    if (equal)
-                    {
-                        if (prevEqual)
-                        {
-                            consecEqual = true;
+                    if (equal) {
+                        if (!secondPart) {
+                            if (prevEqual) {
+                                secondPart = true;
+                                prevEqual = false;
+                                midwayAlert();
+                                return;
+                            }
+                            prevEqual = true;
+
                         }
-                        prevEqual = true;
-                        timesEqual++;
+                        else {
+                            if (prevEqual) {
+                                consecEqual = true;
+                            }
+                            prevEqual = true;
+                            prevWrong = false;
+                            timesEqual++;
+                        }
                     }
                     else
                     {
-                        prevEqual = false;
+
+                        if (secondPart)
+                        {
+                            prevEqual = false;
+                            prevWrong = true;
+                        }
                     }
+
                     alert(equal);
                 }
             }
@@ -218,29 +238,37 @@ public class PinTutorial extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        if (consecEqual && timesEqual >= 4)
+        if (secondPart)
         {
-            Intent next = new Intent(this, PinActivity.class);
-            startActivity(next);
-            finish();
+            titleView.setText("Try entering your code (without assistance).\n" +
+                    "If you don’t remember the code, give it your best shot.");
+            if (consecEqual && timesEqual >= 3) {
+                Intent next = new Intent(this, PinActivity.class);
+                startActivity(next);
+                finish();
+            }
         }
         else
         {
-            SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-            for (int i = 0; i < PIN_LENGTH; i++) {
-                password[i] = prefs.getString(String.format("char%d", i), "");
+            if (password[0] == null || password[0].equals("")) {
+
+                SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+                for (int i = 0; i < PIN_LENGTH; i++) {
+                    password[i] = prefs.getString(String.format("char%d", i), "");
+                }
+
             }
 
             String instructions = "Enter the following code using the numpad:\n";
 
-            for (int i = 0; i < PIN_LENGTH; i++)
-            {
+            for (int i = 0; i < PIN_LENGTH; i++) {
                 pinBoxArray[i].setText("");
                 userEntered[i] = "";
                 instructions += password[i] + " ";
             }
-
             titleView.setText(instructions);
+
+
             curIndex = 0;
             touchLog.clear();
         }
@@ -249,34 +277,81 @@ public class PinTutorial extends AppCompatActivity {
     private void alert(boolean success)
     {
         String title;
-        String message = null;
-        if (success)
-        {
+        String message;
+        if (success) {
             title = "Correct";
-            message = "Once More!";
-        }
-        else
-        {
+            if (consecEqual && timesEqual >= 3)
+            {
+                message = "OK";
+            }
+            else
+            {
+                message = "Once again.";
+            }
+        } else {
             title = "Incorrect";
-            message = "Try Again.";
+            message = "Try again";
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                .setNeutralButton(message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
+                        if (prevWrong) {
+                            Intent intent = new Intent(PinTutorial.this, PassGenerate.class);
+                            intent.putExtra(getString(R.string.generate), false);
+                            intent.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
+                            startActivity(intent);
+                        }
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 onResume();
+                if (prevWrong) {
+                    Intent intent = new Intent(PinTutorial.this, PassGenerate.class);
+                    intent.putExtra(getString(R.string.generate), false);
+                    intent.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
+                    startActivity(intent);
+                }
             }
         });
-        if (message != null)
-        {
-            builder.setMessage(message);
-        }
         builder.show();
     }
+
+    private void midwayAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Correct")
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+
+                        Intent intent = new Intent(PinTutorial.this, PassGenerate.class);
+                        intent.putExtra(getString(R.string.generate), false);
+                        intent.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
+                        intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
+                                "This time try remembering it, but don’t write it down.\n" +
+                                "If you forget it, we will remind you.");
+                        startActivity(intent);
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+                Intent intent = new Intent(PinTutorial.this, PassGenerate.class);
+                intent.putExtra(getString(R.string.generate), false);
+                intent.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
+                intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
+                        "This time try remembering it, but don’t write it down.\n" +
+                        "If you forget it, we will remind you.");
+                startActivity(intent);
+
+            }
+        });
+        builder.show();
+    }
+
 }

@@ -5,31 +5,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.gilad.fp.DispatchActivity;
 import com.example.gilad.fp.ListActivity;
-import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.R;
-import com.example.gilad.fp.utils.DiagonalStoryFP;
 import com.example.gilad.fp.utils.FastPhrase;
 import com.example.gilad.fp.utils.Overlay;
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListTutorial extends AppCompatActivity {
 
@@ -38,20 +30,16 @@ public class ListTutorial extends AppCompatActivity {
     String password[] = new String[6];
     String labels[] = new String[6];
     TextView topInstructions;
-//    TextView leftInstructions;
-//    TextView rightInstructions;
-//    TextView rightLabel;
     WideNoLinesFP fp;
     RelativeLayout layout;
     float scale;
     WideNoLinesFP.Batch batch = WideNoLinesFP.Batch.FIRST;
-    WideNoLinesFP.Batch screen = WideNoLinesFP.Batch.FIRST;
     Overlay overlay;
     boolean prevWrong = false;
     boolean prevEqual = false;
     boolean consecEqual = false;
     int timesEqual = 0;
-
+    Resources res;
 
 
     @Override
@@ -63,136 +51,86 @@ public class ListTutorial extends AppCompatActivity {
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
+        passIntent.putExtra(getString(R.string.message), "Your code is comprised of the following symbols.\n" +
+                "For now, take a look at it, but don’t try to memorize it.");
         startActivity(passIntent);
+        res = getResources();
 
-        scale = getResources().getDisplayMetrics().density;
-        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/androidemoji.ttf");
+        scale = res.getDisplayMetrics().density;
 
         topInstructions = (TextView) findViewById(R.id.top_instructions);
-//        leftInstructions = (TextView) findViewById(R.id.left_instructions);
-//        rightInstructions = (TextView) findViewById(R.id.right_instructions);
-//        rightLabel = (TextView) findViewById(R.id.right_label);
+
         fp = (WideNoLinesFP) findViewById(R.id.list_fp);
         layout = (RelativeLayout) findViewById(R.id.layout);
         overlay = (Overlay) findViewById(R.id.overlay);
 
-//        rightInstructions.setTypeface(font);
-
-//        ViewTreeObserver vto = layout.getViewTreeObserver();
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                int width = (layout.getWidth() - layout.getPaddingLeft() - layout.getPaddingRight() )/ 3;
-//                leftInstructions.getLayoutParams().width = width;
-//                rightInstructions.getLayoutParams().width = width;
-//                rightLabel.getLayoutParams().width = width;
-//                findViewById(R.id.arrow).getLayoutParams().width = width;
-//            }
-//        });
 
         fp.setOnFirstCompleteListener(new WideNoLinesFP.OnFirstCompleteListener() {
             @Override
             public boolean onFirstComplete(String[] pass) {
-//                Intent next = new Intent(ListTutorial.this, TutorialSuccess.class);
-//                if (password[0].equals(pass[0]) && password[1].equals(pass[1])) {
-//                    next.putExtra(getString(R.string.success), true);
-//                    startActivity(next);
-//                    batch = WideNoLinesFP.Batch.SECOND;
-//                    return true;
-//                } else {
-//                    next.putExtra(getString(R.string.success), false);
-//                    startActivity(next);
-//                    return false;
-//                }
-                String message = null;
-                boolean success;
-                if (password[0].equals(pass[0]) && password[1].equals(pass[1])) {
-                    success = true;
-                    screen = WideNoLinesFP.Batch.SECOND;
-                } else {
-                    success = false;
-                    message = "Try again.";
-                }
-                alert(success, message);
-                return success;
+
+                secondHighlight();
+                return true;
             }
         });
 
         fp.setOnSecondCompleteListener(new WideNoLinesFP.OnSecondCompleteListener() {
             @Override
             public boolean onSecondComplete(String[] pass) {
-                String message = null;
-                boolean success;
-                if (password[2].equals(pass[0]) && password[3].equals(pass[1])) {
-                    success = true;
-                    screen = WideNoLinesFP.Batch.THIRD;
-                } else {
-                    success = false;
-                    message = "Try again.";
-                }
-                alert(success, message);
-                return success;
+                thirdHighlight();
+                return true;
             }
         });
 
         fp.setOnThirdCompleteListener(new WideNoLinesFP.OnThirdCompleteListener() {
             @Override
             public boolean onThirdComplete(String[] pass) {
-                String message = null;
-                boolean success;
-                if (password[4].equals(pass[0]) && password[5].equals(pass[1])) {
-                    success = true;
-                    screen = WideNoLinesFP.Batch.FIRST;
+                firstHighlight();
+                return true;
+            }
+        });
 
-                    if (batch == WideNoLinesFP.Batch.FIRST)
-                    {
-                        batch = WideNoLinesFP.Batch.SECOND;
-
+        fp.setOnCompleteListener(new FastPhrase.OnCompleteListener() {
+            @Override
+            public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
+                boolean equal = true;
+                for (int i = 0; i < 6; i++) {
+                    if (!(pass[i].equals(password[i]))) {
+                        equal = false;
+                        break;
                     }
+                }
 
-                    else {
+                String message = null;
+
+                if (equal) {
+                    if (batch == WideNoLinesFP.Batch.FIRST) {
+                        batch = WideNoLinesFP.Batch.SECOND;
+                        message = "OK";
+                    } else if (batch == WideNoLinesFP.Batch.SECOND) {
                         batch = WideNoLinesFP.Batch.DONE;
+                        overlay.off();
                         fp.setOnFirstCompleteListener(null);
                         fp.setOnSecondCompleteListener(null);
-                        fp.setOnThirdCompleteListener(null);
-                        overlay.off();
-                        fp.setOnCompleteListener(new FastPhrase.OnCompleteListener() {
-                            @Override
-                            public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
-                                String message = null;
-                                boolean equal = true;
-                                for (int i = 0; i < 6; i++) {
-                                    if (!(pass[i].equals(password[i]))) {
-                                        equal = false;
-                                        message = "Try Again.";
-                                        break;
-                                    }
-                                }
-                                if (equal) {
-                                    if (prevEqual) {
-                                        consecEqual = true;
-                                    }
-                                    prevEqual = true;
-                                    prevWrong = false;
-                                    timesEqual++;
-                                    if (!consecEqual || timesEqual < 3)
-                                    {
-                                        message = "Once more!";
-                                    }
-                                } else {
-                                    prevEqual = false;
-                                    prevWrong = true;
-                                }
-                                alert(equal, message);
-                            }
-                        });
+                        midwayAlert();
+                        return;
+                    } else {
+                        if (prevEqual) {
+                            consecEqual = true;
+                        }
+                        prevEqual = true;
+                        prevWrong = false;
+                        timesEqual++;
                     }
+
                 } else {
-                    success = false;
-                    message = "Try again.";
+                    prevEqual = false;
+                    if (batch == WideNoLinesFP.Batch.DONE) {
+                        prevWrong = true;
+                    }
                 }
-                alert(success, message);
-                return success;
+
+                alert(equal, message);
             }
         });
     }
@@ -222,36 +160,29 @@ public class ListTutorial extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        switch(batch)
-        {
+        fp.reset();
+        switch (batch) {
             case FIRST:
-                if (password[0] == null || password[0].equals(""))
-                {
+                if (password[0] == null || password[0].equals("")) {
                     SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-                    for (int i = 0 ; i < 6 ; i++)
-                    {
+                    for (int i = 0; i < 6; i++) {
                         password[i] = prefs.getString(String.format("char%d", i), "");
                         labels[i] = prefs.getString(String.format("label%d", i), "");
                     }
                 }
 
-                topInstructions.setText("Enter your code by tapping the highlighted icons");
-                chooseHighlight();
-//                leftInstructions.setText(password[0]);
-//                rightInstructions.setText(password[1]);
-//                rightLabel.setText(labels[1]);
+                topInstructions.setText("Enter your code by tapping the highlighted symbols.");
+                firstHighlight();
                 break;
             case SECOND:
-                topInstructions.setText("Drag your finger across the highlighted icons");
-                chooseHighlight();
-//                leftInstructions.setText(password[2]);
-//                rightInstructions.setText(password[3]);
-//                rightLabel.setText(labels[3]);
+                topInstructions.setText("You can also enter your code by dragging your finger across the highlighted symbols.\n" +
+                        "Give it a try!");
+                firstHighlight();
                 break;
             case DONE:
-                topInstructions.setText("Enter your code");
-                if (consecEqual && timesEqual >= 3)
-                {
+                topInstructions.setText("Try entering your code (without assistance).\n" +
+                        "If you don’t remember the code, give it your best shot.");
+                if (consecEqual && timesEqual >= 3) {
                     startActivity(new Intent(this, ListActivity.class));
                     finish();
                 }
@@ -259,25 +190,33 @@ public class ListTutorial extends AppCompatActivity {
         }
     }
 
-    private void alert(boolean success, String message)
-    {
+    private void alert(boolean success, String message) {
         String title;
-        if (success)
-        {
+        if (success) {
             title = "Correct";
-        }
-        else
-        {
+            if (message == null)
+            {
+                if (consecEqual && timesEqual >= 3) {
+                    message = "OK";
+                }
+                else {
+                    message = "Once again";
+                }
+            }
+        } else {
             title = "Incorrect";
+            if (message == null)
+            {
+                message = "Try again";
+            }
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                .setNeutralButton(message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
-                        if (prevWrong)
-                        {
+                        if (prevWrong) {
                             Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
                             intent.putExtra(getString(R.string.generate), false);
                             intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
@@ -290,49 +229,84 @@ public class ListTutorial extends AppCompatActivity {
                 onResume();
             }
         });
-        if (message != null)
-        {
-            builder.setMessage(message);
-        }
         builder.show();
     }
 
-    private void chooseHighlight()
-    {
-        if(password[0] != null && !password[0].equals(""))
-        {
-            Resources res = getResources();
-            int topId = 0, bottomId = 0;
-            if (screen == WideNoLinesFP.Batch.FIRST) {
-                topId = Integer.parseInt(password[0]) - 1;
-                int[] icons = res.getIntArray(R.array.vehicles);
+    private void midwayAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Correct")
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
 
-                for (int i = 0; i < 5; i++) {
-                    if (new String(Character.toChars(icons[i])).equals(password[1])) {
-                        bottomId = i;
+                        Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
+                        intent.putExtra(getString(R.string.generate), false);
+                        intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
+                        intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
+                                "This time try remembering it, but don’t write it down.\n" +
+                                "If you forget it, we will remind you.");
+                        startActivity(intent);
                     }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+                Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
+                intent.putExtra(getString(R.string.generate), false);
+                intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
+                intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
+                                "This time try remembering it, but don’t write it down.\n" +
+                                "If you forget it, we will remind you.");
+                startActivity(intent);
+
+            }
+        });
+        builder.show();
+    }
+
+    private void firstHighlight() {
+        if (password[0] != null && !password[0].equals("")) {
+            int topId, bottomId = 0;
+            topId = Integer.parseInt(password[0]) - 1;
+            int[] icons = res.getIntArray(R.array.vehicles);
+
+            for (int i = 0; i < 5; i++) {
+                if (new String(Character.toChars(icons[i])).equals(password[1])) {
+                    bottomId = i;
                 }
             }
-            else if (screen == WideNoLinesFP.Batch.SECOND)
-            {
-                topId = Integer.parseInt(password[2]) - 1;
-                int[] icons = res.getIntArray(R.array.animals);
 
-                for (int i = 0; i < 5; i++) {
-                    if (new String(Character.toChars(icons[i])).equals(password[3])) {
-                        bottomId = i;
-                    }
+            overlay.highlight(topId, bottomId);
+        }
+    }
+
+    private void secondHighlight() {
+        if (password[0] != null && !password[0].equals("")) {
+            int topId, bottomId = 0;
+
+            topId = Integer.parseInt(password[2]) - 1;
+            int[] icons = res.getIntArray(R.array.animals);
+
+            for (int i = 0; i < 5; i++) {
+                if (new String(Character.toChars(icons[i])).equals(password[3])) {
+                    bottomId = i;
                 }
             }
-            else if(screen == WideNoLinesFP.Batch.THIRD)
-            {
-                topId = Integer.parseInt(password[4]) - 1;
-                int[] icons = res.getIntArray(R.array.clothes);
 
-                for (int i = 0; i < 5; i++) {
-                    if (new String(Character.toChars(icons[i])).equals(password[5])) {
-                        bottomId = i;
-                    }
+            overlay.highlight(topId, bottomId);
+        }
+    }
+
+    private void thirdHighlight() {
+        if (password[0] != null && !password[0].equals("")) {
+            int topId, bottomId = 0;
+            topId = Integer.parseInt(password[4]) - 1;
+            int[] icons = res.getIntArray(R.array.clothes);
+
+            for (int i = 0; i < 5; i++) {
+                if (new String(Character.toChars(icons[i])).equals(password[5])) {
+                    bottomId = i;
                 }
             }
             overlay.highlight(topId, bottomId);

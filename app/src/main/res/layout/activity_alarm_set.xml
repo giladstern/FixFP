@@ -19,7 +19,7 @@
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:id="@+id/exit_message"
         android:layout_marginTop="61dp"
         android:layout_alignParentTop="true"

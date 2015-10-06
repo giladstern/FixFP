@@ -609,6 +609,11 @@ public class WideNoLinesFP extends FastPhrase {
             case THIRD:
                 pass[4] = topSelected;
                 pass[5] = bottomSelected;
+                if (listener != null)
+                {
+                    complete();
+                    return;
+                }
                 if (thirdCompleteListener != null)
                 {
                     String[] send = {pass[4], pass[5]};
@@ -622,10 +627,7 @@ public class WideNoLinesFP extends FastPhrase {
                     }
                     return;
                 }
-                if (listener != null)
-                {
-                    complete();
-                }
+
                 for (int i = 0 ; i < 6 ; i++)
                 {
                     pass[i] = "";

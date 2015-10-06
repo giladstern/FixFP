@@ -568,6 +568,12 @@ public class DiagonalStoryFP extends FastPhrase {
                 pass[3] = ((ColoredTextSwitch) getChildAt(topSelected)).getText();
                 pass[4] = ((ColoredTextSwitch) getChildAt(middleSelected)).getText();
                 pass[5] = ((ColoredTextSwitch) getChildAt(bottomSelected)).getText();
+                if (listener != null)
+                {
+                    complete();
+                    firstBatch();
+                    return;
+                }
                 if (secondCompleteListener != null)
                 {
                     String[] send = {pass[3], pass[4], pass[5]};
@@ -581,10 +587,7 @@ public class DiagonalStoryFP extends FastPhrase {
                     }
                     return;
                 }
-                if (listener != null)
-                {
-                    complete();
-                }
+
                 firstBatch();
                 break;
         }

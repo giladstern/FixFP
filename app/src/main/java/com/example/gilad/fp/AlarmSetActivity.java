@@ -36,14 +36,28 @@ public class AlarmSetActivity extends AppCompatActivity {
         if (stage < Vals.STAGES - 1) {
             int gap = Vals.GAP[stage];
 
-            String unit = " day";
+            String unit = "day";
 
             if (gap != 1) {
                 unit += "s";
             }
 
+            int overall = 0;
 
-            String text = "Thank you!\nYou will be prompted in " + Integer.valueOf(gap).toString() + unit + ".";
+            for (int i = stage; i < Vals.STAGES - 1; i++)
+            {
+                overall += Vals.GAP[i];
+            }
+
+            String overallUnit = "day";
+            if (overall != 1)
+            {
+                overallUnit += "s";
+            }
+
+
+            String text = String.format("There are %d %s left to complete the experiment.\n" +
+                    "We will prompt you again in %d %s.", overall, overallUnit, gap, unit);
 
             textView.setText(text);
 //            long nextAlarm = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(gap);
@@ -61,26 +75,34 @@ public class AlarmSetActivity extends AppCompatActivity {
 
         else
         {
-            textView.setText("Thank you for participating!");
             SharedPreferences prefs = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(getString(R.string.stage), 0);
-            editor.putLong(getString(R.string.next_alarm), 0);
+            long nextAlarm = 0;
+            String text;
 
             if (!prefs.getBoolean(getString(R.string.second), false))
             {
+                nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(1);
                 editor.putBoolean(getString(R.string.second), true);
+                Alarm.set(this, nextAlarm);
+                text = "Congratulations!\n" +
+                        "You finished half of the experiment.\n" +
+                        "In 1 day we will prompt you to repeat the experiment with a different type of code.";
             }
             else
             {
                 editor.putInt(getString(R.string.order), -1);
                 editor.putBoolean(getString(R.string.second), false);
-
-                textView.setText((textView.getText()) + "\nFinito!");
+                text = "Thank you for participating!\n" +
+                        "You’ve completed the experiments. (INSTRUCTIONS?)\n";
             }
 
-            editor.commit();
+            textView.setText(text);
 
+            editor.putLong(getString(R.string.next_alarm), nextAlarm);
+
+            editor.commit();
             getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
         }
     }

@@ -17,9 +17,8 @@ import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.WideNoLinesFP;
 import com.example.gilad.fp.utils.TouchData;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -30,7 +29,7 @@ public class ListActivity extends AppCompatActivity {
     int timesLeft;
     int stage;
     TextView topMessage;
-    int timesWrong;
+    int passShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,9 @@ public class ListActivity extends AppCompatActivity {
         {
             Intent pass = new Intent(this, PassGenerate.class);
             pass.putExtra(getString(R.string.pass_type), type);
+            pass.putExtra(getString(R.string.message), "Now that you know how to enter your code, memorize it again for future use. \n" +
+                    "Don’t write it down.\n" +
+                    "If you forget the code, we will remind you.");
             startActivity(pass);
         }
 
@@ -64,8 +66,6 @@ public class ListActivity extends AppCompatActivity {
         FP.setOnCompleteListener(new FastPhrase.OnCompleteListener() {
             @Override
             public void onComplete(String[] pass, ArrayList<TouchData> touchLog) {
-//                FP.reset();
-                timesLeft--;
 
                 boolean equal = true;
                 for (int i = 0 ; i < 6 ; i++)
@@ -76,7 +76,26 @@ public class ListActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                alert(equal);
+                if (equal)
+                {
+                    timesLeft--;
+                    topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+                }
+
+                else
+                {
+                    alert();
+                }
+
+                FP.reset();
+
+                if (timesLeft == 0)
+                {
+                    Intent intent = new Intent(ListActivity.this, AlarmSetActivity.class);
+                    intent.putExtra(getString(R.string.stage), stage);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
@@ -158,14 +177,7 @@ public class ListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (timesWrong == Vals.MAX_WRONG)
-        {
-            timesWrong = 0;
-            Intent intent = new Intent(this, PassGenerate.class);
-            intent.putExtra(getString(R.string.pass_type), type);
-            startActivity(intent);
-        }
-        else if (timesLeft != 0) {
+        if (timesLeft != 0) {
             if (password[0] == null)
             {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
@@ -185,27 +197,27 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
-    private void alert(boolean success)
+    private void alert()
     {
-        String text;
-        if (success)
-        {
-            text = "Correct";
-            timesWrong = 0;
-        }
-        else
-        {
-            text = "Incorrect";
-            timesWrong++;
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(text)
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle("Incorrect")
+                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
                     }
-                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                }).setPositiveButton("Code Reminder", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        passShown++;
+                        Intent intent = new Intent(ListActivity.this, PassGenerate.class);
+                        intent.putExtra(getString(R.string.generate), false);
+                        intent.putExtra(getString(R.string.pass_type), type);
+                        startActivity(intent);
+                    }
+                }
+
+        ).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 onResume();

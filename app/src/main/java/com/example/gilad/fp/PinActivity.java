@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import com.example.gilad.fp.utils.AutoResizeTextView;
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
 
@@ -35,7 +33,7 @@ public class PinActivity extends AppCompatActivity {
     ArrayList<TouchData> touchLog = new ArrayList<>();
     int stage;
     int timesLeft;
-    int timesWrong;
+    int passShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,9 @@ public class PinActivity extends AppCompatActivity {
         {
             Intent pass = new Intent(this, PassGenerate.class);
             pass.putExtra(getString(R.string.pass_type), type);
+            pass.putExtra(getString(R.string.message), "Now that you know how to enter your code, memorize it again for future use. \n" +
+                    "Don’t write it down.\n" +
+                    "If you forget the code, we will remind you.");
             startActivity(pass);
         }
 
@@ -125,8 +126,25 @@ public class PinActivity extends AppCompatActivity {
                         userEntered[i] = "";
                     }
                     curIndex = 0;
-                    timesLeft--;
-                    alert(equal);
+
+                    if (equal)
+                    {
+                        timesLeft--;
+                        titleView.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+                    }
+
+                    else
+                    {
+                        alert();
+                    }
+
+                    if (timesLeft == 0)
+                    {
+                        Intent intent = new Intent(PinActivity.this, AlarmSetActivity.class);
+                        intent.putExtra(getString(R.string.stage), stage);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };
@@ -204,15 +222,7 @@ public class PinActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-
-        if (timesWrong == Vals.MAX_WRONG)
-        {
-            timesWrong = 0;
-            Intent intent = new Intent(this, PassGenerate.class);
-            intent.putExtra(getString(R.string.pass_type), type);
-            startActivity(intent);
-        }
-        else if (timesLeft != 0) {
+        if (timesLeft != 0) {
             if (password[0] == null) {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
                 for (int i = 0; i < PIN_LENGTH; i++) {
@@ -236,27 +246,27 @@ public class PinActivity extends AppCompatActivity {
         }
     }
 
-    private void alert(boolean success)
+    private void alert()
     {
-        String text;
-        if (success)
-        {
-            text = "Correct";
-            timesWrong = 0;
-        }
-        else
-        {
-            text = "Incorrect";
-            timesWrong++;
-        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(text)
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle("Incorrect")
+                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
                     }
-                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                }).setPositiveButton("Code Reminder", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        passShown++;
+                        Intent intent = new Intent(PinActivity.this, PassGenerate.class);
+                        intent.putExtra(getString(R.string.generate), false);
+                        intent.putExtra(getString(R.string.pass_type), type);
+                        startActivity(intent);
+                    }
+                }
+
+        ).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 onResume();

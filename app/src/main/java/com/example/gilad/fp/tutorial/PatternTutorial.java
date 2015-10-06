@@ -38,6 +38,7 @@ public class PatternTutorial extends AppCompatActivity {
     Vals.Types type = Vals.Types.PATTERN;
 
     LockPatternView lockPatternView;
+    TextView titleView;
     String[] password = new String[6];
     ArrayList<TouchData> touchLog = new ArrayList<>();
 
@@ -48,6 +49,8 @@ public class PatternTutorial extends AppCompatActivity {
     boolean prevEqual = false;
     boolean consecEqual = false;
     int timesEqual = 0;
+    boolean secondPart = false;
+    boolean prevWrong = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,11 @@ public class PatternTutorial extends AppCompatActivity {
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
+        passIntent.putExtra(getString(R.string.message), "Your code is the following pattern.\n" +
+                "For now, take a look at it, but don’t try to memorize it.");
         startActivity(passIntent);
+
+        titleView = (TextView) findViewById(R.id.message);
 
         // Make new ContextThemeWrapper
         Context newContext = new ContextThemeWrapper(this, R.style.Alp_42447968_Theme_Light);
@@ -70,7 +77,7 @@ public class PatternTutorial extends AppCompatActivity {
         final RelativeLayout relativeLayout =  ((RelativeLayout) findViewById(R.id.background));
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(relativeLayout.getWidth(), relativeLayout.getWidth());
-        layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.message).getId());
+        layoutParams.addRule(RelativeLayout.BELOW, findViewById(R.id.scrollView).getId());
 
         relativeLayout.addView(lockPatternView, layoutParams);
 
@@ -114,19 +121,36 @@ public class PatternTutorial extends AppCompatActivity {
                         }
                     }
                 }
-                if (equal)
-                {
-                    if (prevEqual)
-                    {
-                        consecEqual = true;
+
+                if (equal) {
+                    if (!secondPart) {
+                        if (prevEqual) {
+                            secondPart = true;
+                            prevEqual = false;
+                            midwayAlert();
+                            return;
+                        }
+                        prevEqual = true;
+
                     }
-                    prevEqual = true;
-                    timesEqual++;
+                    else {
+                        if (prevEqual) {
+                            consecEqual = true;
+                        }
+                        prevEqual = true;
+                        prevWrong = false;
+                        timesEqual++;
+                    }
                 }
                 else
                 {
-                    prevEqual = false;
+                    if (secondPart)
+                    {
+                        prevEqual = false;
+                        prevWrong = true;
+                    }
                 }
+
                 alert(equal);
             }
         });
@@ -157,15 +181,21 @@ public class PatternTutorial extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (consecEqual && timesEqual >= 4)
+        lockPatternView.clearPattern();
+        if (secondPart)
         {
-            Intent next = new Intent(this, PatternActivity.class);
-            next.putExtra(getString(R.string.pass_type), type);
-            startActivity(next);
-            finish();
+            titleView.setText("Try entering your code (without assistance).\n" +
+                    "If you don’t remember the code, give it your best shot.");
+            if (consecEqual && timesEqual >= 3) {
+                Intent next = new Intent(this, PatternActivity.class);
+                startActivity(next);
+                finish();
+            }
         }
         else
         {
+            titleView.setText("Enter your code by dragging your finger across the given pattern.\n" +
+                    "The animation will stop once you start.");
             SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
 
             for (int i = 0; i < 6; i++) {
@@ -189,34 +219,80 @@ public class PatternTutorial extends AppCompatActivity {
     private void alert(boolean success)
     {
         String title;
-        String message = null;
-        if (success)
-        {
+        String message;
+        if (success) {
             title = "Correct";
-            message = "Once More!";
-        }
-        else
-        {
+            if (consecEqual && timesEqual >= 3)
+            {
+                message = "OK";
+            }
+            else
+            {
+                message = "Once again.";
+            }
+        } else {
             title = "Incorrect";
-            message = "Try Again.";
+            message = "Try again";
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                .setNeutralButton(message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
+                        if (prevWrong) {
+                            Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
+                            intent.putExtra(getString(R.string.generate), false);
+                            intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
+                            startActivity(intent);
+                        }
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 onResume();
+                if (prevWrong) {
+                    Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
+                    intent.putExtra(getString(R.string.generate), false);
+                    intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
+                    startActivity(intent);
+                }
             }
         });
-        if (message != null)
-        {
-            builder.setMessage(message);
-        }
+        builder.show();
+    }
+
+    private void midwayAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Correct")
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onResume();
+
+                        Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
+                        intent.putExtra(getString(R.string.generate), false);
+                        intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
+                        intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
+                                "This time try remembering it, but don’t write it down.\n" +
+                                "If you forget it, we will remind you.");
+                        startActivity(intent);
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                onResume();
+                Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
+                intent.putExtra(getString(R.string.generate), false);
+                intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
+                intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
+                        "This time try remembering it, but don’t write it down.\n" +
+                        "If you forget it, we will remind you.");
+                startActivity(intent);
+
+            }
+        });
         builder.show();
     }
 }
