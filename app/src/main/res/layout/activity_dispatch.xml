@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="Loading Data"
         android:id="@+id/message"
         android:gravity="center"
         android:layout_alignParentTop="true"
@@ -24,5 +24,6 @@
         android:id="@+id/exitButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="exitOnClick" />
+        android:onClick="exitOnClick"
+        android:visibility="invisible" />
 </RelativeLayout>

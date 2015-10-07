@@ -115,4 +115,9 @@ public abstract class FastPhrase extends RelativeLayout {
             super.setText(text);
         }
     }
+    
+    public void clearLog()
+    {
+        touchLog.clear();
+    }
 }

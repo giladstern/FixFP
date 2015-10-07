@@ -93,7 +93,7 @@ public class StoryActivity extends AppCompatActivity {
                     alert();
                 }
 
-                FP.reset();
+//                FP.reset();
 
                 if (timesLeft == 0)
                 {
@@ -103,6 +103,7 @@ public class StoryActivity extends AppCompatActivity {
                     intent.putExtra(getString(R.string.success_data), successData);
                     intent.putExtra(getString(R.string.forgot_data), forgotData);
                     intent.putExtra(getString(R.string.time_data), timeData);
+                    intent.putExtra(getString(R.string.pass_type), type);
                     startActivity(intent);
                     finish();
                 }
@@ -147,6 +148,7 @@ public class StoryActivity extends AppCompatActivity {
             }
             topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
             FP.reset();
+            FP.clearLog();
         }
         else
         {
@@ -156,6 +158,7 @@ public class StoryActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.success_data), successData);
             intent.putExtra(getString(R.string.forgot_data), forgotData);
             intent.putExtra(getString(R.string.time_data), timeData);
+            intent.putExtra(getString(R.string.pass_type), type);
             startActivity(intent);
             finish();
         }

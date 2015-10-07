@@ -18,6 +18,10 @@ import java.util.concurrent.TimeUnit;
 import com.example.gilad.fp.utils.Alarm;
 import com.example.gilad.fp.utils.AutoResizeTextView;
 import com.example.gilad.fp.utils.Vals;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import org.json.JSONArray;
 
 public class AlarmSetActivity extends AppCompatActivity {
 
@@ -26,7 +30,27 @@ public class AlarmSetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_set);
 
-        int stage = getIntent().getIntExtra("stage", 0);
+        Intent intent = getIntent();
+
+        int stage = intent.getIntExtra("stage", 0);
+        Vals.Types type = (Vals.Types) intent.getSerializableExtra(getString(R.string.pass_type));
+
+        String parseName = "";
+        switch (type)
+        {
+            case LIST:
+                parseName = "List";
+                break;
+            case TRIPLE_STORY:
+                parseName = "Story";
+                break;
+            case PATTERN:
+                parseName = "Pattern";
+                break;
+            case PIN:
+                parseName = "Pin";
+                break;
+        }
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,27 +60,42 @@ public class AlarmSetActivity extends AppCompatActivity {
         });
         AutoResizeTextView textView = (AutoResizeTextView) findViewById(R.id.exit_message);
 
-        Intent intent = getIntent();
+        ParseUser user = ParseUser.getCurrentUser();
         ArrayList<String> stringData = intent.getStringArrayListExtra(getString(R.string.log_data));
         ArrayList<Boolean> successData  = (ArrayList<Boolean>) intent.getSerializableExtra(getString(R.string.success_data));
         ArrayList<Boolean> forgotData  = (ArrayList<Boolean>) intent.getSerializableExtra(getString(R.string.forgot_data));
         ArrayList<Long> timeData  = (ArrayList<Long>) intent.getSerializableExtra(getString(R.string.time_data));
 
 
-        if (stringData.size() == successData.size() && successData.size() == forgotData.size())
+        if (stringData.size() == successData.size() &&
+                successData.size() == forgotData.size() &&
+                forgotData.size() == timeData.size())
         {
             Log.d("Debug", "AwesomeSauce");
+            ArrayList<ParseObject> list = new ArrayList<>();
             for (int i = 0; i < stringData.size() ; i++)
             {
-                Log.d(String.format("Run %d", i), successData.get(i).toString() + " " +
-                        forgotData.get(i).toString() + " " +
-                stringData.get(i));
+                ParseObject toAdd = ParseObject.create(parseName);
+                try {
+                    toAdd.put("actions", new JSONArray(stringData.get(i)));
+                }
+                catch (Exception e)
+                {
+                    Log.d("Debug", "WTF?");
+                }
+                toAdd.put("correct", successData.get(i).booleanValue());
+                toAdd.put("forgot", forgotData.get(i).booleanValue());
+                toAdd.put("time", timeData.get(i).longValue());
+                toAdd.put("user", user);
+                list.add(toAdd);
             }
+            ParseObject.saveAllInBackground(list);
         }
 
         else
         {
-            Log.d("Num", String.format("String: %d, Success: %d, Forgot: %d", stringData.size(), successData.size(), forgotData.size()));
+            Log.d("Debug", String.format("String: %d, Success: %d, Forgot: %d, Time: %d",
+                    stringData.size(), successData.size(), forgotData.size(), timeData.size()));
         }
 
         if (stage < Vals.STAGES - 1) {

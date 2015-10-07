@@ -154,6 +154,7 @@ public class PinActivity extends AppCompatActivity {
                         intent.putExtra(getString(R.string.success_data), successData);
                         intent.putExtra(getString(R.string.forgot_data), forgotData);
                         intent.putExtra(getString(R.string.time_data), timeData);
+                        intent.putExtra(getString(R.string.pass_type), type);
                         startActivity(intent);
                         finish();
                     }
@@ -191,6 +192,7 @@ public class PinActivity extends AppCompatActivity {
                     userEntered[curIndex] = "";
                     pinBoxArray[curIndex].setText("");
                 }
+                touchLog.add(new TouchData(System.currentTimeMillis(), MotionEvent.ACTION_DOWN, v.getId() - 1, "delete"));
             }
         });
 
@@ -204,6 +206,7 @@ public class PinActivity extends AppCompatActivity {
                 }
 
                 curIndex = 0;
+                touchLog.add(new TouchData(System.currentTimeMillis(), MotionEvent.ACTION_DOWN, v.getId() - 1, "clear"));
             }
         });
 
@@ -257,6 +260,7 @@ public class PinActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.success_data), successData);
             intent.putExtra(getString(R.string.forgot_data), forgotData);
             intent.putExtra(getString(R.string.time_data), timeData);
+            intent.putExtra(getString(R.string.pass_type), type);
             startActivity(intent);
             finish();
         }

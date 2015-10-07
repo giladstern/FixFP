@@ -196,12 +196,11 @@ public class WideNoLinesFP extends FastPhrase {
                 public boolean onTouch(View v, MotionEvent ev) {
                     if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 
-                        if (curBatch == Batch.FIRST)
-                        {
-                            touchLog.clear();
-                        }
                         off = false;
-                        touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                        touchLog.add(new TouchData(System.currentTimeMillis(),
+                                ev.getAction(),
+                                v.getId() - 1,
+                                ((ColoredTextSwitch) v).getText()));
 
                         drawCirc = true;
                         selected = v.getId() - 1;
@@ -223,7 +222,10 @@ public class WideNoLinesFP extends FastPhrase {
 
                     if (ev.getAction() == MotionEvent.ACTION_UP)
                     {
-                        touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                        touchLog.add(new TouchData(System.currentTimeMillis(),
+                                ev.getAction(),
+                                v.getId() - 1,
+                                ((ColoredTextSwitch) v).getText()));
 
                     }
                     return true;
@@ -242,7 +244,10 @@ public class WideNoLinesFP extends FastPhrase {
 //                        }
                         if (ev.getAction() == MotionEvent.ACTION_DOWN)
                         {
-                            touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                            touchLog.add(new TouchData(System.currentTimeMillis(),
+                                    ev.getAction(),
+                                    v.getId() - 1,
+                                    ((ColoredTextSwitch) getChildAt(v.getId() + 4)).getText()));
                             selected = v.getId() - 1;
                             off = false;
                         }
@@ -251,7 +256,10 @@ public class WideNoLinesFP extends FastPhrase {
                         {
                             if (ev.getAction() == MotionEvent.ACTION_UP)
                             {
-                                touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                                touchLog.add(new TouchData(System.currentTimeMillis(),
+                                        ev.getAction(),
+                                        v.getId() - 1,
+                                        ((ColoredTextSwitch) getChildAt(v.getId() + 4)).getText()));
                                 bottomSelected = ((ColoredTextSwitch) v).getText();
                                 nextBatch();
                             }
@@ -415,7 +423,7 @@ public class WideNoLinesFP extends FastPhrase {
                     float midY = (child.getTop() + label.getBottom()) / 2.0f;
 
                     if (x > child.getLeft() && x < child.getRight() && y > child.getTop() && y < label.getBottom()) {
-
+                        dispatched = true;
                         if ((x < midX && 0.25 * (midX - x) > x - child.getLeft()) || (x > midX && 0.25 * (x - midX) > child.getRight() - x)) {
 //                        outside = true;
                             selected = -1;
@@ -450,6 +458,7 @@ public class WideNoLinesFP extends FastPhrase {
                     View label = getChildAt(i + 5);
 
                     if (x > child.getLeft() && x < child.getRight() && y > child.getTop() && y < label.getBottom()) {
+                        dispatched = true;
                         retVal = child.dispatchTouchEvent(ev);
                         break;
                     }
@@ -461,6 +470,13 @@ public class WideNoLinesFP extends FastPhrase {
         {
 //            selected = -1;
 //            timerHandler.removeCallbacks(timerFunc);
+            if (!dispatched)
+            {
+                touchLog.add(new TouchData(System.currentTimeMillis(),
+                        ev.getAction(),
+                        -1,
+                        "outside"));
+            }
             drawCirc = false;
             selected = -1;
             off = true;
@@ -497,6 +513,12 @@ public class WideNoLinesFP extends FastPhrase {
 
     public void firstBatch()
     {
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "firstBatch")
+        );
         if(firstListener != null)
         {
             firstListener.onFirst();
@@ -522,6 +544,12 @@ public class WideNoLinesFP extends FastPhrase {
 
     public void secondBatch()
     {
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "secondBatch")
+        );
         if(secondListener != null)
         {
             secondListener.onSecond();
@@ -545,6 +573,12 @@ public class WideNoLinesFP extends FastPhrase {
 
     public void thirdBatch()
     {
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "thirdBatch")
+        );
         if(thirdListener != null)
         {
             thirdListener.onThird();
@@ -612,6 +646,8 @@ public class WideNoLinesFP extends FastPhrase {
                 if (listener != null)
                 {
                     complete();
+                    firstBatch();
+                    touchLog.clear();
                     return;
                 }
                 if (thirdCompleteListener != null)
@@ -633,12 +669,19 @@ public class WideNoLinesFP extends FastPhrase {
                     pass[i] = "";
                 }
                 firstBatch();
+                touchLog.clear();
                 break;
         }
     }
 
     public void reset()
     {
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "reset")
+        );
         firstBatch();
         selected = -1;
     }

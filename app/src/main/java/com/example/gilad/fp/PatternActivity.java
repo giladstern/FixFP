@@ -105,6 +105,7 @@ public class PatternActivity extends AppCompatActivity {
 
             @Override
             public void onPatternDetected(List<LockPatternView.Cell> list) {
+                touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
                 stringData.add(TouchData.toJSONArray(touchLog).toString());
                 if (touchLog.size() == 0)
                 {
@@ -149,11 +150,13 @@ public class PatternActivity extends AppCompatActivity {
                     intent.putExtra(getString(R.string.success_data), successData);
                     intent.putExtra(getString(R.string.forgot_data), forgotData);
                     intent.putExtra(getString(R.string.time_data), timeData);
+                    intent.putExtra(getString(R.string.pass_type), type);
                     startActivity(intent);
                     finish();
                 }
             }
         });
+
     }
 
     @Override
@@ -201,6 +204,7 @@ public class PatternActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.success_data), successData);
             intent.putExtra(getString(R.string.forgot_data), forgotData);
             intent.putExtra(getString(R.string.time_data), timeData);
+            intent.putExtra(getString(R.string.pass_type), type);
             startActivity(intent);
             finish();
         }

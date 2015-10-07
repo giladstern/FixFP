@@ -8,13 +8,14 @@
 
     <com.example.gilad.fp.utils.AutoResizeTextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp"
         android:gravity="center"
-        android:text="Welcome back!\n Your best time is ___."
+        android:text="Welcome back!"
         android:id="@+id/welcome" />
 
     <Button

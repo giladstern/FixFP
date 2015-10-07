@@ -161,7 +161,10 @@ public class DiagonalStoryFP extends FastPhrase {
 
                     if (ev.getAction() == MotionEvent.ACTION_UP)
                     {
-                        touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                        touchLog.add(new TouchData(System.currentTimeMillis(),
+                                ev.getAction(),
+                                v.getId() - 1,
+                                ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
                         return true;
                     }
 
@@ -172,12 +175,10 @@ public class DiagonalStoryFP extends FastPhrase {
 
                     if (ev.getAction() == MotionEvent.ACTION_DOWN)
                     {
-                        TouchData toAdd = new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText());
-
-                        if (curBatch == Batch.FIRST) {
-                            touchLog.clear();
-                        }
-                        touchLog.add(toAdd);
+                        touchLog.add(new TouchData(System.currentTimeMillis(),
+                                ev.getAction(),
+                                v.getId() - 1,
+                                ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
                     }
 
                     if (bottomSelected != -1)
@@ -204,6 +205,15 @@ public class DiagonalStoryFP extends FastPhrase {
 
                     topSelected = v.getId() - 1;
                     formatSelect(topSelected);
+                    if (ev.getAction() != MotionEvent.ACTION_DOWN && ev.getAction() != MotionEvent.ACTION_UP)
+                    {
+                        touchLog.add(new TouchData(
+                                        System.currentTimeMillis(),
+                                        ev.getAction(),
+                                        topSelected,
+                                        ((ColoredTextSwitch) getChildAt(topSelected + 15)).getText())
+                        );
+                    }
 
                     return true;
                 }
@@ -217,12 +227,18 @@ public class DiagonalStoryFP extends FastPhrase {
 
                         if (ev.getAction() == MotionEvent.ACTION_UP)
                         {
-                            touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                            touchLog.add(new TouchData(System.currentTimeMillis(),
+                                    ev.getAction(),
+                                    v.getId() - 1,
+                                    ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
                             return true;
                         }
                         if (ev.getAction() == MotionEvent.ACTION_DOWN)
                         {
-                            touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                            touchLog.add(new TouchData(System.currentTimeMillis(),
+                                    ev.getAction(),
+                                    v.getId() - 1,
+                                    ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));;
                         }
 
                         else if (!insideCirc(v, ev) && middleSelected != -1)
@@ -248,6 +264,15 @@ public class DiagonalStoryFP extends FastPhrase {
 
                         middleSelected = v.getId() - 1;
                         formatSelect(middleSelected);
+                        if (ev.getAction() != MotionEvent.ACTION_DOWN && ev.getAction() != MotionEvent.ACTION_UP)
+                        {
+                            touchLog.add(new TouchData(
+                                            System.currentTimeMillis(),
+                                            ev.getAction(),
+                                            middleSelected,
+                                            ((ColoredTextSwitch) getChildAt(middleSelected + 15)).getText())
+                            );
+                        }
 //
 //                        if (middleSelected != -1)
 //                        {
@@ -269,7 +294,10 @@ public class DiagonalStoryFP extends FastPhrase {
                     if(middleSelected != -1) {
                         if (ev.getAction() == MotionEvent.ACTION_DOWN || ev.getAction() == MotionEvent.ACTION_UP)
                         {
-                            touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), v.getId() - 1, ((ColoredTextSwitch) v).getText()));
+                            touchLog.add(new TouchData(System.currentTimeMillis(),
+                                    ev.getAction(),
+                                    v.getId() - 1,
+                                    ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
                         }
 
                         if(!insideCirc(v, ev) && bottomSelected != -1 && ev.getAction() != MotionEvent.ACTION_DOWN)
@@ -288,6 +316,15 @@ public class DiagonalStoryFP extends FastPhrase {
 
                         bottomSelected = v.getId() - 1;
                         formatSelect(bottomSelected);
+                        if (ev.getAction() != MotionEvent.ACTION_DOWN && ev.getAction() != MotionEvent.ACTION_UP)
+                        {
+                            touchLog.add(new TouchData(
+                                            System.currentTimeMillis(),
+                                            ev.getAction(),
+                                            bottomSelected,
+                                            ((ColoredTextSwitch) getChildAt(bottomSelected + 15)).getText())
+                            );
+                        }
 //                        if (bottomSelected != -1)
 //                        {
 //                            formatDeselect(bottomSelected);
@@ -431,7 +468,7 @@ public class DiagonalStoryFP extends FastPhrase {
             bottomOff = false;
             if (!inside)
             {
-                touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), -1, ""));
+                touchLog.add(new TouchData(System.currentTimeMillis(), ev.getAction(), -1, "outside"));
             }
             if(topSelected != -1 && middleSelected != -1 && bottomSelected != -1)
             {
@@ -444,7 +481,12 @@ public class DiagonalStoryFP extends FastPhrase {
 
     private void firstBatch()
     {
-        touchLog.clear();
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "firstBatch")
+        );
         curBatch = Batch.FIRST;
         if (bottomSelected != -1)
         {
@@ -498,6 +540,12 @@ public class DiagonalStoryFP extends FastPhrase {
 
     private void secondBatch()
     {
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "secondBatch")
+        );
         curBatch = Batch.SECOND;
         if (bottomSelected != -1)
         {
@@ -560,6 +608,7 @@ public class DiagonalStoryFP extends FastPhrase {
                     {
                         firstBatch();
                     }
+                    touchLog.clear();
                     return;
                 }
                 secondBatch();
@@ -572,6 +621,7 @@ public class DiagonalStoryFP extends FastPhrase {
                 {
                     complete();
                     firstBatch();
+                    touchLog.clear();
                     return;
                 }
                 if (secondCompleteListener != null)
@@ -587,14 +637,21 @@ public class DiagonalStoryFP extends FastPhrase {
                     }
                     return;
                 }
-
                 firstBatch();
+                touchLog.clear();
                 break;
         }
     }
 
     public void reset()
     {
+
+        touchLog.add(new TouchData(
+                        System.currentTimeMillis(),
+                        -1,
+                        -1,
+                        "reset")
+        );
         firstBatch();
     }
 
