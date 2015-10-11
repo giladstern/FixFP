@@ -56,10 +56,6 @@ public class WelcomeScreen extends AppCompatActivity {
                 finish();
             }
         });
-
-        ParseUser user = ParseUser.getCurrentUser();
-        TextView textView = (TextView) findViewById(R.id.welcome);
-        textView.setText(textView.getText() + "\nUser ID: " + user.getObjectId());
     }
 
     @Override

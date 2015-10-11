@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.gilad.fp.tutorial.FirstScreen;
 import com.example.gilad.fp.utils.Vals;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,55 +51,40 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
 
-        int passType = prefs.getInt(getString(R.string.pass_type), -1);
-
-        switch (passType)
-        {
-            case Vals.list:
-                listOnClick(null);
-                break;
-            case Vals.story:
-                storyOnClick(null);
-                break;
-            case Vals.pattern:
-                patternOnClick(null);
-                break;
-            case Vals.pin:
-                pinOnClick(null);
-                break;
-            case -1:
-                prefs.edit().putString("char0", "").commit();
-        }
     }
 
     public void listOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.list).commit();
-        Intent next = new Intent(this, ListActivity.class);
+        getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.LIST_PATTERN).commit();
+        Intent next = new Intent(this, FirstScreen.class);
+        next.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
         startActivity(next);
         finish();
     }
 
     public void storyOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.story).commit();
-        Intent next = new Intent(this, StoryActivity.class);
+        getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.STORY_LIST).commit();
+        Intent next = new Intent(this, FirstScreen.class);
+        next.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
         startActivity(next);
         finish();
     }
 
     public void patternOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.pattern).commit();
-        Intent next = new Intent(this, PatternActivity.class);
+        getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.PATTERN_LIST).commit();
+        Intent next = new Intent(this, FirstScreen.class);
+        next.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
         startActivity(next);
         finish();
     }
 
     public void pinOnClick(View v)
     {
-        getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().putInt(getString(R.string.pass_type), Vals.pin).commit();
-        Intent next = new Intent(this, PinActivity.class);
+        getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.PIN_LIST).commit();
+        Intent next = new Intent(this, FirstScreen.class);
+        next.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
         startActivity(next);
         finish();
     }

@@ -119,16 +119,16 @@ public class AlarmSetActivity extends AppCompatActivity {
             {
                 overall += Vals.GAP[i];
             }
-
-            if(!second)
-            {
-                //Extra day between input types.
-                overall++;
-                for (int i = 0; i < Vals.STAGES - 1; i++)
-                {
-                    overall += Vals.GAP[i];
-                }
-            }
+//
+//            if(!second)
+//            {
+//                //Extra day between input types.
+//                overall++;
+//                for (int i = 0; i < Vals.STAGES - 1; i++)
+//                {
+//                    overall += Vals.GAP[i];
+//                }
+//            }
 
             String overallUnit = "day";
             if (overall != 1)
@@ -165,21 +165,15 @@ public class AlarmSetActivity extends AppCompatActivity {
             if (!second)
             {
                 //TODO: Change to actual time.
-                nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
-                editor.putInt(getString(R.string.stage), 0);
-                editor.putBoolean(getString(R.string.second), true);
-                Alarm.set(this, nextAlarm);
+                editor.clear().commit();
                 text = "Congratulations!\n" +
-                        "You finished half of the experiment.\n" +
-                        "In 1 day we will prompt you to repeat the experiment with a different type of code.\n" +
-                        "User ID: " + user.getObjectId();
+                        "You've finished the experiment.";
             }
             else
             {
                 text = "Thank you for participating!\n" +
                         "You’ve completed the experiments.\n" +
-                        "Please send your data.\n" +
-                        "User ID: " + user.getObjectId();
+                        "Please send your data.";
                 editor.putInt(getString(R.string.stage), stage + 1);
                 Button button = (Button) findViewById(R.id.button);
                 button.setText("Send");

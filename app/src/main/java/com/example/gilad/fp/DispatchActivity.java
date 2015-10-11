@@ -79,7 +79,7 @@ public class DispatchActivity extends AppCompatActivity {
                 intent.putExtra(getString(R.string.stage), stage);
             }
 
-            if (user.isDirty() || order == -1) {
+            if (order == -1) {
                 getOrder();
             } else {
                 next();
@@ -115,56 +115,59 @@ public class DispatchActivity extends AppCompatActivity {
 
     private void getOrder()
     {
-        if (order == -1) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("CodeTypes");
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> list, ParseException e) {
-                    if (e == null) {
-                        selected = list.get(0);
-                        int userNum = selected.getInt("users");
-                        for (ParseObject elem : list) {
-                            int curUsers = elem.getInt("users");
-                            if (userNum > curUsers) {
-                                userNum = curUsers;
-                                selected = elem;
-                            }
-                        }
-
-                        order = selected.getInt("enum");
-
-                        selected.increment("users");
-                        saveInfo();
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(DispatchActivity.this);
-                        builder.setTitle("Error")
-                                .setMessage("An error has occurred.\n" +
-                                        "Make sure you have an internet connection and try again.")
-                                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        getOrder();
-                                    }
-                                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                getOrder();
-                            }
-                        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
-                        builder.show();
-                    }
-                }
-            });
-        }
-        else
-        {
-            saveUser();
-        }
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+//        if (order == -1) {
+//            ParseQuery<ParseObject> query = ParseQuery.getQuery("CodeTypes");
+//            query.findInBackground(new FindCallback<ParseObject>() {
+//                @Override
+//                public void done(List<ParseObject> list, ParseException e) {
+//                    if (e == null) {
+//                        selected = list.get(0);
+//                        int userNum = selected.getInt("users");
+//                        for (ParseObject elem : list) {
+//                            int curUsers = elem.getInt("users");
+//                            if (userNum > curUsers) {
+//                                userNum = curUsers;
+//                                selected = elem;
+//                            }
+//                        }
+//
+//                        order = selected.getInt("enum");
+//
+//                        selected.increment("users");
+//                        saveInfo();
+//                    } else {
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(DispatchActivity.this);
+//                        builder.setTitle("Error")
+//                                .setMessage("An error has occurred.\n" +
+//                                        "Make sure you have an internet connection and try again.")
+//                                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        getOrder();
+//                                    }
+//                                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                            @Override
+//                            public void onCancel(DialogInterface dialog) {
+//                                getOrder();
+//                            }
+//                        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                finish();
+//                            }
+//                        });
+//                        builder.show();
+//                    }
+//                }
+//            });
+//        }
+//        else
+//        {
+//            saveUser();
+//        }
     }
 
     private void saveInfo()
