@@ -130,16 +130,18 @@ public class AlarmSetActivity extends AppCompatActivity {
 //                }
 //            }
 
+            String beText = "is";
             String overallUnit = "day";
             if (overall != 1)
             {
+                beText = "are";
                 overallUnit += "s";
             }
 
 
             String text = String.format("Excellent!\n" +
-                    "There are %d %s left to complete the experiment.\n" +
-                    "We will prompt you again in %d %s.", overall, overallUnit, gap, unit);
+                    "There %s %d %s left to complete the experiment.\n" +
+                    "We will prompt you again in %d %s.", beText, overall, overallUnit, gap, unit);
 
             textView.setText(text);
 
