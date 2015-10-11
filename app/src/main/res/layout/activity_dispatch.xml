@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Loading Data"
+        android:text="Initializing"
         android:id="@+id/message"
         android:gravity="center"
         android:layout_alignParentTop="true"
@@ -26,4 +26,15 @@
         android:layout_centerHorizontal="true"
         android:onClick="exitOnClick"
         android:visibility="invisible" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/message"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
+        android:indeterminate="true"
+        android:visibility="visible" />
 </RelativeLayout>

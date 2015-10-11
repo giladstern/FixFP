@@ -1,5 +1,8 @@
 package com.example.gilad.fp;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -8,22 +11,31 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.example.gilad.fp.utils.Alarm;
 import com.example.gilad.fp.utils.AutoResizeTextView;
+import com.example.gilad.fp.utils.SendService;
 import com.example.gilad.fp.utils.Vals;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 
 public class AlarmSetActivity extends AppCompatActivity {
+
+    ProgressDialog dialog;
+    ParseUser user;
+    int stage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +44,27 @@ public class AlarmSetActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int stage = intent.getIntExtra("stage", 0);
+        stage = intent.getIntExtra("stage", 0);
         Vals.Types type = (Vals.Types) intent.getSerializableExtra(getString(R.string.pass_type));
 
         String parseName = "";
-        switch (type)
-        {
-            case LIST:
-                parseName = "List";
-                break;
-            case TRIPLE_STORY:
-                parseName = "Story";
-                break;
-            case PATTERN:
-                parseName = "Pattern";
-                break;
-            case PIN:
-                parseName = "Pin";
-                break;
+        if (type != null) {
+            switch (type) {
+                case LIST:
+                    parseName = "List";
+                    break;
+                case TRIPLE_STORY:
+                    parseName = "Story";
+                    break;
+                case PATTERN:
+                    parseName = "Pattern";
+                    break;
+                case PIN:
+                    parseName = "Pin";
+                    break;
+            }
         }
+
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +74,15 @@ public class AlarmSetActivity extends AppCompatActivity {
         });
         AutoResizeTextView textView = (AutoResizeTextView) findViewById(R.id.exit_message);
 
-        ParseUser user = ParseUser.getCurrentUser();
+        user = ParseUser.getCurrentUser();
         ArrayList<String> stringData = intent.getStringArrayListExtra(getString(R.string.log_data));
         ArrayList<Boolean> successData  = (ArrayList<Boolean>) intent.getSerializableExtra(getString(R.string.success_data));
         ArrayList<Boolean> forgotData  = (ArrayList<Boolean>) intent.getSerializableExtra(getString(R.string.forgot_data));
         ArrayList<Long> timeData  = (ArrayList<Long>) intent.getSerializableExtra(getString(R.string.time_data));
 
 
-        if (stringData.size() == successData.size() &&
-                successData.size() == forgotData.size() &&
-                forgotData.size() == timeData.size())
+        if (stringData != null && successData != null && forgotData != null && timeData != null)
         {
-            Log.d("Debug", "AwesomeSauce");
-            ArrayList<ParseObject> list = new ArrayList<>();
             for (int i = 0; i < stringData.size() ; i++)
             {
                 ParseObject toAdd = ParseObject.create(parseName);
@@ -87,16 +97,11 @@ public class AlarmSetActivity extends AppCompatActivity {
                 toAdd.put("forgot", forgotData.get(i).booleanValue());
                 toAdd.put("time", timeData.get(i).longValue());
                 toAdd.put("user", user);
-                list.add(toAdd);
+                toAdd.saveEventually();
             }
-            ParseObject.saveAllInBackground(list);
         }
 
-        else
-        {
-            Log.d("Debug", String.format("String: %d, Success: %d, Forgot: %d, Time: %d",
-                    stringData.size(), successData.size(), forgotData.size(), timeData.size()));
-        }
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE);
 
         if (stage < Vals.STAGES - 1) {
             int gap = Vals.GAP[stage];
@@ -128,7 +133,7 @@ public class AlarmSetActivity extends AppCompatActivity {
 //            long nextAlarm = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(gap);
             long nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
 
-            SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit();
+            SharedPreferences.Editor editor = preferences.edit();
 
             editor.putInt(getString(R.string.stage), stage + 1);
             editor.putLong(getString(R.string.next_alarm), nextAlarm);
@@ -138,17 +143,16 @@ public class AlarmSetActivity extends AppCompatActivity {
             Alarm.set(this, nextAlarm);
         }
 
-        else
+        else if (!preferences.getBoolean(getString(R.string.finished), false))
         {
-            SharedPreferences prefs = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(getString(R.string.stage), 0);
+            SharedPreferences.Editor editor = preferences.edit();
             long nextAlarm = 0;
             String text;
 
-            if (!prefs.getBoolean(getString(R.string.second), false))
+            if (!preferences.getBoolean(getString(R.string.second), false))
             {
                 nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(1);
+                editor.putInt(getString(R.string.stage), 0);
                 editor.putBoolean(getString(R.string.second), true);
                 Alarm.set(this, nextAlarm);
                 text = "Congratulations!\n" +
@@ -157,10 +161,19 @@ public class AlarmSetActivity extends AppCompatActivity {
             }
             else
             {
-                editor.putInt(getString(R.string.order), -1);
-                editor.putBoolean(getString(R.string.second), false);
                 text = "Thank you for participating!\n" +
-                        "You’ve completed the experiments. (INSTRUCTIONS?)\n";
+                        "You’ve completed the experiments.\n" +
+                        "Please send your data.";
+                editor.putInt(getString(R.string.stage), stage + 1);
+                Button button = (Button) findViewById(R.id.button);
+                button.setText("Send");
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                        finalSave("List");
+                    }
+                });
             }
 
             textView.setText(text);
@@ -169,6 +182,11 @@ public class AlarmSetActivity extends AppCompatActivity {
 
             editor.commit();
             getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
+        }
+
+        else
+        {
+            textView.setText("Thank You!");
         }
     }
 
@@ -197,5 +215,132 @@ public class AlarmSetActivity extends AppCompatActivity {
     public void exitOnClick(View v)
     {
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        startService(new Intent(this, SendService.class));
+        Log.d("Debug", "Peace Out!");
+        super.onDestroy();
+    }
+
+    private void finalSave(final String title) {
+        Log.d("Debug", "Inside");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(title);
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    if (list.size() != 0) {
+                        finalError(title);
+                    } else {
+                        switch (title) {
+                            case "List":
+                                finalSave("Story");
+                                break;
+                            case "Story":
+                                finalSave("Pattern");
+                                break;
+                            case "Pattern":
+                                finalSave("Pin");
+                                break;
+                            case "Pin":
+                                userSave();
+                                break;
+                        }
+                    }
+                } else {
+                    finalError(title);
+                }
+            }
+        });
+    }
+
+    private void finalError(final String title)
+    {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Error")
+                .setMessage("An error has occurred.\n" +
+                        "Make sure you have an internet connection and try again.")
+                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                        finalSave(title);
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                finalSave(title);
+            }
+        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
+    }
+
+    private void userSave() {
+        Log.d("Debug", "Here");
+        user.put("finished", true);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    userError();
+                }
+                else
+                {
+                    getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE)
+                            .edit().putBoolean(getString(R.string.finished), true).commit();
+                    dialog.dismiss();
+                    ((TextView) findViewById(R.id.exit_message)).setText("Thank You!");
+                    findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    });
+                    ((Button) findViewById(R.id.button)).setText("Exit");
+                }
+            }
+        });
+
+    }
+
+    private void userError()
+    {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Error")
+                .setMessage("An error has occurred.\n" +
+                        "Make sure you have an internet connection and try again.")
+                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                        userSave();
+                    }
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                userSave();
+            }
+        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
     }
 }

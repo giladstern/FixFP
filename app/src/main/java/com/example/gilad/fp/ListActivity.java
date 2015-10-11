@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,7 +91,7 @@ public class ListActivity extends AppCompatActivity {
                     timesLeft--;
                     successData.add(true);
                     forgotData.add(false);
-                    topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+                    topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
                 }
 
                 else
@@ -200,7 +201,7 @@ public class ListActivity extends AppCompatActivity {
                     password[i] = prefs.getString(String.format("char%d", i), "");
                 }
             }
-            topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+            topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
             FP.reset();
             FP.clearLog();
         }

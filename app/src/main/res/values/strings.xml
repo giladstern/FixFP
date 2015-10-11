@@ -139,7 +139,7 @@
     <string name="title_activity_pin_tutorial">Fast Phrase</string>
     <string name="title_activity_pattern_tutorial">Fast Phrase</string>
     <string name="title_activity_welcome_screen">Fast Phrase</string>
-    <string name="num_left_msg">Enter your code %d more times.\nIf you don\'t remember it, try your best.</string>
+    <string name="num_left_msg">Enter your code &lt;b&gt;%d&lt;/b&gt; more times.\nIf you don\'t remember it, try your best.</string>
     <string name="title_activity_loop">LoopActivity</string>
     <string name="title_activity_second_screen">SecondScreen</string>
     <string name="title_activity_tutorial_end">TutorialEnd</string>
@@ -153,4 +153,6 @@
     <string name="success_data">successData</string>
     <string name="forgot_data">forgotData</string>
     <string name="time_data">timeData</string>
+    <string name="incremented">incremented</string>
+    <string name="finished">finished</string>
 </resources>

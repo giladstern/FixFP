@@ -15,7 +15,7 @@ public class Vals {
     public static final int pattern = 2;
     public static final int pin = 3;
 
-    public static final int STAGES = 6;
-    public static final int[] ITERATIONS = {10, 5, 5, 3, 3, 3};
+    public static final int STAGES = 2;
+    public static final int[] ITERATIONS = {3, 3, 5, 3, 3, 3};
     public static final int[] GAP = {1, 1, 1, 2, 2, 1};
 }

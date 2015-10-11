@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.gilad.fp.tutorial.FirstScreen;
+import com.example.gilad.fp.utils.Vals;
 import com.example.gilad.fp.utils.Vals.Types;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -63,29 +65,27 @@ public class DispatchActivity extends AppCompatActivity {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancelAll();
 
-        if (stage == 0)
-        {
-            intent = new Intent(this, FirstScreen.class);
-            getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
-        }
-
-        else
-        {
-            intent = new Intent(this, WelcomeScreen.class);
+        if ((second && stage > Vals.STAGES - 1) || preferences.getBoolean(getString(R.string.finished), false)) {
+            Intent intent = new Intent(this, AlarmSetActivity.class);
             intent.putExtra(getString(R.string.stage), stage);
-        }
+            startActivity(intent);
+            finish();
+        } else {
+            if (stage == 0) {
+                intent = new Intent(this, FirstScreen.class);
+                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
+            } else {
+                intent = new Intent(this, WelcomeScreen.class);
+                intent.putExtra(getString(R.string.stage), stage);
+            }
 
-        if (order == -1)
-        {
-            getOrder();
-        }
-
-        else
-        {
-            next();
+            if (user.isDirty()) {
+                getOrder();
+            } else {
+                next();
+            }
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -115,53 +115,56 @@ public class DispatchActivity extends AppCompatActivity {
 
     private void getOrder()
     {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CodeTypes");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
-                    selected = list.get(0);
-                    int userNum = selected.getInt("users");
-                    for (ParseObject elem : list) {
-                        int curUsers = elem.getInt("users");
-                        if (userNum > curUsers) {
-                            userNum = curUsers;
-                            selected = elem;
+        if (order == -1) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("CodeTypes");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+                        selected = list.get(0);
+                        int userNum = selected.getInt("users");
+                        for (ParseObject elem : list) {
+                            int curUsers = elem.getInt("users");
+                            if (userNum > curUsers) {
+                                userNum = curUsers;
+                                selected = elem;
+                            }
                         }
+
+                        order = selected.getInt("enum");
+
+                        selected.increment("users");
+                        saveInfo();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DispatchActivity.this);
+                        builder.setTitle("Error")
+                                .setMessage("An error has occurred.\n" +
+                                        "Make sure you have an internet connection and try again.")
+                                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        getOrder();
+                                    }
+                                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                getOrder();
+                            }
+                        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                        builder.show();
                     }
-
-                    order = selected.getInt("enum");
-
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt(getString(R.string.order), order);
-                    editor.putInt(getString(R.string.stage), 0);
-                    editor.putBoolean(getString(R.string.second), false);
-                    editor.putLong(getString(R.string.next_alarm), 0);
-                    editor.commit();
-
-                    selected.increment("users");
-                    user.put("order", selected.getInt("enum"));
-                    saveInfo();
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DispatchActivity.this);
-                    builder.setTitle("Error")
-                            .setMessage("An error has occurred.\n" +
-                                    "Make sure you have an internet connection and try again.")
-                            .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getOrder();
-                                }
-                            }).setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            getOrder();
-                        }
-                    });
-                    builder.show();
                 }
-            }
-        });
+            });
+        }
+        else
+        {
+            saveUser();
+        }
     }
 
     private void saveInfo()
@@ -170,6 +173,12 @@ public class DispatchActivity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt(getString(R.string.order), order);
+                    editor.putInt(getString(R.string.stage), 0);
+                    editor.putBoolean(getString(R.string.second), false);
+                    editor.putLong(getString(R.string.next_alarm), 0);
+                    editor.commit();
                     saveUser();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(DispatchActivity.this);
@@ -186,6 +195,11 @@ public class DispatchActivity extends AppCompatActivity {
                         public void onCancel(DialogInterface dialog) {
                             saveInfo();
                         }
+                    }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
                     });
                     builder.show();
                 }
@@ -195,6 +209,8 @@ public class DispatchActivity extends AppCompatActivity {
 
     private void saveUser()
     {
+        user.put("order", selected.getInt("enum"));
+        user.put("finished", false);
         user.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -217,6 +233,11 @@ public class DispatchActivity extends AppCompatActivity {
                         @Override
                         public void onCancel(DialogInterface dialog) {
                             saveUser();
+                        }
+                    }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
                         }
                     });
                     builder.show();
@@ -311,6 +332,7 @@ public class DispatchActivity extends AppCompatActivity {
         else
         {
             findViewById(R.id.exitButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
             long timeLeft = alarmTime - System.currentTimeMillis();
             timeLeft /= 60000;
             long  minutes = timeLeft % 60;
@@ -346,5 +368,6 @@ public class DispatchActivity extends AppCompatActivity {
 
             ((TextView) findViewById(R.id.message)).setText(message);
         }
+
     }
 }

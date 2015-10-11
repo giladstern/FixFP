@@ -137,6 +137,8 @@
             android:label="@string/title_activity_tutorial_end"
             android:screenOrientation="portrait" >
         </activity>
+        <service
+            android:name=".utils.SendService"
+            android:exported="false"/>
     </application>
-
 </manifest>

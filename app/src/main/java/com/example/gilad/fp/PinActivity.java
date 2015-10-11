@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -137,7 +138,7 @@ public class PinActivity extends AppCompatActivity {
                         timesLeft--;
                         successData.add(true);
                         forgotData.add(false);
-                        titleView.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+                        titleView.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
                     }
 
                     else
@@ -249,7 +250,7 @@ public class PinActivity extends AppCompatActivity {
                 userEntered[i] = "";
             }
             curIndex = 0;
-            titleView.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+            titleView.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
             touchLog.clear();
         }
         else

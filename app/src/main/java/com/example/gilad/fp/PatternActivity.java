@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -131,7 +132,7 @@ public class PatternActivity extends AppCompatActivity {
                     timesLeft--;
                     successData.add(true);
                     forgotData.add(false);
-                    topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+                    topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
                 }
 
                 else
@@ -193,7 +194,7 @@ public class PatternActivity extends AppCompatActivity {
                     password[i] = prefs.getString(String.format("char%d", i), "");
                 }
             }
-            topMessage.setText(String.format(getString(R.string.num_left_msg), timesLeft));
+            topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
             lockPatternView.clearPattern();
         }
         else
