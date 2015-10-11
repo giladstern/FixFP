@@ -211,6 +211,7 @@ public class PatternTutorial extends AppCompatActivity {
             }
             lockPatternView.setPattern(LockPatternView.DisplayMode.Animate, pattern);
 
+
             touchLog.clear();
         }
     }
