@@ -102,6 +102,7 @@ public class AlarmSetActivity extends AppCompatActivity {
         }
 
         SharedPreferences preferences = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE);
+        boolean second = preferences.getBoolean(getString(R.string.finished), false);
 
         if (stage < Vals.STAGES - 1) {
             int gap = Vals.GAP[stage];
@@ -117,6 +118,16 @@ public class AlarmSetActivity extends AppCompatActivity {
             for (int i = stage; i < Vals.STAGES - 1; i++)
             {
                 overall += Vals.GAP[i];
+            }
+
+            if(!second)
+            {
+                //Extra day between input types.
+                overall++;
+                for (int i = 0; i < Vals.STAGES - 1; i++)
+                {
+                    overall += Vals.GAP[i];
+                }
             }
 
             String overallUnit = "day";
@@ -143,7 +154,7 @@ public class AlarmSetActivity extends AppCompatActivity {
             Alarm.set(this, nextAlarm);
         }
 
-        else if (!preferences.getBoolean(getString(R.string.finished), false))
+        else if (!second)
         {
             SharedPreferences.Editor editor = preferences.edit();
             long nextAlarm = 0;
