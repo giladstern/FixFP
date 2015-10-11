@@ -206,10 +206,14 @@ public class PatternTutorial extends AppCompatActivity {
 
             ArrayList<LockPatternView.Cell> pattern = new ArrayList<>();
             for (int i = 0; i< 6; i++) {
-                int pass = Integer.parseInt(password[i]);
-                pattern.add(LockPatternView.Cell.of(pass));
+                if (password[i] != null && !password[i].equals("")) {
+                    int pass = Integer.parseInt(password[i]);
+                    pattern.add(LockPatternView.Cell.of(pass));
+                }
             }
-            lockPatternView.setPattern(LockPatternView.DisplayMode.Animate, pattern);
+            if (pattern.size() > 0) {
+                lockPatternView.setPattern(LockPatternView.DisplayMode.Animate, pattern);
+            }
 
 
             touchLog.clear();
