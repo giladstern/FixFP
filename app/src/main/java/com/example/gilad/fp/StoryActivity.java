@@ -82,32 +82,10 @@ public class StoryActivity extends AppCompatActivity {
 
                 if (equal)
                 {
-                    timesLeft--;
-                    successData.add(true);
-                    forgotData.add(false);
                     topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
                 }
 
-                else
-                {
-                    successData.add(false);
-                    alert();
-                }
-
-//                FP.reset();
-
-                if (timesLeft == 0)
-                {
-                    Intent intent = new Intent(StoryActivity.this, AlarmSetActivity.class);
-                    intent.putExtra(getString(R.string.stage), stage);
-                    intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
-                    intent.putExtra(getString(R.string.success_data), successData);
-                    intent.putExtra(getString(R.string.forgot_data), forgotData);
-                    intent.putExtra(getString(R.string.time_data), timeData);
-                    intent.putExtra(getString(R.string.pass_type), type);
-                    startActivity(intent);
-                    finish();
-                }
+                alert(equal);
             }
         });
 
@@ -165,35 +143,93 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
-    private void alert()
+    private void alert(boolean success)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.incorrect)
-                .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
+        if (success) {
+            forgotData.add(false);
+            successData.add(true);
+            builder.setTitle(R.string.correct);
+            timesLeft--;
+            if (timesLeft != 0)
+            {
+                builder.setNeutralButton(R.string.again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        forgotData.add(false);
                         onResume();
                     }
-                }).setPositiveButton(R.string.forgot, new DialogInterface.OnClickListener() {
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        onResume();
+                    }
+                });
+            }
+            else
+            {
+                builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        forgotData.add(true);
-                        passShown++;
-                        Intent intent = new Intent(StoryActivity.this, PassGenerate.class);
-                        intent.putExtra(getString(R.string.generate), false);
-                        intent.putExtra(getString(R.string.pass_type), type);
-                        startActivity(intent);
+                        if (timesLeft == 0)
+                        {
+                            Intent intent = new Intent(StoryActivity.this, AlarmSetActivity.class);
+                            intent.putExtra(getString(R.string.stage), stage);
+                            intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+                            intent.putExtra(getString(R.string.success_data), successData);
+                            intent.putExtra(getString(R.string.forgot_data), forgotData);
+                            intent.putExtra(getString(R.string.time_data), timeData);
+                            intent.putExtra(getString(R.string.pass_type), type);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
-                }
-
-        ).setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                forgotData.add(false);
-                onResume();
+                }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        if (timesLeft == 0)
+                        {
+                            Intent intent = new Intent(StoryActivity.this, AlarmSetActivity.class);
+                            intent.putExtra(getString(R.string.stage), stage);
+                            intent.putStringArrayListExtra(getString(R.string.log_data), stringData);
+                            intent.putExtra(getString(R.string.success_data), successData);
+                            intent.putExtra(getString(R.string.forgot_data), forgotData);
+                            intent.putExtra(getString(R.string.time_data), timeData);
+                            intent.putExtra(getString(R.string.pass_type), type);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
             }
-        });
+        } else {
+            successData.add(false);
+            builder.setTitle(R.string.incorrect)
+                    .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            forgotData.add(false);
+                            onResume();
+                        }
+                    }).setPositiveButton(R.string.forgot, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            passShown++;
+                            forgotData.add(true);
+                            Intent intent = new Intent(StoryActivity.this, PassGenerate.class);
+                            intent.putExtra(getString(R.string.generate), false);
+                            intent.putExtra(getString(R.string.pass_type), type);
+                            startActivity(intent);
+                        }
+                    }
+
+            ).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    forgotData.add(false);
+                    onResume();
+                }
+            });
+        }
         builder.show();
     }
 }

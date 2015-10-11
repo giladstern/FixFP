@@ -102,7 +102,7 @@ public class AlarmSetActivity extends AppCompatActivity {
         }
 
         SharedPreferences preferences = getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE);
-        boolean second = preferences.getBoolean(getString(R.string.finished), false);
+        boolean second = preferences.getBoolean(getString(R.string.second), false);
 
         if (stage < Vals.STAGES - 1) {
             int gap = Vals.GAP[stage];
@@ -156,13 +156,13 @@ public class AlarmSetActivity extends AppCompatActivity {
             Alarm.set(this, nextAlarm);
         }
 
-        else if (!second)
+        else if (!preferences.getBoolean(getString(R.string.finished), false))
         {
             SharedPreferences.Editor editor = preferences.edit();
             long nextAlarm = 0;
             String text;
 
-            if (!preferences.getBoolean(getString(R.string.second), false))
+            if (!second)
             {
                 //TODO: Change to actual time.
                 nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
@@ -318,7 +318,9 @@ public class AlarmSetActivity extends AppCompatActivity {
                     getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE)
                             .edit().putBoolean(getString(R.string.finished), true).commit();
                     dialog.dismiss();
-                    ((TextView) findViewById(R.id.exit_message)).setText("Congratulations!\nYou've completed the experiment.");
+                    ((TextView) findViewById(R.id.exit_message)).setText("Congratulations!\n" +
+                            "You've completed the experiment.\n" +
+                            "User ID: " + user.getObjectId());
                     findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
