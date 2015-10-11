@@ -364,7 +364,7 @@ public class DispatchActivity extends AppCompatActivity {
             }
 
             String message = String.format("You have %d " + dayString + ", %d " +
-                    hourString + " and %d " + minuteString + " until your next session.\nThank you!", days, hours, minutes);
+                    hourString + " and %d " + minuteString + " until your next session.\nUser ID: %s", days, hours, minutes, user.getObjectId());
 
             ((TextView) findViewById(R.id.message)).setText(message);
         }

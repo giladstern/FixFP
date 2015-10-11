@@ -139,7 +139,8 @@ public class AlarmSetActivity extends AppCompatActivity {
 
             String text = String.format("Excellent!\n" +
                     "There are %d %s left to complete the experiment.\n" +
-                    "We will prompt you again in %d %s.", overall, overallUnit, gap, unit);
+                    "We will prompt you again in %d %s.\n" +
+                    "User ID: %s", overall, overallUnit, gap, unit, user.getObjectId());
 
             textView.setText(text);
 
