@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.gilad.fp.tutorial.ListTutorial;
 import com.example.gilad.fp.tutorial.PatternTutorial;
 import com.example.gilad.fp.tutorial.PinTutorial;
 import com.example.gilad.fp.tutorial.StoryTutorial;
 import com.example.gilad.fp.utils.Vals;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -54,6 +56,10 @@ public class WelcomeScreen extends AppCompatActivity {
                 finish();
             }
         });
+
+        ParseUser user = ParseUser.getCurrentUser();
+        TextView textView = (TextView) findViewById(R.id.welcome);
+        textView.setText(textView.getText() + "\nUser ID: " + user.getObjectId());
     }
 
     @Override

@@ -51,7 +51,7 @@ public class ListTutorial extends AppCompatActivity {
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
-        passIntent.putExtra(getString(R.string.message), "Your code is comprised of the following symbols.\n" +
+        passIntent.putExtra(getString(R.string.message), "Your code is comprised of the following symbols. " +
                 "For now, take a look at it, but don’t try to memorize it.");
         startActivity(passIntent);
         res = getResources();
@@ -177,7 +177,7 @@ public class ListTutorial extends AppCompatActivity {
                 firstHighlight();
                 break;
             case DONE:
-                topInstructions.setText("Try entering your code (without assistance).\n" +
+                topInstructions.setText("Try entering your code (without assistance). " +
                         "If you don’t remember the code, give it your best shot.");
                 if (consecEqual && timesEqual >= 3) {
                     startActivity(new Intent(this, ListActivity.class));
@@ -242,8 +242,8 @@ public class ListTutorial extends AppCompatActivity {
                         Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
                         intent.putExtra(getString(R.string.generate), false);
                         intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
-                        intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
-                                "This time try remembering it, but don’t write it down.\n" +
+                        intent.putExtra(getString(R.string.message), "Here is your code once more. " +
+                                "This time try remembering it, but don’t write it down. " +
                                 "If you forget it, we will remind you.");
                         startActivity(intent);
                     }
@@ -254,8 +254,8 @@ public class ListTutorial extends AppCompatActivity {
                 Intent intent = new Intent(ListTutorial.this, PassGenerate.class);
                 intent.putExtra(getString(R.string.generate), false);
                 intent.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
-                intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
-                                "This time try remembering it, but don’t write it down.\n" +
+                intent.putExtra(getString(R.string.message), "Here is your code once more. " +
+                                "This time try remembering it, but don’t write it down. " +
                                 "If you forget it, we will remind you.");
                 startActivity(intent);
 

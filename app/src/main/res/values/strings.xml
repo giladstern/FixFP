@@ -147,7 +147,7 @@
     <string name="ok">OK</string>
     <string name="correct">Excellent!</string>
     <string name="incorrect">Wrong Code</string>
-    <string name="forgot">Code Reminder</string>
+    <string name="forgot">Remind me the code</string>
     <string name="again">Once Again</string>
     <string name="log_data">logData</string>
     <string name="success_data">successData</string>

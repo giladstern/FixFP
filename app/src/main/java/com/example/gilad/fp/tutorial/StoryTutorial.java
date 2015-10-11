@@ -55,8 +55,8 @@ public class StoryTutorial extends AppCompatActivity {
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
-        passIntent.putExtra(getString(R.string.message), "Your code is comprised of the following symbols.\n" +
-                "Note that the symbols make up a story.\n" +
+        passIntent.putExtra(getString(R.string.message), "Your code is comprised of the following symbols. " +
+                "Note that the symbols make up a story. " +
                 "For now, take a look at it, but don’t try to memorize it.");
         startActivity(passIntent);
 
@@ -191,7 +191,7 @@ public class StoryTutorial extends AppCompatActivity {
                 firstScreenHighlight();
                 break;
             case DONE:
-                topInstructions.setText("Try entering your code (without assistance).\n" +
+                topInstructions.setText("Try entering your code (without assistance). " +
                         "If you don’t remember the code, give it your best shot.");
                 if (consecEqual && timesEqual >= 3)
                 {
@@ -258,8 +258,8 @@ public class StoryTutorial extends AppCompatActivity {
                         Intent intent = new Intent(StoryTutorial.this, PassGenerate.class);
                         intent.putExtra(getString(R.string.generate), false);
                         intent.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
-                        intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
-                                "This time try remembering it, but don’t write it down.\n" +
+                        intent.putExtra(getString(R.string.message), "Here is your code once more. " +
+                                "This time try remembering it, but don’t write it down. " +
                                 "If you forget it, we will remind you.\n" +
                                 "Note: Visualizing the suggested story might help you remember the code.");
                         startActivity(intent);
@@ -271,8 +271,8 @@ public class StoryTutorial extends AppCompatActivity {
                 Intent intent = new Intent(StoryTutorial.this, PassGenerate.class);
                 intent.putExtra(getString(R.string.generate), false);
                 intent.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
-                intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
-                        "This time try remembering it, but don’t write it down.\n" +
+                intent.putExtra(getString(R.string.message), "Here is your code once more. " +
+                        "This time try remembering it, but don’t write it down. " +
                         "If you forget it, we will remind you.\n" +
                         "Note: Visualizing the suggested story might help you remember the code.");
                 startActivity(intent);

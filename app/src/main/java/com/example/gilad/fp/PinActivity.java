@@ -52,8 +52,8 @@ public class PinActivity extends AppCompatActivity {
         {
             Intent pass = new Intent(this, PassGenerate.class);
             pass.putExtra(getString(R.string.pass_type), type);
-            pass.putExtra(getString(R.string.message), "Now that you know how to enter your code, memorize it again for future use. \n" +
-                    "Don’t write it down.\n" +
+            pass.putExtra(getString(R.string.message), "Now that you know how to enter your code, memorize it again for future use. " +
+                    "Don’t write it down. " +
                     "If you forget the code, we will remind you.");
             startActivity(pass);
         }

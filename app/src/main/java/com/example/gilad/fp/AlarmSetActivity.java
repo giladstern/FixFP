@@ -137,11 +137,13 @@ public class AlarmSetActivity extends AppCompatActivity {
             }
 
 
-            String text = String.format("There are %d %s left to complete the experiment.\n" +
+            String text = String.format("Excellent!\n" +
+                    "There are %d %s left to complete the experiment.\n" +
                     "We will prompt you again in %d %s.", overall, overallUnit, gap, unit);
 
             textView.setText(text);
-//            long nextAlarm = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(gap);
+
+            //TODO: Change to actual time.
             long nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
 
             SharedPreferences.Editor editor = preferences.edit();
@@ -162,19 +164,22 @@ public class AlarmSetActivity extends AppCompatActivity {
 
             if (!preferences.getBoolean(getString(R.string.second), false))
             {
-                nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(1);
+                //TODO: Change to actual time.
+                nextAlarm = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
                 editor.putInt(getString(R.string.stage), 0);
                 editor.putBoolean(getString(R.string.second), true);
                 Alarm.set(this, nextAlarm);
                 text = "Congratulations!\n" +
                         "You finished half of the experiment.\n" +
-                        "In 1 day we will prompt you to repeat the experiment with a different type of code.";
+                        "In 1 day we will prompt you to repeat the experiment with a different type of code.\n" +
+                        "User ID: " + user.getObjectId();
             }
             else
             {
                 text = "Thank you for participating!\n" +
                         "You’ve completed the experiments.\n" +
-                        "Please send your data.";
+                        "Please send your data.\n" +
+                        "User ID: " + user.getObjectId();
                 editor.putInt(getString(R.string.stage), stage + 1);
                 Button button = (Button) findViewById(R.id.button);
                 button.setText("Send");
@@ -197,7 +202,9 @@ public class AlarmSetActivity extends AppCompatActivity {
 
         else
         {
-            textView.setText("Thank You!");
+            textView.setText("Congratulations!\n" +
+                    "You've completed the experiment.\n" +
+                    "User ID: " + user.getObjectId());
         }
     }
 
@@ -311,7 +318,7 @@ public class AlarmSetActivity extends AppCompatActivity {
                     getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE)
                             .edit().putBoolean(getString(R.string.finished), true).commit();
                     dialog.dismiss();
-                    ((TextView) findViewById(R.id.exit_message)).setText("Thank You!");
+                    ((TextView) findViewById(R.id.exit_message)).setText("Congratulations!\nYou've completed the experiment.");
                     findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

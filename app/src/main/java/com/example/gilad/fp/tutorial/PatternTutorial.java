@@ -60,7 +60,7 @@ public class PatternTutorial extends AppCompatActivity {
         Intent passIntent = new Intent(this, PassGenerate.class);
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
-        passIntent.putExtra(getString(R.string.message), "Your code is the following pattern.\n" +
+        passIntent.putExtra(getString(R.string.message), "Your code is the following pattern. " +
                 "For now, take a look at it, but don’t try to memorize it.");
         startActivity(passIntent);
 
@@ -184,7 +184,7 @@ public class PatternTutorial extends AppCompatActivity {
         lockPatternView.clearPattern();
         if (secondPart)
         {
-            titleView.setText("Try entering your code (without assistance).\n" +
+            titleView.setText("Try entering your code (without assistance). " +
                     "If you don’t remember the code, give it your best shot.");
             if (consecEqual && timesEqual >= 3) {
                 Intent next = new Intent(this, PatternActivity.class);
@@ -194,7 +194,7 @@ public class PatternTutorial extends AppCompatActivity {
         }
         else
         {
-            titleView.setText("Enter your code by dragging your finger across the given pattern.\n" +
+            titleView.setText("Enter your code by dragging your finger across the given pattern. " +
                     "The animation will stop once you start.");
             SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
 
@@ -272,8 +272,8 @@ public class PatternTutorial extends AppCompatActivity {
                         Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
                         intent.putExtra(getString(R.string.generate), false);
                         intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
-                        intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
-                                "This time try remembering it, but don’t write it down.\n" +
+                        intent.putExtra(getString(R.string.message), "Here is your code once more. " +
+                                "This time try remembering it, but don’t write it down. " +
                                 "If you forget it, we will remind you.");
                         startActivity(intent);
                     }
@@ -284,8 +284,8 @@ public class PatternTutorial extends AppCompatActivity {
                 Intent intent = new Intent(PatternTutorial.this, PassGenerate.class);
                 intent.putExtra(getString(R.string.generate), false);
                 intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
-                intent.putExtra(getString(R.string.message), "Here is your code once more.\n" +
-                        "This time try remembering it, but don’t write it down.\n" +
+                intent.putExtra(getString(R.string.message), "Here is your code once more. " +
+                        "This time try remembering it, but don’t write it down. " +
                         "If you forget it, we will remind you.");
                 startActivity(intent);
 
