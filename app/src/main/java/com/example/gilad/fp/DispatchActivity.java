@@ -79,7 +79,7 @@ public class DispatchActivity extends AppCompatActivity {
                 intent.putExtra(getString(R.string.stage), stage);
             }
 
-            if (user.isDirty()) {
+            if (user.isDirty() || order == -1) {
                 getOrder();
             } else {
                 next();
