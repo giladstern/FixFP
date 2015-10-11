@@ -63,12 +63,39 @@ public class PassGenerate extends AppCompatActivity {
         type = (Vals.Types) getIntent().getSerializableExtra(getString(R.string.pass_type));
         generate = getIntent().getBooleanExtra(getString(R.string.generate), false);
 
+        String passText = "";
+        String labelText = "";
+
+        switch (type)
+        {
+            case TRIPLE_STORY:
+                passText = "story_pass%d";
+                labelText = "story_label%d";
+                break;
+            case LIST:
+                passText = "list_pass%d";
+                labelText = "list_label%d";
+                break;
+            case PATTERN:
+                passText = "pattern_pass%d";
+                labelText = "pattern_label%d";
+                break;
+            case PIN:
+                passText = "pin_pass%d";
+                labelText = "pin_label%d";
+                break;
+        }
+
+        generate = generate || prefs.getString(String.format(passText, 0), "").equals("");
+
         if (generate) {
             int[] indices = new int[6];
 
             for (int i = 0; i < 6; i++) {
                 indices[i] = (int) (Math.random() * 5);
             }
+
+
             switch (type) {
                 case LIST:
                     for (int i = 0; i < 3; i++) {
@@ -216,14 +243,14 @@ public class PassGenerate extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
 
             for (int i = 0; i < 6; i++) {
-                editor.putString(String.format("char%d", i), password[i]);
-                editor.putString(String.format("label%d", i), labels[i]);
+                editor.putString(String.format(passText, i), password[i]);
+                editor.putString(String.format(labelText, i), labels[i]);
             }
             editor.commit();
         } else {
             for (int i = 0; i < 6; i++) {
-                password[i] = prefs.getString(String.format("char%d", i), "");
-                labels[i] = prefs.getString(String.format("label%d", i), "");
+                password[i] = prefs.getString(String.format(passText, i), "");
+                labels[i] = prefs.getString(String.format(labelText, i), "");
             }
         }
 

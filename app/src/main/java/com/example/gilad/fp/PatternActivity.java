@@ -108,11 +108,9 @@ public class PatternActivity extends AppCompatActivity {
             public void onPatternDetected(List<LockPatternView.Cell> list) {
                 touchLog.add(new TouchData(System.currentTimeMillis(), FINISH, -1, ""));
                 stringData.add(TouchData.toJSONArray(touchLog).toString());
-                if (touchLog.size() == 0)
-                {
+                if (touchLog.size() == 0) {
                     timeData.add(0l);
-                }
-                else {
+                } else {
                     timeData.add(touchLog.get(touchLog.size() - 1).time - touchLog.get(0).time);
                 }
                 boolean equal = true;
@@ -127,8 +125,7 @@ public class PatternActivity extends AppCompatActivity {
                     }
                 }
 
-                if (equal)
-                {
+                if (equal) {
                     topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));
                 }
 
@@ -172,7 +169,7 @@ public class PatternActivity extends AppCompatActivity {
             {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
                 for (int i = 0; i < 6; i++) {
-                    password[i] = prefs.getString(String.format("char%d", i), "");
+                    password[i] = prefs.getString(String.format("pattern_pass%d", i), "");
                 }
             }
             topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));

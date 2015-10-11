@@ -178,7 +178,7 @@ public class ListActivity extends AppCompatActivity {
             {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
                 for (int i = 0; i < 6; i++) {
-                    password[i] = prefs.getString(String.format("char%d", i), "");
+                    password[i] = prefs.getString(String.format("list_pass%d", i), "");
                 }
             }
             topMessage.setText(Html.fromHtml(String.format(getString(R.string.num_left_msg), timesLeft)));

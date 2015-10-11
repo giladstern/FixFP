@@ -199,19 +199,18 @@ public class PatternTutorial extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
 
             for (int i = 0; i < 6; i++) {
-                password[i] = prefs.getString(String.format("char%d", i), "");
+                password[i] = prefs.getString(String.format("pattern_pass%d", i), "");
 
             }
 
-            if (password[0] != null && !password[0].equals(""))
-            {
-                ArrayList<LockPatternView.Cell> pattern = new ArrayList<>();
-                for (int i = 0; i< 6; i++) {
-                    int pass = Integer.parseInt(password[i]);
-                    pattern.add(LockPatternView.Cell.of(pass));
-                }
-                lockPatternView.setPattern(LockPatternView.DisplayMode.Animate, pattern);
+
+            ArrayList<LockPatternView.Cell> pattern = new ArrayList<>();
+            for (int i = 0; i< 6; i++) {
+                int pass = Integer.parseInt(password[i]);
+                pattern.add(LockPatternView.Cell.of(pass));
             }
+            lockPatternView.setPattern(LockPatternView.DisplayMode.Animate, pattern);
+
             touchLog.clear();
         }
     }

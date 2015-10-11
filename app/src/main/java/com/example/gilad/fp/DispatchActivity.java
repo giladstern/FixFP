@@ -73,7 +73,7 @@ public class DispatchActivity extends AppCompatActivity {
         } else {
             if (stage == 0) {
                 intent = new Intent(this, FirstScreen.class);
-                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
+//                getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
             } else {
                 intent = new Intent(this, WelcomeScreen.class);
                 intent.putExtra(getString(R.string.stage), stage);

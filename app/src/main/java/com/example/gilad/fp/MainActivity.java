@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.example.gilad.fp.tutorial.FirstScreen;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.LIST_PATTERN).commit();
         Intent next = new Intent(this, FirstScreen.class);
         next.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
+        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
         startActivity(next);
         finish();
     }
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.STORY_LIST).commit();
         Intent next = new Intent(this, FirstScreen.class);
         next.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
+        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
         startActivity(next);
         finish();
     }
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.PATTERN_LIST).commit();
         Intent next = new Intent(this, FirstScreen.class);
         next.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
+        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
         startActivity(next);
         finish();
     }
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.PIN_LIST).commit();
         Intent next = new Intent(this, FirstScreen.class);
         next.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
+        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
         startActivity(next);
         finish();
     }

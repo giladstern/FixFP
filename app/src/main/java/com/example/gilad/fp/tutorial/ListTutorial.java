@@ -160,12 +160,10 @@ public class ListTutorial extends AppCompatActivity {
         fp.reset();
         switch (batch) {
             case FIRST:
-                if (password[0] == null || password[0].equals("")) {
-                    SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-                    for (int i = 0; i < 6; i++) {
-                        password[i] = prefs.getString(String.format("char%d", i), "");
-                        labels[i] = prefs.getString(String.format("label%d", i), "");
-                    }
+                SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+                for (int i = 0; i < 6; i++) {
+                    password[i] = prefs.getString(String.format("list_pass%d", i), "");
+                    labels[i] = prefs.getString(String.format("list_pass%d", i), "");
                 }
 
                 topInstructions.setText("Enter your code by tapping the highlighted symbols.");

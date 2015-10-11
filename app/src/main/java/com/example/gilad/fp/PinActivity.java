@@ -221,7 +221,7 @@ public class PinActivity extends AppCompatActivity {
             if (password[0] == null) {
                 SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
                 for (int i = 0; i < PIN_LENGTH; i++) {
-                    password[i] = prefs.getString(String.format("char%d", i), "");
+                    password[i] = prefs.getString(String.format("pin_pass%d", i), "");
                 }
             }
             for (int i = 0; i < PIN_LENGTH; i++) {

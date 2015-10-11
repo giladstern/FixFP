@@ -250,13 +250,9 @@ public class PinTutorial extends AppCompatActivity {
         }
         else
         {
-            if (password[0] == null || password[0].equals("")) {
-
-                SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
-                for (int i = 0; i < PIN_LENGTH; i++) {
-                    password[i] = prefs.getString(String.format("char%d", i), "");
-                }
-
+            SharedPreferences prefs = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+            for (int i = 0; i < PIN_LENGTH; i++) {
+                password[i] = prefs.getString(String.format("pin_pass%d", i), "");
             }
 
             String instructions = "Enter the following code using the numpad:\n";

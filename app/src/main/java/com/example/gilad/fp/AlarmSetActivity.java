@@ -191,7 +191,7 @@ public class AlarmSetActivity extends AppCompatActivity {
             editor.putLong(getString(R.string.next_alarm), nextAlarm);
 
             editor.commit();
-            getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
+//            getSharedPreferences(getString(R.string.filename), MODE_PRIVATE).edit().clear().commit();
         }
 
         else
