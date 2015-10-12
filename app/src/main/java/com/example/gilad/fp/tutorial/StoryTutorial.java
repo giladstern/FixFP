@@ -259,7 +259,7 @@ public class StoryTutorial extends AppCompatActivity {
                         intent.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
                         intent.putExtra(getString(R.string.message), "Here is your code once more. " +
                                 "This time try remembering it, but don’t write it down. " +
-                                "If you forget it, we will remind you.\n" +
+                                "If you forget your code, we will remind you.\n" +
                                 "Note: Visualizing the suggested story might help you remember the code.");
                         startActivity(intent);
                     }
@@ -272,7 +272,7 @@ public class StoryTutorial extends AppCompatActivity {
                 intent.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
                 intent.putExtra(getString(R.string.message), "Here is your code once more. " +
                         "This time try remembering it, but don’t write it down. " +
-                        "If you forget it, we will remind you.\n" +
+                        "If you forget your code, we will remind you.\n" +
                         "Note: Visualizing the suggested story might help you remember the code.");
                 startActivity(intent);
 

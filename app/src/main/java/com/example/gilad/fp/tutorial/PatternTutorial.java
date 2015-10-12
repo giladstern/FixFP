@@ -278,7 +278,7 @@ public class PatternTutorial extends AppCompatActivity {
                         intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
                         intent.putExtra(getString(R.string.message), "Here is your code once more. " +
                                 "This time try remembering it, but don’t write it down. " +
-                                "If you forget it, we will remind you.");
+                                "If you forget your code, we will remind you.");
                         startActivity(intent);
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -290,7 +290,7 @@ public class PatternTutorial extends AppCompatActivity {
                 intent.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
                 intent.putExtra(getString(R.string.message), "Here is your code once more. " +
                         "This time try remembering it, but don’t write it down. " +
-                        "If you forget it, we will remind you.");
+                        "If you forget your code, we will remind you.");
                 startActivity(intent);
 
             }
