@@ -57,40 +57,78 @@ public class MainActivity extends AppCompatActivity {
     public void listOnClick(View v)
     {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.LIST_PATTERN).commit();
-        Intent next = new Intent(this, FirstScreen.class);
-        next.putExtra(getString(R.string.pass_type), Vals.Types.LIST);
-        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
-        startActivity(next);
-        finish();
+        nextScreen(Vals.Types.LIST);
     }
 
     public void storyOnClick(View v)
     {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.STORY_LIST).commit();
-        Intent next = new Intent(this, FirstScreen.class);
-        next.putExtra(getString(R.string.pass_type), Vals.Types.TRIPLE_STORY);
-        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
-        startActivity(next);
-        finish();
+        nextScreen(Vals.Types.TRIPLE_STORY);
     }
 
     public void patternOnClick(View v)
     {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.PATTERN_LIST).commit();
-        Intent next = new Intent(this, FirstScreen.class);
-        next.putExtra(getString(R.string.pass_type), Vals.Types.PATTERN);
-        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
-        startActivity(next);
-        finish();
+        nextScreen(Vals.Types.PATTERN);
     }
 
     public void pinOnClick(View v)
     {
         getSharedPreferences(getString(R.string.stage_file), MODE_PRIVATE).edit().putInt(getString(R.string.order), DispatchActivity.PIN_LIST).commit();
-        Intent next = new Intent(this, FirstScreen.class);
-        next.putExtra(getString(R.string.pass_type), Vals.Types.PIN);
-        next.putExtra(getString(R.string.generate), ((CheckBox)findViewById(R.id.checkBox)).isChecked());
+        nextScreen(Vals.Types.PIN);
+    }
+
+    private void nextScreen(Vals.Types type)
+    {
+        Intent next = null;
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.filename), MODE_PRIVATE);
+        String pass = "";
+        switch (type)
+        {
+            case LIST:
+                pass = preferences.getString("list_pass0", "");
+                break;
+            case TRIPLE_STORY:
+                pass = preferences.getString("story_pass0", "");
+                break;
+            case PIN:
+                pass = preferences.getString("pin_pass0", "");
+                break;
+            case PATTERN:
+                pass = preferences.getString("pattern_pass0", "");
+                break;
+        }
+        if (((CheckBox)findViewById(R.id.checkBox)).isChecked() || pass.equals(""))
+        {
+            next = new Intent(this, FirstScreen.class);
+            next.putExtra(getString(R.string.pass_type), type);
+            next.putExtra(getString(R.string.generate), ((CheckBox) findViewById(R.id.checkBox)).isChecked());
+        }
+        else
+        {
+            switch (type)
+            {
+                case LIST:
+                    next = new Intent(this, ListActivity.class);
+                    break;
+                case TRIPLE_STORY:
+                    next = new Intent(this, StoryActivity.class);
+                    break;
+                case PIN:
+                    next = new Intent(this, PinActivity.class);
+                    break;
+                case PATTERN:
+                    next = new Intent(this, PatternActivity.class);
+                    break;
+            }
+
+            next.putExtra("skipped", true);
+
+        }
+
         startActivity(next);
         finish();
+
+
     }
 }

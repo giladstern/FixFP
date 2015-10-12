@@ -48,7 +48,7 @@ public class PinActivity extends AppCompatActivity {
         stage = getIntent().getIntExtra("stage", 0);
         timesLeft = Vals.ITERATIONS[stage];
 
-        if (stage == 0)
+        if (stage == 0 && !getIntent().getBooleanExtra("skipped", false))
         {
             Intent pass = new Intent(this, PassGenerate.class);
             pass.putExtra(getString(R.string.pass_type), type);

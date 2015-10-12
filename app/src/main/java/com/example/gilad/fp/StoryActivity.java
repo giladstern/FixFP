@@ -48,7 +48,7 @@ public class StoryActivity extends AppCompatActivity {
         timesLeft = Vals.ITERATIONS[stage];
         topMessage = (TextView) findViewById(R.id.top_message);
 
-        if (stage == 0)
+        if (stage == 0 && !getIntent().getBooleanExtra("skipped", false))
         {
             Intent pass = new Intent(this, PassGenerate.class);
             pass.putExtra(getString(R.string.pass_type), type);
