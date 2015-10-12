@@ -29,7 +29,7 @@ public class Alarm extends WakefulBroadcastReceiver
     {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED))
         {
-            long time = context.getSharedPreferences("times", Context.MODE_PRIVATE).getLong("nextAlarm", 0);
+            long time = context.getSharedPreferences(context.getString(R.string.stage_file), Context.MODE_PRIVATE).getLong(context.getString(R.string.next_alarm), 0);
             if (time != 0)
             {
                 AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -59,12 +59,12 @@ public class Alarm extends WakefulBroadcastReceiver
 
     static public void set(Context context, long time)
     {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("times", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("times", Context.MODE_PRIVATE);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, Alarm.class);
         i.setAction(ALARM_ACTION);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
-        sharedPreferences.edit().putLong("nextAlarm", time).commit();
+//        sharedPreferences.edit().putLong("nextAlarm", time).commit();
         am.set(AlarmManager.RTC_WAKEUP, time, pi);
     }
 
