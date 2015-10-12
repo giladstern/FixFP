@@ -299,7 +299,7 @@ public class PinTutorial extends AppCompatActivity {
                 onResume();
             }
         });
-        if (!success)
+        if (!success && secondPart)
         {
             builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
                 @Override

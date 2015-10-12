@@ -230,7 +230,7 @@ public class StoryTutorial extends AppCompatActivity {
                 onResume();
             }
         });
-        if (!success)
+        if (!success && batch == DiagonalStoryFP.Batch.DONE)
         {
             builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
                 @Override

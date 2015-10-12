@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDoneException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -249,7 +250,7 @@ public class PatternTutorial extends AppCompatActivity {
                 onResume();
             }
         });
-        if (!success)
+        if (!success && secondPart)
         {
             builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
                 @Override
