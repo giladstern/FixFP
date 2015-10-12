@@ -61,7 +61,7 @@ public class PatternTutorial extends AppCompatActivity {
         passIntent.putExtra(getString(R.string.pass_type), type);
         passIntent.putExtra(getString(R.string.generate), getIntent().getBooleanExtra(getString(R.string.generate), true));
         passIntent.putExtra(getString(R.string.message), "Your code is the following pattern. " +
-                "For now, take a look at it, but don’t try to memorize it.");
+                "For now, take a look at your code, but don’t try to memorize it.");
         startActivity(passIntent);
 
         titleView = (TextView) findViewById(R.id.message);

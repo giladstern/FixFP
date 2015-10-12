@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="In this study, you will be given a code and will be asked to memorize it.\n\nYou will be prompted once in a while to input your code.\n\nPlease do not write your code down, you will be reminded of it if needed.\n\n"
+                android:text="In this study, you will be given a code and will be asked to memorize it.\n\nYou will be prompted once in a while to input your code.\n\nPlease do not write your code down. If you forget your code, we will remind you.\n\n"
                 android:id="@+id/textView"
                 android:layout_below="@id/welcomeText"
                 android:layout_marginTop="15dp"/>
