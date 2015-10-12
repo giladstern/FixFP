@@ -216,7 +216,7 @@ public class ListTutorial extends AppCompatActivity {
                 onResume();
             }
         });
-        if (!success)
+        if (!success && batch == WideNoLinesFP.Batch.DONE)
         {
             builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
                 @Override

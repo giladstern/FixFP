@@ -1,17 +1,22 @@
 package com.example.gilad.fp.tutorial;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gilad.fp.MainActivity;
@@ -303,7 +308,7 @@ public class PinTutorial extends AppCompatActivity {
                 onResume();
             }
         });
-        if (!success)
+        if (!success && secondPart)
         {
             builder.setPositiveButton(getString(R.string.forgot), new DialogInterface.OnClickListener() {
                 @Override
@@ -316,13 +321,15 @@ public class PinTutorial extends AppCompatActivity {
             });
         }
         builder.show();
+        //  Align button?
+        // .getButton(DialogInterface.BUTTON_NEUTRAL).setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
     private void midwayAlert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.correct))
-                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onResume();
