@@ -182,7 +182,7 @@ public class AlarmSetActivity extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                        dialog = ProgressDialog.show(AlarmSetActivity.this, getString(R.string.sending), getString(R.string.wait));
                         finalSave("List");
                     }
                 });
@@ -234,12 +234,10 @@ public class AlarmSetActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         startService(new Intent(this, SendService.class));
-        Log.d("Debug", "Peace Out!");
         super.onDestroy();
     }
 
     private void finalSave(final String title) {
-        Log.d("Debug", "Inside");
         ParseQuery<ParseObject> query = ParseQuery.getQuery(title);
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -276,22 +274,21 @@ public class AlarmSetActivity extends AppCompatActivity {
             dialog.dismiss();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Error")
-                .setMessage("An error has occurred.\n" +
-                        "Make sure you have an internet connection and try again.")
-                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.error)
+                .setMessage(R.string.internet_error)
+                .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                        AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, getString(R.string.sending), getString(R.string.wait));
                         finalSave(title);
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, getString(R.string.sending), getString(R.string.wait));
                 finalSave(title);
             }
-        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
@@ -301,7 +298,6 @@ public class AlarmSetActivity extends AppCompatActivity {
     }
 
     private void userSave() {
-        Log.d("Debug", "Here");
         user.put("finished", true);
         user.saveInBackground(new SaveCallback() {
             @Override
@@ -323,7 +319,7 @@ public class AlarmSetActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-                    ((Button) findViewById(R.id.button)).setText("Exit");
+                    ((Button) findViewById(R.id.button)).setText(R.string.exit);
                 }
             }
         });
@@ -336,22 +332,21 @@ public class AlarmSetActivity extends AppCompatActivity {
             dialog.dismiss();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Error")
-                .setMessage("An error has occurred.\n" +
-                        "Make sure you have an internet connection and try again.")
-                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.error)
+                .setMessage(R.string.internet_error)
+                .setNeutralButton(R.string.retry, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                        AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, getString(R.string.sending), getString(R.string.wait));
                         userSave();
                     }
                 }).setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, "Sending", "Please Wait");
+                AlarmSetActivity.this.dialog = ProgressDialog.show(AlarmSetActivity.this, getString(R.string.sending), getString(R.string.wait));
                 userSave();
             }
-        }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();

@@ -155,4 +155,9 @@
     <string name="time_data">timeData</string>
     <string name="incremented">incremented</string>
     <string name="finished">finished</string>
+    <string name="error">Error</string>
+    <string name="internet_error">An error has occurred.\nMake sure you have an internet connection and try again.</string>
+    <string name="exit">Exit</string>
+    <string name="wait">Please wait</string>
+    <string name="sending">Sending</string>
 </resources>

@@ -39,7 +39,7 @@ public class DiagonalStoryFP extends FastPhrase {
     private Paint bottomPaint;
     private RectF middleRect;
     private Paint middlePaint;
-//    private String[] pass = new String[6];
+    //    private String[] pass = new String[6];
     private Typeface font;
     private Typeface cartoonFont;
     private Typeface locationsFont;
@@ -159,28 +159,6 @@ public class DiagonalStoryFP extends FastPhrase {
             OnTouchListener topListen = new OnTouchListener(){
                 public boolean onTouch(View v, MotionEvent ev) {
 
-                    if (ev.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        touchLog.add(new TouchData(System.currentTimeMillis(),
-                                ev.getAction(),
-                                v.getId() - 1,
-                                ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
-                        return true;
-                    }
-
-                    if (!insideCirc(v, ev) && topSelected != -1 && ev.getAction() != MotionEvent.ACTION_DOWN)
-                    {
-                        return true;
-                    }
-
-                    if (ev.getAction() == MotionEvent.ACTION_DOWN)
-                    {
-                        touchLog.add(new TouchData(System.currentTimeMillis(),
-                                ev.getAction(),
-                                v.getId() - 1,
-                                ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
-                    }
-
                     if (bottomSelected != -1)
                     {
                         formatDeselect(bottomSelected);
@@ -191,6 +169,30 @@ public class DiagonalStoryFP extends FastPhrase {
                     {
                         formatDeselect(middleSelected);
                         middleSelected = -1;
+                    }
+
+                    if (ev.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        touchLog.add(new TouchData(System.currentTimeMillis(),
+                                ev.getAction(),
+                                v.getId() - 1,
+                                ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
+                        return true;
+                    }
+
+                    // Possibly add "&&topSelected != -1" for automatic selection if nothing is selected?
+                    if (!(insideCirc(v, ev) || topHalf(v, ev) || (v.getId() % 5 == 1 && leftEdge(v, ev)) || (v.getId() % 5 == 0 && rightEdge(v, ev)))
+                            && ev.getAction() != MotionEvent.ACTION_DOWN)
+                    {
+                        return true;
+                    }
+
+                    if (ev.getAction() == MotionEvent.ACTION_DOWN)
+                    {
+                        touchLog.add(new TouchData(System.currentTimeMillis(),
+                                ev.getAction(),
+                                v.getId() - 1,
+                                ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
                     }
 
                     if (topSelected == v.getId() - 1)
@@ -224,6 +226,11 @@ public class DiagonalStoryFP extends FastPhrase {
                 public boolean onTouch(View v, MotionEvent ev) {
                     if(topSelected != -1) {
 
+                        if (bottomSelected != -1)
+                        {
+                            formatDeselect(bottomSelected);
+                            bottomSelected = -1;
+                        }
 
                         if (ev.getAction() == MotionEvent.ACTION_UP)
                         {
@@ -241,15 +248,10 @@ public class DiagonalStoryFP extends FastPhrase {
                                     ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));;
                         }
 
-                        else if (!insideCirc(v, ev) && middleSelected != -1)
+                        // Possibly add "&&topSelected != -1" for automatic selection if nothing is selected?
+                        else if (!(insideCirc(v, ev)  || (v.getId() % 5 == 1 && leftEdge(v, ev)) || (v.getId() % 5 == 0 && rightEdge(v, ev))))
                         {
                             return true;
-                        }
-
-                        if (bottomSelected != -1)
-                        {
-                            formatDeselect(bottomSelected);
-                            bottomSelected = -1;
                         }
 
                         if (middleSelected == v.getId() - 1)
@@ -300,7 +302,9 @@ public class DiagonalStoryFP extends FastPhrase {
                                     ((ColoredTextSwitch) getChildAt(v.getId() + 14)).getText()));
                         }
 
-                        if(!insideCirc(v, ev) && bottomSelected != -1 && ev.getAction() != MotionEvent.ACTION_DOWN)
+                        // Possibly add "&&bottomSelected != -1" for automatic selection if nothing is selected?
+                        if(!(insideCirc(v, ev) || bottomHalf(v, ev) || (v.getId() % 5 == 1 && leftEdge(v, ev)) || (v.getId() % 5 == 0 && rightEdge(v, ev)))
+                                && ev.getAction() != MotionEvent.ACTION_DOWN)
                         {
                             return true;
                         }
@@ -737,21 +741,61 @@ public class DiagonalStoryFP extends FastPhrase {
 
     public boolean insideCirc(View v, MotionEvent ev)
     {
-        int width = v.getWidth();
-        int height = v.getHeight() + getChildAt(v.getId() + 14).getHeight();
-        int xCenter = (v.getLeft() + v.getRight()) / 2;
-        int yCenter = (v.getTop() + getChildAt(v.getId() + 14).getBottom()) / 2;
-        float radius = Math.min(height, width) * radiusRatio;
-
-        float xDist = ev.getX() - xCenter;
-        float yDist = ev.getY() - yCenter;
-
-        return xDist * xDist + yDist * yDist < radius * radius;
-
+//        int width = v.getWidth();
 //        int height = v.getHeight() + getChildAt(v.getId() + 14).getHeight();
+//        int xCenter = (v.getLeft() + v.getRight()) / 2;
 //        int yCenter = (v.getTop() + getChildAt(v.getId() + 14).getBottom()) / 2;
+//        float radius = Math.min(height, width) * radiusRatio;
 //
-//        return yCenter - ev.getY() < height * 0.2 && ev.getY() - yCenter < height * 0.2;
+//        float xDist = ev.getX() - xCenter;
+//        float yDist = ev.getY() - yCenter;
+//
+//        return xDist * xDist + yDist * yDist < radius * radius;
+
+        int height = v.getHeight() + getChildAt(v.getId() + 14).getHeight();
+        int yCenter = (v.getTop() + getChildAt(v.getId() + 14).getBottom()) / 2;
+        int width = v.getWidth();
+        int xCenter = (v.getLeft() + v.getRight()) / 2;
+
+        float yRatio = 0.20f;
+        float xRatio = 0.30f;
+
+        float xDist = Math.abs(ev.getX() - xCenter);
+        float yDist = Math.abs(ev.getY() - yCenter);
+
+        return (xDist / (width * xRatio) + yDist / (height * yRatio)) <= 1;
+
+//        boolean inY = yCenter - ev.getY() < height * yRatio && ev.getY() - yCenter < height * yRatio;
+//        boolean inX = xCenter - ev.getX() < width * xRatio && ev.getX() - xCenter < width * xRatio;
+//
+//        return inX && inY;
+    }
+
+    public boolean topHalf(View v, MotionEvent ev)
+    {
+//        // Probably not needed?
+//        float threshold = v.getTop() * 0.4f + getChildAt(v.getId() + 14).getBottom() * 0.6f;
+//        return ev.getY() < threshold;
+
+        return false;
+    }
+
+    public boolean bottomHalf(View v, MotionEvent ev)
+    {
+        float threshold = v.getTop() * 0.7f + getChildAt(v.getId() + 14).getBottom() * 0.3f;
+        return ev.getY() > threshold;
+    }
+
+    public boolean rightEdge(View v, MotionEvent ev)
+    {
+        float threshold = v.getLeft() * 0.50f + v.getRight() * 0.50f;
+        return ev.getX() > threshold;
+    }
+
+    public boolean leftEdge(View v, MotionEvent ev)
+    {
+        float threshold = v.getLeft() * 0.50f + v.getRight() * 0.50f;
+        return ev.getX() < threshold;
     }
 
     public interface OnFirstCompleteListener
