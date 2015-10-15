@@ -46,6 +46,7 @@ public class DiagonalStoryFP extends FastPhrase {
     private Vibrator vibrator;
     private boolean middleOff = false;
     private boolean bottomOff = false;
+    private static float marginPercent = 0.30f;
 
 //    private ArrayList<TouchData> touchLog = new ArrayList<TouchData>();
 
@@ -414,22 +415,31 @@ public class DiagonalStoryFP extends FastPhrase {
         int hh = h - ypad;
 
         // Calculate the size of each cell.
-        int yUnit = hh / 3;
+//        int yUnit = hh / 3;
+        float yUnit = hh / (3 + 2 * marginPercent);
+        float margin = yUnit * marginPercent;
         int xUnit =  ww / 5;
+        int thirdHeight = hh / 3;
 
-        topRect = new RectF(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + ww, getPaddingTop() + yUnit);
-        middleRect = new RectF(getPaddingLeft(), getPaddingTop() + yUnit, getPaddingLeft() + ww, getPaddingTop() + 2 * yUnit);
-        bottomRect = new RectF(getPaddingLeft(), getPaddingTop() + 2 * yUnit, getPaddingLeft() + ww, getPaddingTop() + 3 * yUnit);
 
+
+        topRect = new RectF(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + ww, getPaddingTop() + thirdHeight);
+        middleRect = new RectF(getPaddingLeft(), getPaddingTop() + thirdHeight, getPaddingLeft() + ww, getPaddingTop() + 2 * thirdHeight);
+        bottomRect = new RectF(getPaddingLeft(), getPaddingTop() + 2 * thirdHeight, getPaddingLeft() + ww, getPaddingTop() + 3 * thirdHeight);
         // They are already lain out in relation to each other, only need to fix size.
 
 
         for (int i = 0 ; i < 15 ; i++)
         {
-            ((LayoutParams) getChildAt(i).getLayoutParams()).height = (yUnit * 3 / 4);
+            ((LayoutParams) getChildAt(i).getLayoutParams()).height = (int) (yUnit * 3 / 4);
             ((LayoutParams) getChildAt(i).getLayoutParams()).width = xUnit;
-            ((LayoutParams) getChildAt(i + 15).getLayoutParams()).height = (yUnit / 4);
+            ((LayoutParams) getChildAt(i + 15).getLayoutParams()).height = (int) (yUnit / 4);
             ((LayoutParams) getChildAt(i + 15).getLayoutParams()).width = xUnit;
+        }
+
+        for (int i = 15; i < 25; i++)
+        {
+            ((LayoutParams) getChildAt(i).getLayoutParams()).setMargins(0,0,0,(int) margin);
         }
 
         // Fix lost pixels.
@@ -757,8 +767,8 @@ public class DiagonalStoryFP extends FastPhrase {
         int width = v.getWidth();
         int xCenter = (v.getLeft() + v.getRight()) / 2;
 
-        float yRatio = 0.20f;
-        float xRatio = 0.30f;
+        float yRatio = 0.30f;
+        float xRatio = 0.50f;
 
         float xDist = Math.abs(ev.getX() - xCenter);
         float yDist = Math.abs(ev.getY() - yCenter);

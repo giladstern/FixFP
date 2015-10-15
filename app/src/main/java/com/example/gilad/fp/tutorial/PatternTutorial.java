@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDoneException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -15,18 +14,11 @@ import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.gilad.fp.AlarmSetActivity;
-import com.example.gilad.fp.DispatchActivity;
-import com.example.gilad.fp.MainActivity;
 import com.example.gilad.fp.PassGenerate;
 import com.example.gilad.fp.PatternActivity;
 import com.example.gilad.fp.R;
-import com.example.gilad.fp.SuccMsg;
 import com.example.gilad.fp.utils.TouchData;
 import com.example.gilad.fp.utils.Vals;
-
-import org.json.JSONArray;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
